@@ -163,8 +163,15 @@ persistent bandwidth difference in this short run. The EWMA changes more gradual
 than individual samples. These probe rates are not file-download throughput.
 
 [Run logs and measurements](../results/q2/lan-run-20261017-145341/README.md).
-Client completion/hash confirmation for this run is pending. Download time was not
-measured; the server's launch-to-exit interval includes waiting for the client.
+The client-reported SHA-256 matches the server source hash, confirming correct
+file reconstruction with the bandwidth probes active:
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+```
+
+Download time was not measured; the server's launch-to-exit interval includes
+waiting for the client.
 
 ### Limitations
 

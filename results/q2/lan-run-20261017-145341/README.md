@@ -11,5 +11,6 @@ The server used commit bd9742c and minRTT scheduling, transferring a 53,186,840-
 
 Both probe channels recorded five samples. Similar average rates and a simultaneous
 drop are consistent with shared conditions; they do not prove independent paths or
-identify the cause. Separate client completion/hash confirmation is pending.
+identify the cause. The client SHA-256 supplied in results/README.md matches the
+recorded server source SHA-256, confirming byte-for-byte file reconstruction.
 No client download-duration measurement was captured.

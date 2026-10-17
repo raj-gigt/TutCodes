@@ -9,8 +9,10 @@
   "file_size_bytes": 53186840,
   "source_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
   "status": "server finished",
-  "client_hash": null,
+  "client_hash": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
   "client_download_duration": null,
   "ended_at": "2026-10-17T14:55:21.367297+05:30",
-  "server_exit_code": 0
+  "server_exit_code": 0,
+  "file_integrity_verified": true,
+  "client_hash_evidence": "User-supplied client SHA-256 in results/README.md, commit 633608f"
 }
