@@ -65,3 +65,16 @@ confirms file integrity, not client download time.
 - q4/validation.txt: balanced-completion equation and transfer checks.
 - Q4 LAN runs archive bandwidth CSVs, Scheduler.csv, server console, parameters,
   source hash and allocation summaries. Client verification is recorded per run.
+
+### Q4 client verification — 17 October 2026
+
+The client exited successfully and reconstructed 53,186,840 bytes.
+[Captured client output and verification](q4/client-verification.txt).
+Client elapsed time was **139.648287 seconds**, including warmup.
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
+```
+
+The hash matches the previously verified sample source. Comparison with this
+Q4 run's server source and confirmation of scheduler allocations await server records.

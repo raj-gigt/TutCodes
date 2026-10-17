@@ -1,0 +1,28 @@
+Q4 client download verification — 17 October 2026
+
+Client commit: 65a8c08
+Working directory: MultiPath/Client
+Command: java -cp build Main
+Server IP: 10.42.184.197
+Client exit code: 0
+
+Captured client output:
+Connected : 0
+Connected : 1
+1 Hi Sent
+0 Hi Sent
+1 Received HiAck
+0 Received HiAck
+Complete file reconstructed in order.
+Client elapsed seconds (receiver start through flush, includes warmup): 139.648287
+BW Path 1: null
+BW Path 0: null
+
+Downloaded file: video/CN_Lect_NPTEL.zip
+Size: 53186840 bytes
+SHA-256: 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+
+Client elapsed seconds: 139.648287
+Timing: receiver start through output flush, including warmup.
+Hash matches the previously verified sample source.
+Q4 server-side source comparison and scheduler allocations: pending server records.
