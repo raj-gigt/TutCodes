@@ -5,3 +5,5 @@ video/
 MultiPath/Server/Bandwidth-Path*.csv
 MultiPath/Server/Scheduler.csv
 __pycache__/
+# Q5 timings and console logs are retained; per-chunk diagnostic lag is local.
+results/q5/*/client/*/MultiPath.txt

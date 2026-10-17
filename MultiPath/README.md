@@ -249,3 +249,6 @@ python3 MultiPath/experiments/run_q5.py summarize --batch q5-20261017
 This writes summary.csv and summary.json with client times, source/output integrity
 checks, sender times and per-path chunk counts. Missing client results stay blank;
 sender times are never substituted for client download time.
+
+For the Codex instance on the client laptop, follow
+[CLIENT_Q5_INSTRUCTIONS.md](experiments/CLIENT_Q5_INSTRUCTIONS.md).
