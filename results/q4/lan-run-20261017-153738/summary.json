@@ -1,0 +1,26 @@
+{
+  "status": "server completed; client verification pending",
+  "windows": 145,
+  "total_chunks": 37064,
+  "path0_chunks": 26075,
+  "path1_chunks": 10989,
+  "path0_share_percent": 70.35128426505504,
+  "path1_share_percent": 29.64871573494496,
+  "sender_seconds": 136.883317,
+  "fallback_windows": 0,
+  "all_allocations_minimize_predicted_completion_difference": true,
+  "windows_differing_from_bwratio_on_same_snapshot": 55,
+  "extra_path0_chunks_vs_bwratio_on_same_snapshots": 55,
+  "largest_predicted_time_gap_seconds_after_rounding": 0.008940473747593769,
+  "timing_boundary": "Metadata writes through final end-marker writes, excluding warmup; not client download completion.",
+  "path0_bandwidth": {
+    "sample_count": 71,
+    "mean_sample_mbps": 2.213223833537352,
+    "final_ewma_mbps": 2.1404310604480004
+  },
+  "path1_bandwidth": {
+    "sample_count": 43,
+    "mean_sample_mbps": 0.9370662128485582,
+    "final_ewma_mbps": 0.938048127616
+  }
+}

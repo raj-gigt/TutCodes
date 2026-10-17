@@ -321,6 +321,25 @@ an independent enumeration of the possible splits.
 
 [Validation record](../results/q4/validation.txt)
 
+### Two-machine results
+
+With `balanced 4 2 10 4`, the server completed successfully:
+
+```text
+Path 0: 26,075 chunks (70.35%)
+Path 1: 10,989 chunks (29.65%)
+Sender duration: 136.883 seconds
+```
+
+All 145 windows minimized the predicted completion-time difference over integer
+splits, with no fallback. Compared with the ratio formula on the same snapshots,
+55 windows changed allocation, giving path 0 a net 55 extra chunks.
+Mean probe rates were 2.213 and 0.937 Mbps. Sender duration excludes warmup and
+ends at the final socket writes. Client completion/hash confirmation is pending.
+This single run is insufficient to rank schedulers; repeated comparisons follow in Q5.
+
+[Run logs and measurements](../results/q4/lan-run-20261017-153738/README.md)
+
 ## Q5-Q6
 
 To be added after experiments.

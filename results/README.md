@@ -78,3 +78,5 @@ Client elapsed time was **139.648287 seconds**, including warmup.
 
 The hash matches the previously verified sample source. Comparison with this
 Q4 run's server source and confirmation of scheduler allocations await server records.
+- q4/lan-run-20261017-153738/: completed server run and per-window equation checks;
+  client verification pending.
