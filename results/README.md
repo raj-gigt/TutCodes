@@ -8,6 +8,8 @@ Keep original measurements separate from interpretations in the report.
 - q1/server-user-run.log: server-console excerpt supplied by the user after the
   Q1 changes. It is not a full run capture and contains no completion message,
   client output, file hash, or total download duration.
+- The report records the user-verified matching server/client SHA-256 and the
+  downloaded file size. A separate client console log was not captured.
 - q1/validation.txt: recorded results of the five integration tests run during
   implementation. Test source: ../MultiPath/tests/test_q1.py.
 
