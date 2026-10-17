@@ -21,30 +21,70 @@ The final chunk contains only its actual bytes, without zero padding. Both paths
 must terminate successfully and the reconstructed byte count must match the file
 size before success is reported. Empty files contain only metadata and end markers.
 
-## Run
+## Build and run
 
-Compile both updated programs: the new protocol is incompatible with the old one.
-Run each program from its own directory so the relative video/log paths resolve.
+Install a Java JDK on both computers (`java -version` and `javac -version`
+should work). Use the same updated code on both computers.
 
-Server machine, from MultiPath/Server:
+### Server computer — start first
 
-```sh
-javac Main.java
-java Main
-```
-
-Client machine, from MultiPath/Client:
+From the `TutCodes` repository root:
 
 ```sh
-javac Main.java
-java Main SERVER_IP
+cd MultiPath/Server
+mkdir -p build
+javac -d build Main.java
+java -cp build Main
 ```
 
-An optional second address selects the second path: `java Main SERVER_IP SECOND_IP`.
-With no arguments, the existing default address 10.42.184.197 is used for both.
-The server reads video/CN_Lect_NPTEL.zip; the client creates/overwrites that relative
-filename in its own directory. No cleanup script is needed. MultiPath.txt still
-appends per-chunk lag measurements and is not cleared between runs.
+The source file must exist at `MultiPath/Server/video/CN_Lect_NPTEL.zip`.
+Run `hostname -I` in another terminal to find the server's LAN IP address.
+
+### Client computer — start after the server
+
+From the `TutCodes` repository root:
+
+```sh
+cd MultiPath/Client
+mkdir -p build
+javac -d build Main.java
+java -cp build Main
+```
+
+With no arguments, the client uses the hardcoded default IP `10.42.184.197`
+for both paths. You do not need to provide it again if that is the server's IP.
+
+Optional: if the server has a different IP, override the default without editing
+or recompiling the code:
+
+```sh
+java -cp build Main SERVER_IP
+```
+
+Replace `SERVER_IP` with the server's actual LAN IPv4 address.
+
+The client creates `video/` automatically and writes
+`MultiPath/Client/video/CN_Lect_NPTEL.zip`. Success prints
+`Complete file reconstructed in order.`
+
+Keep each terminal in its `Server` or `Client` directory when running; do not
+change into `build/`. Both computers must be reachable on the same network.
+Allow TCP ports 6001/6002 and UDP ports 8001/8002 on the server if its firewall
+blocks them. Restart the server before each new download.
+
+Recompile after changing `Main.java`. Generated classes go into each directory's
+`build/` folder. Add these patterns to the repository-root `.gitignore` to keep
+compiled files out of commits:
+
+```gitignore
+build/
+*.class
+```
+
+An optional second server address selects the second path:
+`java -cp build Main SERVER_IP SECOND_IP`. Normally both paths use the same server.
+The client overwrites its output ZIP each run. No cleanup script is needed.
+`MultiPath.txt` appends per-chunk lag measurements and is not cleared between runs.
 
 The lag timestamps still depend on clock synchronization between machines; they
 are not RTT measurements. Bandwidth probes, new schedulers, and Gaussian data-path
