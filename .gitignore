@@ -1,3 +1,5 @@
 build/
 *.class
 video/
+# Per-run copies are archived under results/q2/.
+MultiPath/Server/Bandwidth-Path*.csv

@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-10-17T14:53:41.049888+05:30",
+  "commit": "bd9742ce5098b8e60428c2785421b8b7678237e5",
+  "command": "java -cp build Main",
+  "scheduler": "minRTT",
+  "payload_bytes_per_probe": 262144,
+  "probe_pause_ms": 1000,
+  "ewma_alpha": 0.125,
+  "file_size_bytes": 53186840,
+  "source_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
+  "status": "server finished",
+  "client_hash": null,
+  "client_download_duration": null,
+  "ended_at": "2026-10-17T14:55:21.367297+05:30",
+  "server_exit_code": 0
+}

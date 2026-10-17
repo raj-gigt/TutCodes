@@ -1,0 +1,58 @@
+Connected to Path1 on port: 6001
+Connected to Path2 on port: 6002
+0 Hi Received
+1 Hi Received
+BW Path 1: sample 35.679 Mbps, estimate 35.679 Mbps
+BW Path 0: sample 31.223 Mbps, estimate 31.223 Mbps
+0 Resending Timestamp
+1 Resending Timestamp
+0 Current RTT: 78.0 Estimates RTT: 0.0
+1 Current RTT: 78.0 Estimates RTT: 0.0
+1 Current RTT: 25.0 Estimates RTT: 9.75
+0 Current RTT: 21.0 Estimates RTT: 9.75
+1 Current RTT: 27.0 Estimates RTT: 11.65625
+0 Current RTT: 21.0 Estimates RTT: 11.15625
+0 Current RTT: 21.0 Estimates RTT: 12.386719
+1 Current RTT: 23.0 Estimates RTT: 13.574219
+0 Current RTT: 21.0 Estimates RTT: 13.463379
+1 Current RTT: 23.0 Estimates RTT: 14.752441
+BW Path 0: sample 53.763 Mbps, estimate 34.041 Mbps
+BW Path 1: sample 52.169 Mbps, estimate 37.740 Mbps
+1 Current RTT: 19.0 Estimates RTT: 15.783386
+0 Current RTT: 22.0 Estimates RTT: 14.405457
+0 Current RTT: 18.0 Estimates RTT: 15.354774
+1 Current RTT: 18.0 Estimates RTT: 16.185463
+1 Current RTT: 19.0 Estimates RTT: 16.412281
+0 Current RTT: 23.0 Estimates RTT: 15.685428
+1 Current RTT: 23.0 Estimates RTT: 16.735746
+0 Current RTT: 19.0 Estimates RTT: 16.59975
+1 Current RTT: 35.0 Estimates RTT: 17.518778
+0 Current RTT: 48.0 Estimates RTT: 16.899782
+BW Path 1: sample 44.651 Mbps, estimate 38.604 Mbps
+BW Path 0: sample 49.506 Mbps, estimate 35.974 Mbps
+1 Current RTT: 66.0 Estimates RTT: 19.70393
+0 Current RTT: 135.0 Estimates RTT: 20.78731
+1 Current RTT: 169.0 Estimates RTT: 25.490938
+0 Current RTT: 82.0 Estimates RTT: 35.063896
+1 Current RTT: 115.0 Estimates RTT: 43.429573
+0 Current RTT: 108.0 Estimates RTT: 40.93091
+0 Current RTT: 135.0 Estimates RTT: 49.314545
+1 Current RTT: 135.0 Estimates RTT: 52.375877
+BW Path 0: sample 13.082 Mbps, estimate 33.112 Mbps
+BW Path 1: sample 12.540 Mbps, estimate 35.346 Mbps
+1 Current RTT: 113.0 Estimates RTT: 62.70389
+0 Current RTT: 131.0 Estimates RTT: 60.025227
+1 Current RTT: 30.0 Estimates RTT: 68.990906
+0 Current RTT: 38.0 Estimates RTT: 68.89707
+1 Current RTT: 35.0 Estimates RTT: 64.11704
+0 Current RTT: 30.0 Estimates RTT: 65.03494
+1 Current RTT: 107.0 Estimates RTT: 60.477413
+0 Current RTT: 98.0 Estimates RTT: 60.655575
+BW Path 0: sample 22.004 Mbps, estimate 31.724 Mbps
+BW Path 1: sample 22.023 Mbps, estimate 33.680 Mbps
+1 Current RTT: 102.0 Estimates RTT: 66.29274
+0 Current RTT: 89.0 Estimates RTT: 65.32362
+1 Current RTT: 103.0 Estimates RTT: 70.75615
+Stopping Control Channels
+0 Current RTT: 98.0 Estimates RTT: 68.28317
+Stopping Control Channels

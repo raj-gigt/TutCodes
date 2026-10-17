@@ -145,6 +145,27 @@ Path 1: 400 ms → 200 ms; samples  655360 → 1310720 B/s; final EWMA  737280 B
 [Path 0 loopback samples](../results/q2/loopback-path0.csv) ·
 [Path 1 loopback samples](../results/q2/loopback-path1.csv)
 
+### Two-machine run: 17 October 2026
+
+The server completed with exit code 0 using minRTT and a 53,186,840-byte file.
+Each path recorded five probe samples (rates below are decimal Mbps):
+
+```text
+Path 0 samples: 31.223, 53.763, 49.506, 13.082, 22.004
+Path 1 samples: 35.679, 52.169, 44.651, 12.540, 22.023
+
+Path 0: mean sample = 33.915 Mbps; final EWMA = 31.724 Mbps
+Path 1: mean sample = 33.412 Mbps; final EWMA = 33.680 Mbps
+```
+
+Both paths showed a similar drop and recovery. Their close averages do not show a
+persistent bandwidth difference in this short run. The EWMA changes more gradually
+than individual samples. These probe rates are not file-download throughput.
+
+[Run logs and measurements](../results/q2/lan-run-20261017-145341/README.md).
+Client completion/hash confirmation for this run is pending. Download time was not
+measured; the server's launch-to-exit interval includes waiting for the client.
+
 ### Limitations
 
 - Separate ports do not guarantee separate physical paths. With the same IP and
@@ -153,8 +174,8 @@ Path 1: 400 ms → 200 ms; samples  655360 → 1310720 B/s; final EWMA  737280 B
   proxy for the associated data path, not its exact achieved rate.
 - Probe traffic consumes bandwidth and may affect file transfers. Burst size,
   latency, TCP startup, and host processing also affect the samples.
-- These are local correctness checks, not measurements of the required two-machine
-  setup. No artificial bandwidth difference was introduced in Q2.
+- Automated tests used loopback; the separate two-machine run is recorded above.
+  No artificial bandwidth difference was introduced in Q2.
 
 ## Q3-Q6
 

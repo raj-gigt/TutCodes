@@ -29,3 +29,6 @@ establishing its boundaries. Preserve existing logs before clearing them.
 The server's runtime Bandwidth-Path0.csv and Bandwidth-Path1.csv are overwritten
 on restart. Copy each run's files into a distinct results subdirectory to retain
 measurements. CSV rates are bytes/second; console rates are decimal Mbps.
+
+- q2/lan-run-20261017-145341/: captured two-machine run, including server console,
+  raw per-path CSVs, parameters, source hash, and calculated summaries.
