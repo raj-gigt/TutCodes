@@ -106,6 +106,8 @@ double sample = PROBE_BYTES * 1_000_000_000.0 / elapsed;
 Samples are in bytes/second. They include the READY request delay and payload
 transfer time, so they estimate effective burst throughput rather than exact link
 capacity. The result message back to the server is outside the measured interval.
+I used a 256 KiB burst because smaller bursts would make the fixed READY request
+delay a larger part of the measurement, making the estimate more latency-dependent.
 
 ### Smoothing
 
