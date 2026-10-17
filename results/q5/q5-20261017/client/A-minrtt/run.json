@@ -1,0 +1,20 @@
+{
+  "case": "A-minrtt",
+  "started_at": "2026-10-17T15:53:41.998568+05:30",
+  "commit": "92f678ddd0b34badced2304e3961fa1a1d0d0b58",
+  "command": [
+    "java",
+    "-cp",
+    "/home/tusshar/TutCodes/MultiPath/Client/build",
+    "Main",
+    "10.42.184.197",
+    "10.42.184.197"
+  ],
+  "ended_at": "2026-10-17T15:56:55.147600+05:30",
+  "client_exit_code": 0,
+  "file_bytes": 53186840,
+  "client_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
+  "client_elapsed_seconds": 192.76487,
+  "timing_boundary": "Receiver start through verified output flush, including server warmup.",
+  "verified": true
+}

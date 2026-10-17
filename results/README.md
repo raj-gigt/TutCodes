@@ -80,3 +80,8 @@ The client hash and file size match this Q4 run's server source. All 145 schedul
 allocations were checked against the completion-time equation.
 - q4/lan-run-20261017-153738/: completed server run and per-window equation checks;
   client completion, elapsed time and matching source/output hashes verified.
+
+## Q5 client batch
+
+All six cases in `q5-20261017` completed with matching file sizes and SHA-256 hashes.
+[Client times, hash and per-case evidence](q5/README.md#client-batch-q5-20261017).

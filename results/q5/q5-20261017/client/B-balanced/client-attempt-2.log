@@ -1,0 +1,9 @@
+Connected : 0
+Connected : 1
+1 Hi Sent
+0 Hi Sent
+0 Received HiAck
+1 Received HiAck
+Complete file reconstructed in order.
+Client elapsed seconds (receiver start through flush, includes warmup): 240.650121
+BW Path 1: Read timed out

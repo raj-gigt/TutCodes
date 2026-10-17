@@ -14,3 +14,26 @@ for Q5 client times.
 Each batch contains plan.json, server/CASE logs, client/CASE evidence, and combined
 summary files. Client elapsed seconds include warmup and end after output flush.
 Source/output size and SHA-256 must match before a case is accepted.
+
+## Client batch q5-20261017
+
+All six cases completed successfully. Times measure receiver start through output
+flush, including warmup. Each downloaded ZIP was 53,186,840 bytes.
+
+| Case | Client seconds | Hash verification |
+|---|---:|---|
+| A-minrtt | 192.764870 | PASS |
+| A-bwratio | 137.545372 | PASS |
+| A-balanced | 141.235329 | PASS |
+| B-minrtt | 458.109298 | PASS |
+| B-bwratio | 232.171317 | PASS |
+| B-balanced | 240.650121 | PASS |
+
+All six output files have this SHA-256:
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+```
+
+[Per-case client logs and metadata](q5-20261017/client/). Check server-side case
+alignment and source verification when combining both computers' records.

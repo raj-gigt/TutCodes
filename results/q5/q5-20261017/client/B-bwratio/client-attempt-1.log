@@ -1,0 +1,8 @@
+Connected : 0
+Connected : 1
+0 Hi Sent
+1 Hi Sent
+1 Received HiAck
+0 Received HiAck
+Complete file reconstructed in order.
+Client elapsed seconds (receiver start through flush, includes warmup): 232.171317
