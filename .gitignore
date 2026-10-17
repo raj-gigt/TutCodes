@@ -4,3 +4,4 @@ video/
 # Per-run copies are archived under results/.
 MultiPath/Server/Bandwidth-Path*.csv
 MultiPath/Server/Scheduler.csv
+__pycache__/

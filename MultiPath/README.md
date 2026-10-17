@@ -216,3 +216,36 @@ python3 MultiPath/tests/test_q1.py --scheduler balanced --delays 4 2 10 4
 
 The Java SchedulerTest additionally checks balanced allocation against every possible
 integer split for 1000 seeded cases. See results/q4/validation.txt for recorded checks.
+
+## Q5 six-case batch
+
+Use the same unique batch name on both machines. The runner compiles Java, runs each
+case in a fresh process, and saves separate logs and metadata. Order: A-minrtt,
+A-bwratio, A-balanced, B-minrtt, B-bwratio, B-balanced. A uses delays 4/2 and 10/4 ms;
+B uses 10/4 ms on both paths. It performs one measured run per case.
+
+```sh
+# Server, from repository root:
+python3 MultiPath/experiments/run_q5.py server --batch q5-20261017
+
+# Client, from its repository root (after pulling):
+python3 MultiPath/experiments/run_q5.py client --batch q5-20261017 --host 10.42.184.197
+```
+
+Keep the client running for the whole batch. The next case starts automatically.
+Client time includes warmup and ends after both paths finish and the output flushes.
+Each case verifies size and SHA-256, saving output under results/q5/BATCH/client/CASE/.
+The video files are ignored by Git. Save and share each run.json and console log;
+client MultiPath.txt files are diagnostic lag measurements, not timing evidence.
+Existing case directories cause an error rather than overwriting earlier results.
+A failed transfer stops the batch. Do not reconnect manually while a batch is active.
+
+After merging the client evidence on the server:
+
+```sh
+python3 MultiPath/experiments/run_q5.py summarize --batch q5-20261017
+```
+
+This writes summary.csv and summary.json with client times, source/output integrity
+checks, sender times and per-path chunk counts. Missing client results stay blank;
+sender times are never substituted for client download time.
