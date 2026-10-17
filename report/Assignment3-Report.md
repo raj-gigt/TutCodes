@@ -1,7 +1,7 @@
 # Assignment 3: Multipath File Transfer
 
-Name: ____________________  
-Roll number: ____________________
+Name: ________Rajat Dugar____________  
+Roll number: _________ME23B114___________
 
 The experiments use a 53,186,840-byte ZIP transferred over two TCP connections.
 Path 1 and Path 2 correspond to IDs 0 and 1 in the logs. Payloads are at most
