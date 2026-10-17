@@ -1,0 +1,46 @@
+javac -d build Main.java
+rajat@Rajats-MacBook-Air Server % java -cp build Main
+Connected to Path1 on port: 6001
+Connected to Path2 on port: 6002
+1 Hi Received
+0 Hi Received
+0 Resending Timestamp
+1 Resending Timestamp
+1 Current RTT: 21.0 Estimates RTT: 0.0
+0 Current RTT: 23.0 Estimates RTT: 0.0
+0 Current RTT: 53.0 Estimates RTT: 2.875
+1 Current RTT: 61.0 Estimates RTT: 2.625
+0 Current RTT: 21.0 Estimates RTT: 9.140625
+1 Current RTT: 23.0 Estimates RTT: 9.921875
+1 Current RTT: 18.0 Estimates RTT: 11.556641
+0 Current RTT: 20.0 Estimates RTT: 10.623047
+0 Current RTT: 23.0 Estimates RTT: 11.795166
+1 Current RTT: 28.0 Estimates RTT: 12.362061
+1 Current RTT: 89.0 Estimates RTT: 14.316803
+0 Current RTT: 91.0 Estimates RTT: 13.19577
+0 Current RTT: 123.0 Estimates RTT: 22.921299
+1 Current RTT: 120.0 Estimates RTT: 23.652203
+0 Current RTT: 20.0 Estimates RTT: 35.431137
+1 Current RTT: 28.0 Estimates RTT: 35.69568
+1 Current RTT: 21.0 Estimates RTT: 34.73372
+0 Current RTT: 20.0 Estimates RTT: 33.502243
+0 Current RTT: 63.0 Estimates RTT: 31.814463
+1 Current RTT: 70.0 Estimates RTT: 33.017006
+0 Current RTT: 97.0 Estimates RTT: 35.712654
+1 Current RTT: 115.0 Estimates RTT: 37.63988
+0 Resending Timestamp
+1 Resending Timestamp
+0 Current RTT: 233.0 Estimates RTT: 43.373573
+1 Current RTT: 226.0 Estimates RTT: 47.309895
+0 Current RTT: 237.0 Estimates RTT: 67.07687
+1 Current RTT: 224.0 Estimates RTT: 69.64616
+0 Current RTT: 224.0 Estimates RTT: 88.31726
+1 Current RTT: 225.0 Estimates RTT: 88.940384
+0 Current RTT: 215.0 Estimates RTT: 105.2776
+1 Current RTT: 216.0 Estimates RTT: 105.94784
+0 Current RTT: 213.0 Estimates RTT: 118.992905
+1 Current RTT: 224.0 Estimates RTT: 119.70436
+0 Current RTT: 215.0 Estimates RTT: 130.74379
+1 Current RTT: 220.0 Estimates RTT: 132.74132
+0 Current RTT: 223.0 Estimates RTT: 141.27582
+1 Current RTT: 216.0 Estimates RTT: 143.64865

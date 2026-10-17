@@ -1,0 +1,18 @@
+Q1 implementation validation
+Recorded from the integration test execution during Q1 implementation.
+This is a record of that execution, not a newly rerun benchmark.
+
+Command: python3 MultiPath/tests/test_q1.py
+
+PASS empty
+PASS exact-chunks
+PASS partial-final-chunk
+PASS reordered-fragmented-early-eof
+PASS reject-truncated-payload
+
+Both Java programs compiled successfully. Successful transfers were checked
+using SHA-256 equality against the test input. The truncated-payload case
+required a nonzero client exit and absence of a success message.
+
+Tests used temporary directories and loopback networking, not the user's
+separate-machine experiment. No file-download-time benchmark was recorded.
