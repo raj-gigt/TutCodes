@@ -1,0 +1,25 @@
+{
+  "started_at": "2026-10-17T15:24:22.305876+05:30",
+  "commit": "c76d1893a863f267f0063047d201c40171a8f0f1",
+  "command": "java -cp build Main bwratio 4 2 10 4",
+  "scheduler": "bwratio",
+  "window_chunks": 256,
+  "path0_delay_ms": {
+    "mean": 4,
+    "std": 2
+  },
+  "path1_delay_ms": {
+    "mean": 10,
+    "std": 4
+  },
+  "payload_bytes_per_probe": 262144,
+  "probe_pause_ms": 1000,
+  "ewma_alpha": 0.125,
+  "file_size_bytes": 53186840,
+  "source_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
+  "status": "server finished",
+  "client_hash": null,
+  "client_download_duration": null,
+  "ended_at": "2026-10-17T15:26:50.059231+05:30",
+  "server_exit_code": 0
+}

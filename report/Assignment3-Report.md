@@ -263,6 +263,26 @@ last window may be incomplete. This attempt is not a completed-download result.
 
 [Failed-run logs](../results/q3/lan-run-20261017-151847/README.md)
 
+### Retry results
+
+The same configuration completed on the server with exit code 0. All 145 scheduling
+windows matched the ratio formula, with no minRTT fallbacks:
+
+```text
+File: 53,186,840 bytes / 37,064 chunks
+Path 0: 25,978 chunks (70.09%)
+Path 1: 11,086 chunks (29.91%)
+Sender duration: 135.396 seconds
+```
+
+The larger allocation went to the path with higher measured bandwidth. Mean probe
+rates were 2.202 Mbps on path 0 and 0.933 Mbps on path 1. The earlier connection reset
+did not recur, but its cause is still unknown. Sender duration excludes warmup and
+ends after writing the end markers; it is not client-side download time. Client
+completion/hash confirmation for this retry is pending.
+
+[Retry logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
+
 ## Q4-Q6
 
 To be added after implementation and experiments.

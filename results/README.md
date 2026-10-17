@@ -56,3 +56,7 @@ performance or download time.
 - q3/validation.txt: scheduler and delay tests, plus delayed bandwidth-ratio transfers.
 - Each Q3 LAN run archives Scheduler.csv alongside the bandwidth CSVs and server log.
   Sender duration excludes warmup but does not establish client download completion.
+
+- q3/lan-run-20261017-151847/: interrupted first attempt; preserved as a failed run.
+- q3/lan-run-20261017-152422/: retry completed on the server; all allocations checked.
+  Client hash confirmation is pending for this retry.

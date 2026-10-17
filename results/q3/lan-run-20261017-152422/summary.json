@@ -1,0 +1,27 @@
+{
+  "status": "server completed; client hash pending",
+  "windows": 145,
+  "total_chunks": 37064,
+  "path0_chunks": 25978,
+  "path1_chunks": 11086,
+  "path0_share_percent": 70.08957478955321,
+  "path1_share_percent": 29.910425210446796,
+  "fallback_windows": 0,
+  "all_allocations_match_formula": true,
+  "sender_seconds": 135.395867,
+  "timing_boundary": "Metadata writes through final end-marker writes; excludes warmup; not client download completion.",
+  "path0_bandwidth": {
+    "sample_count": 69,
+    "mean_sample_mbps": 2.2017966373626665,
+    "min_sample_mbps": 1.9662964333200001,
+    "max_sample_mbps": 2.433122343472,
+    "final_ewma_mbps": 2.2029918866880003
+  },
+  "path1_bandwidth": {
+    "sample_count": 42,
+    "mean_sample_mbps": 0.9330587551729523,
+    "min_sample_mbps": 0.885159834336,
+    "max_sample_mbps": 0.984854895992,
+    "final_ewma_mbps": 0.928905125296
+  }
+}
