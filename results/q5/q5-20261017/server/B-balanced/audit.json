@@ -1,0 +1,11 @@
+{
+  "all_windows_valid": true,
+  "windows": 145,
+  "chunks": 37064,
+  "fallbacks": 0,
+  "path0_chunks": 19296,
+  "path1_chunks": 17768,
+  "path0_probe_samples": 72,
+  "path1_probe_samples": 72,
+  "largest_predicted_completion_gap_seconds": 0.012201227889753863
+}

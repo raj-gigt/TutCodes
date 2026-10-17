@@ -1,0 +1,68 @@
+{
+  "cases": [
+    {
+      "case": "A-minrtt",
+      "scheduler": "minrtt",
+      "delays_ms": [
+        "4",
+        "2",
+        "10",
+        "4"
+      ]
+    },
+    {
+      "case": "A-bwratio",
+      "scheduler": "bwratio",
+      "delays_ms": [
+        "4",
+        "2",
+        "10",
+        "4"
+      ]
+    },
+    {
+      "case": "A-balanced",
+      "scheduler": "balanced",
+      "delays_ms": [
+        "4",
+        "2",
+        "10",
+        "4"
+      ]
+    },
+    {
+      "case": "B-minrtt",
+      "scheduler": "minrtt",
+      "delays_ms": [
+        "10",
+        "4",
+        "10",
+        "4"
+      ]
+    },
+    {
+      "case": "B-bwratio",
+      "scheduler": "bwratio",
+      "delays_ms": [
+        "10",
+        "4",
+        "10",
+        "4"
+      ]
+    },
+    {
+      "case": "B-balanced",
+      "scheduler": "balanced",
+      "delays_ms": [
+        "10",
+        "4",
+        "10",
+        "4"
+      ]
+    }
+  ],
+  "source_bytes": 53186840,
+  "source_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
+  "timing": "Client receiver start through verified output flush, including warmup.",
+  "repetitions_per_case": 1
+}

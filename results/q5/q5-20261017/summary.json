@@ -1,0 +1,92 @@
+[
+  {
+    "case": "A-minrtt",
+    "scheduler": "minrtt",
+    "delays_ms": [
+      "4",
+      "2",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 192.76487,
+    "sender_seconds": 190.592116,
+    "path0_chunks": 36808,
+    "path1_chunks": 256
+  },
+  {
+    "case": "A-bwratio",
+    "scheduler": "bwratio",
+    "delays_ms": [
+      "4",
+      "2",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 137.545372,
+    "sender_seconds": 135.164399,
+    "path0_chunks": 26140,
+    "path1_chunks": 10924
+  },
+  {
+    "case": "A-balanced",
+    "scheduler": "balanced",
+    "delays_ms": [
+      "4",
+      "2",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 141.235329,
+    "sender_seconds": 138.930739,
+    "path0_chunks": 25994,
+    "path1_chunks": 11070
+  },
+  {
+    "case": "B-minrtt",
+    "scheduler": "minrtt",
+    "delays_ms": [
+      "10",
+      "4",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 458.109298,
+    "sender_seconds": 456.004985,
+    "path0_chunks": 16840,
+    "path1_chunks": 20224
+  },
+  {
+    "case": "B-bwratio",
+    "scheduler": "bwratio",
+    "delays_ms": [
+      "10",
+      "4",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 232.171317,
+    "sender_seconds": 229.718982,
+    "path0_chunks": 18495,
+    "path1_chunks": 18569
+  },
+  {
+    "case": "B-balanced",
+    "scheduler": "balanced",
+    "delays_ms": [
+      "10",
+      "4",
+      "10",
+      "4"
+    ],
+    "verified": true,
+    "client_seconds": 240.650121,
+    "sender_seconds": 238.325998,
+    "path0_chunks": 19296,
+    "path1_chunks": 17768
+  }
+]

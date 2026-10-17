@@ -1,0 +1,11 @@
+{
+  "cases_verified": 6,
+  "source_and_client_hashes_match": true,
+  "file_bytes_each": 53186840,
+  "client_times_match_captured_console": true,
+  "total_scheduler_windows_checked": 870,
+  "all_scheduler_allocations_valid": true,
+  "fallback_windows": 0,
+  "client_evidence_commit": "7ed3e5f",
+  "timing_boundary": "Receiver start through output flush, including warmup; excludes compilation, connection setup and post-download hashing."
+}

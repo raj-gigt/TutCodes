@@ -7,7 +7,7 @@ Three schedulers are run under each required delay configuration:
 
 The file, 1435-byte chunks, 256-chunk windows, probe size/interval, smoothing and
 delay model remain fixed. Each case has a fresh Java server/client process.
-One measured run per case is planned; conclusions will describe this set without
+One measured run per case completed; conclusions describe this set without
 claiming statistical significance. Q3/Q4 demonstration runs are not substituted
 for Q5 client times.
 
@@ -35,5 +35,12 @@ All six output files have this SHA-256:
 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
 ```
 
-[Per-case client logs and metadata](q5-20261017/client/). Check server-side case
-alignment and source verification when combining both computers' records.
+[Per-case client logs and metadata](q5-20261017/client/). All six case labels, source/output hashes, byte counts, client console times and
+870 scheduler windows have been checked against the server records.
+
+## Combined verification
+
+All six client/source hashes and byte counts match. Combined times are available in
+[q5-20261017/summary.csv](q5-20261017/summary.csv), with full records in summary.json.
+[verification.json](q5-20261017/verification.json) records the cross-checks. All 870
+windows match their scheduler rules, and no fallback windows occurred.

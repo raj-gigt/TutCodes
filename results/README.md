@@ -85,3 +85,13 @@ allocations were checked against the completion-time equation.
 
 All six cases in `q5-20261017` completed with matching file sizes and SHA-256 hashes.
 [Client times, hash and per-case evidence](q5/README.md#client-batch-q5-20261017).
+
+## Q5 and Q6 completed results
+
+- q5/q5-20261017/: all six server/client runs, combined times and integrity checks.
+- q5/validation.txt: batch-runner validation.
+- q6/comparison.json: time reductions and fastest observed scheduler by delay case.
+- q6/README.md: concise interpretation and limitations.
+
+All six downloads were verified against the source SHA-256 and size. Client timing
+includes warmup and output flush. One measured run per case was performed.

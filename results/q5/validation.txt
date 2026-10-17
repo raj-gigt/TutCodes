@@ -1,0 +1,21 @@
+Q5 batch runner validation
+Command: python3 MultiPath/tests/test_q5_runner.py
+Result: 3 tests passed.
+
+Checks:
+- All six cases have the required scheduler order and delay configurations.
+- Initial connection-refused errors can retry before a data connection is established.
+- A connected-transfer failure is not automatically retried or relabeled.
+- A wrong downloaded-file hash is rejected.
+- Client elapsed time is parsed and saved with its timing boundary.
+- Combined summaries require matching source/output integrity evidence.
+- Existing result directories cannot be overwritten by rerunning the batch.
+
+These are orchestration checks using controlled fixtures, not download measurements.
+Actual two-machine evidence is stored under q5-20261017/.
+
+Recorded-run audit:
+python3 MultiPath/experiments/audit_q5.py --batch q5-20261017
+PASS all six runs, 145 windows each (870 total), no fallback windows.
+Each allocation follows its scheduler rule; probe rate/EWMA calculations match.
+Combined verification checks source/output hashes, sizes and captured client times.

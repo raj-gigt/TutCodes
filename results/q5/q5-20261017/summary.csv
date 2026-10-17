@@ -1,0 +1,7 @@
+case,scheduler,verified,client_seconds,sender_seconds,path0_chunks,path1_chunks
+A-minrtt,minrtt,True,192.76487,190.592116,36808,256
+A-bwratio,bwratio,True,137.545372,135.164399,26140,10924
+A-balanced,balanced,True,141.235329,138.930739,25994,11070
+B-minrtt,minrtt,True,458.109298,456.004985,16840,20224
+B-bwratio,bwratio,True,232.171317,229.718982,18495,18569
+B-balanced,balanced,True,240.650121,238.325998,19296,17768

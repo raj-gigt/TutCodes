@@ -1,0 +1,35 @@
+{
+  "source": "../q5/q5-20261017/summary.json",
+  "repetitions_per_case": 1,
+  "timing": "Client receiver start through verified output flush, including warmup and initial-estimate wait.",
+  "comparisons": {
+    "A": {
+      "client_seconds": {
+        "minrtt": 192.76487,
+        "bwratio": 137.545372,
+        "balanced": 141.235329
+      },
+      "fastest_observed": "bwratio",
+      "time_reduction_vs_minrtt_percent": {
+        "bwratio": 28.64603804624775,
+        "balanced": 26.73181114380436
+      },
+      "balanced_minus_bwratio_seconds": 3.689957000000021,
+      "balanced_slower_than_bwratio_percent": 2.6827198518900524
+    },
+    "B": {
+      "client_seconds": {
+        "minrtt": 458.109298,
+        "bwratio": 232.171317,
+        "balanced": 240.650121
+      },
+      "fastest_observed": "bwratio",
+      "time_reduction_vs_minrtt_percent": {
+        "bwratio": 49.31966715942972,
+        "balanced": 47.46884159509026
+      },
+      "balanced_minus_bwratio_seconds": 8.478804000000025,
+      "balanced_slower_than_bwratio_percent": 3.651960160091621
+    }
+  }
+}

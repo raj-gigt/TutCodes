@@ -3,53 +3,18 @@
 Name: ____________________  
 Roll number: ____________________
 
+The experiments use a 53,186,840-byte ZIP transferred over two TCP connections.
+Path 1 and Path 2 correspond to IDs 0 and 1 in the logs. Payloads are at most
+1435 bytes (37,064 chunks in total), and schedulers allocate windows of up to 256 chunks.
+
 ## Q1. In-order delivery
 
-I added a global sequence number to each chunk and used one shared reassembler
-for both receiver threads. The minRTT scheduler is unchanged.
-
-### Application frame format
-
-Each TCP connection first receives the total file size (`long`). The chunk format is:
-
-```text
-sequence number (int) | payload length (int) | timestamp (long) | payload
-```
-
-The maximum payload is 1435 bytes. The last chunk carries only the remaining bytes.
-A sequence number of `-1` marks the end of a path.
-
-### Sender
-
-The sequence number increases across both paths. After choosing a path using
-minRTT, the server sends:
+Chunks can arrive in a different order on the two paths. I gave every chunk a
+global sequence number and made both receiver threads share one reassembler.
+A later chunk waits in a map until all earlier chunks have been written.
 
 ```java
-out.writeInt(sequence++);
-out.writeInt(length);
-out.writeLong(System.currentTimeMillis());
-out.write(fileBytes, offset, length);
-```
-
-### Receiver
-
-Each receiver reads a complete record and passes it to the shared reassembler:
-
-```java
-int sequence = input.readInt();
-if (sequence == -1) return;
-int length = input.readInt();
-// Validate length before allocating the payload.
-long sentTime = input.readLong();
-byte[] payload = new byte[length];
-input.readFully(payload);
-reassembler.accept(sequence, payload);
-```
-
-The synchronized `accept()` method validates the chunk and buffers it until all
-previous chunks have been written. Its ordering logic is:
-
-```java
+// Inside the synchronized accept() method, after validation:
 pending.put(sequence, payload);
 while (pending.containsKey(nextExpected)) {
     byte[] next = pending.remove(nextExpected);
@@ -59,159 +24,73 @@ while (pending.containsKey(nextExpected)) {
 }
 ```
 
-For example, arrival order `1, 0, 3, 2` produces file order `0, 1, 2, 3`.
-Both threads share one output stream. Success is reported only after both paths
-finish, no receiver errors occur, and the written byte count matches the file size
-with no chunks left pending.
-
-### Validation
-
-The two-computer transfer completed with `Complete file reconstructed in order.`
-The downloaded ZIP was 53,186,840 bytes. The server and client SHA-256 hashes
-were verified to match:
+For example, arrival order `1, 0, 3, 2` is written as `0, 1, 2, 3`. Only the shared
+reassembler writes the output file.
 
 ```text
-653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+Connection header: total file size (long)
+Chunk: sequence (int) | payload length (int) | timestamp (long) | payload
+End of path: sequence = -1
 ```
 
-This confirms byte-for-byte reconstruction for the tested transfer. The recorded
-[integration checks](../results/q1/validation.txt) also cover deliberately reordered
-and fragmented data, empty files, chunk boundaries, and truncated-payload rejection.
+The receiver uses `readFully(payload)` because a TCP read may contain only part of
+a chunk. The last chunk carries its actual length. Completion requires both paths
+to finish and the reconstructed size to match the advertised size.
+
+Tests passed for reordered arrivals, fragmented reads, empty files, exact/partial
+chunks, and rejection of truncated transfers. Downloaded files were checked using
+SHA-256. [Q1 checks](../results/q1/validation.txt)
 
 ## Q2. Bandwidth estimation
 
-I added two TCP control channels on ports 9001 and 9002. Each uses the same server
-IP as its corresponding data path. The server sends a 256 KiB probe burst and waits
-one second between completed probes. These bytes are discarded by the client and
-are not part of the downloaded file.
-
-### Measurement
+Each path has a separate TCP probe channel, on ports 9001 and 9002. The server sends
+a 256 KiB burst, and the client measures its duration with `System.nanoTime()`.
+The client starts timing before sending READY, so bytes cannot arrive before the
+timer starts. It returns the elapsed time to the server.
 
 ```text
-Server → Client: probe ID, payload size
-Client: start timer
-Client → Server: READY (probe ID)
-Server → Client: 262144 payload bytes
-Client: stop timer
-Client → Server: probe ID, elapsed nanoseconds
+Server: probe ID and size → Client
+Client: start timer, send READY → Server
+Server: send payload → Client
+Client: stop timer, return duration → Server
 ```
 
-The timer uses `System.nanoTime()` on the client, so synchronized clocks are not
-needed. Starting before READY prevents the payload from arriving before timing starts.
-
 ```java
-double sample = PROBE_BYTES * 1_000_000_000.0 / elapsed;
-```
-
-Samples are in bytes/second. They include the READY request delay and payload
-transfer time, so they estimate effective burst throughput rather than exact link
-capacity. The result message back to the server is outside the measured interval.
-I used a 256 KiB burst because smaller bursts would make the fixed READY request
-delay a larger part of the measurement, making the estimate more latency-dependent.
-
-### Smoothing
-
-I used an EWMA with `alpha = 0.125`. The first valid sample initializes the estimate;
-subsequent samples are smoothed independently for each path:
-
-```java
+double sample = PROBE_BYTES * 1_000_000_000.0 / elapsed; // bytes/second
 bandwidthEstimateBytesPerSecond = Double.isNaN(old)
         ? sample : 0.875 * old + 0.125 * sample;
 ```
 
-This reduces sudden changes from noisy samples. Before the first sample, the estimate
-is `NaN` (unavailable). A timestamp records when the latest valid estimate was obtained.
-The estimate is `volatile` so the sender can read updates from the probe thread.
-MinRTT remains the data scheduler for Q2.
+I used EWMA smoothing with alpha = 0.125 to reduce sudden changes from noisy samples.
+The first sample initializes the estimate. Probes pause for one second after each
+completed measurement. A 256 KiB burst makes the fixed READY delay a smaller fraction
+of the measurement; smaller bursts would make the estimate more latency-dependent.
 
-### Results
-
-```sh
-python3 MultiPath/tests/test_q2.py --results results/q2
-```
-
-The tests passed for independent estimates, smoothing, fragmented reads, invalid
-messages, reconnecting, and stopping blocked probe workers. Both real probe endpoints
-also exchanged bursts successfully over loopback.
-
-Controlled durations verified the calculation (these are test inputs, not network measurements):
-
-```text
-Path 0: 100 ms → 200 ms; samples 2621440 → 1310720 B/s; final EWMA 2457600 B/s
-Path 1: 400 ms → 200 ms; samples  655360 → 1310720 B/s; final EWMA  737280 B/s
-```
-
-[Validation](../results/q2/validation.txt) ·
-[Path 0 controlled results](../results/q2/controlled-path0.csv) ·
-[Path 1 controlled results](../results/q2/controlled-path1.csv) ·
-[Path 0 loopback samples](../results/q2/loopback-path0.csv) ·
-[Path 1 loopback samples](../results/q2/loopback-path1.csv)
-
-### Two-machine run: 17 October 2026
-
-The server completed with exit code 0 using minRTT and a 53,186,840-byte file.
-Each path recorded five probe samples (rates below are decimal Mbps):
-
-```text
-Path 0 samples: 31.223, 53.763, 49.506, 13.082, 22.004
-Path 1 samples: 35.679, 52.169, 44.651, 12.540, 22.023
-
-Path 0: mean sample = 33.915 Mbps; final EWMA = 31.724 Mbps
-Path 1: mean sample = 33.412 Mbps; final EWMA = 33.680 Mbps
-```
-
-Both paths showed a similar drop and recovery. Their close averages do not show a
-persistent bandwidth difference in this short run. The EWMA changes more gradually
-than individual samples. These probe rates are not file-download throughput.
-
-[Run logs and measurements](../results/q2/lan-run-20261017-145341/README.md).
-The client-reported SHA-256 matches the server source hash, confirming correct
-file reconstruction with the bandwidth probes active:
-
-```text
-653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
-```
-
-Download time was not measured; the server's launch-to-exit interval includes
-waiting for the client.
-
-### Limitations
-
-- Separate ports do not guarantee separate physical paths. With the same IP and
-  interface, both probes may share a bottleneck; differences can be measurement noise.
-- Separate TCP connections have their own congestion state. Their throughput is a
-  proxy for the associated data path, not its exact achieved rate.
-- Probe traffic consumes bandwidth and may affect file transfers. Burst size,
-  latency, TCP startup, and host processing also affect the samples.
-- Automated tests used loopback; the separate two-machine run is recorded above.
-  No artificial bandwidth difference was introduced in Q2.
+These are effective-throughput estimates. Separate TCP connections have their own
+congestion state, and different ports can still share a physical bottleneck. Probe
+traffic also consumes bandwidth. [Q2 checks](../results/q2/validation.txt)
 
 ## Q3. Bandwidth-ratio scheduler
 
-I added a `Scheduler` interface with `MinRttScheduler` and `BandwidthRatioScheduler`
-implementations. The scheduler can be selected from the command line:
-
-```sh
-java -cp build Main bwratio 4 2 10 4
-# Alternative: java -cp build Main minrtt 4 2 10 4
-```
-
-The four numbers are path 0 mean/std and path 1 mean/std, in milliseconds.
-
-### Allocation
-
-The file is scheduled in windows of up to 256 chunks. Each window uses the latest
-smoothed bandwidth estimates from Q2:
+The idea is to give more chunks to the path that can carry more data per second.
+For example, a 2:1 bandwidth ratio should give approximately a 2:1 allocation.
 
 ```text
-n = round(N × BW0 / (BW0 + BW1))
-Path 0 receives n chunks; path 1 receives N - n chunks.
+n = round(N × BW1 / (BW1 + BW2))
+Path 1: n chunks
+Path 2: N − n chunks
 ```
 
-The assigned chunks are spread through the window's sequence numbers. Two sender
-workers transmit concurrently, and the next window begins after both workers finish
-writing the current one. This bounds queued work, but a faster path can wait at the
-window boundary. MinRTT also selects a path per window for a consistent comparison.
+The core allocation is proportional to the two rates (the implementation scales
+the rates first to avoid overflow):
+
+```java
+int firstCount = (int) Math.round(count * share);
+// share = BW1 / (BW1 + BW2)
+```
+
+A `Scheduler` strategy chooses the allocation, so the sender can switch algorithms
+without changing the transfer or reassembly code:
 
 ```java
 interface Scheduler {
@@ -221,132 +100,150 @@ interface Scheduler {
 }
 ```
 
-The ratio scheduler waits up to 15 seconds after the 2-second warmup for valid
-bandwidth estimates. If either estimate is unavailable or older than 10 seconds,
-it uses minRTT for that window and records the fallback in `Scheduler.csv`.
+At each window, the sender reads fresh estimates and spreads the assigned chunks
+through the global sequence numbers. Two workers send concurrently. Both finish
+writing their current window before the next allocation. This bounds the work queued to the sender workers,
+but the faster worker can wait at a window boundary. MinRTT also chooses a path
+per window; it gives that window to the lower-RTT path.
 
-### Simulated delay
+I added delays using `AddDelay(mean, std)`:
 
-`AddDelay` samples a normal distribution, rounds to milliseconds, and clamps
-negative values to zero:
-
-```text
-delay = max(0, round(mean + std × Gaussian(0, 1)))
+```java
+Math.max(0, Math.round(meanDelay + stdDelay * random.nextGaussian()))
 ```
 
-Each sender sleeps before transmitting a chunk. Bandwidth probes use the same
-per-path distribution before every payload block of at most 1435 bytes. RTT samples
-include two independently sampled one-way delays. Separate random samples are used
-for data and probes.
+Each worker sleeps before sending a chunk. Bandwidth probes use the same path's
+distribution before each payload block of at most 1435 bytes. RTT samples add two
+independent one-way delay samples. Negative delays are clamped to zero.
 
-This is a per-chunk service-delay simulation, not a pure propagation-delay model:
-sleeping between chunks also limits effective throughput. Clamping changes the
-actual distribution slightly. Both schedulers use the same simulation rules.
-
-### Validation
-
-Strategy tests passed for 2:1 allocation, equal bandwidth, changed estimates,
-rounding, fallback, and exact sequence coverage. Normal-delay sampling was checked
-with a fixed random seed. File-transfer tests with `bwratio 4 2 10 4` passed for
-empty files, exact and partial chunks, reordering, fragmentation, and truncation.
-Successful transfers matched the source SHA-256, and every logged window matched
-the bandwidth-ratio allocation.
-
-[Validation record](../results/q3/validation.txt)
-
-### Two-machine results
-
-The `bwratio 4 2 10 4` configuration completed on the server with exit code 0. All 145 scheduling
-windows matched the ratio formula, with no minRTT fallbacks:
-
-```text
-File: 53,186,840 bytes / 37,064 chunks
-Path 0: 25,978 chunks (70.09%)
-Path 1: 11,086 chunks (29.91%)
-Sender duration: 135.396 seconds
-```
-
-The larger allocation went to the path with higher measured bandwidth. Mean probe
-rates were 2.202 Mbps on path 0 and 0.933 Mbps on path 1. Sender duration excludes warmup and
-ends after writing the end markers; it is not client-side download time. The client
-completed successfully and its 53,186,840-byte output matched the server SHA-256:
-
-```text
-653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
-```
-
-[Client verification](../results/q3/client-verification.txt)
-
-[Run logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
+This is a service-delay simulation: sleeping per chunk also limits throughput.
+If bandwidth is missing or older than 10 seconds, the scheduler falls back to
+minRTT. The formula, delays, allocation counts and file hashes passed the tests.
+[Q3 checks](../results/q3/validation.txt)
 
 ## Q4. Balanced subflow completion scheduler
 
-I added `BalancedCompletionScheduler` using the same strategy interface, windows,
-workers and delay settings as Q3:
+This scheduler tries to make both paths finish their assigned work together. It
+accounts for initial latency as well as bandwidth. A path with a higher RTT may
+need a smaller share even when its bandwidth is good.
+
+```text
+T1 = RTT1/2 + n × L/BW1
+T2 = RTT2/2 + (N − n) × L/BW2
+
+Set T1 = T2:
+n = (N × L/BW2 + (RTT2 − RTT1)/2) / (L/BW1 + L/BW2)
+```
+
+Here, L = 1435 bytes, BW is bytes/second, and RTT is in seconds. The result is rounded
+to the nearest integer and clamped to `[0, N]`. The code uses an equivalent scaled
+calculation to avoid overflow. The final short chunk is approximated as full-size
+when allocating work; only its real bytes are sent.
+
+The implementation adds a latency correction to the bandwidth-ratio share:
+
+```java
+double harmonicRate = smallest / (1 + smallest / largest);
+double deltaSeconds = (second.rttMs - first.rttMs) / 2000.0;
+double n = count * share + deltaSeconds * (harmonicRate / Server.CHUNK_BYTES);
+return (int) Math.round(Math.max(0, Math.min(count, n)));
+```
+
+Here `harmonicRate = BW1 × BW2 / (BW1 + BW2)` and `share = BW1 / (BW1 + BW2)`.
+With equal RTTs, the equation reduces to the bandwidth-ratio allocation. For 100
+chunks, equal rates of 10 chunks/second, and RTTs of 0 and 2 seconds, it gives 55:45.
+
+`BalancedCompletionScheduler` uses the same strategy interface, workers and delays.
+Unavailable bandwidth or an invalid RTT triggers the minRTT fallback.
+Tests checked its split against every possible integer allocation for 1,000 seeded
+cases, plus complete file transfers. [Q4 checks](../results/q4/validation.txt)
+
+## Q5. File download experiments
+
+I ran all three schedulers on two connected laptops using these delay settings
+(mean and standard deviation, in milliseconds):
+
+```text
+Case A: Path 1 = (4, 2),  Path 2 = (10, 4)
+Case B: Path 1 = (10, 4), Path 2 = (10, 4)
+```
+
+Each combination used a fresh server/client process and the same file, chunk size,
+window size, probe settings and delay model. I measured one download per combination.
+The batch runs the cases automatically:
 
 ```sh
-java -cp build Main balanced 4 2 10 4
+# Server laptop, from the repository root:
+python3 MultiPath/experiments/run_q5.py server --batch q5-20261017
+# Client laptop:
+python3 MultiPath/experiments/run_q5.py client --batch q5-20261017 --host 10.42.184.197
 ```
 
-For a window of N chunks, the estimated completion times are:
+The client measures from receiver-thread start through successful reconstruction
+and output flush using its monotonic clock:
 
-```text
-T0 = RTT0/2 + n × L/BW0
-T1 = RTT1/2 + (N − n) × L/BW1
-
-n = (N × L/BW1 + (RTT1 − RTT0)/2) / (L/BW0 + L/BW1)
+```java
+(System.nanoTime() - downloadStart) / 1e9
 ```
 
-Here L = 1435 bytes, bandwidth is in bytes/second, and RTT is converted to seconds.
-The result is rounded to the nearest chunk and clamped to [0, N]. The last partial
-chunk is approximated as a full chunk for allocation, but only its actual bytes
-are transmitted.
+This includes the configured 2-second server warmup and any initial bandwidth-estimate
+wait (up to 15 seconds for the bandwidth-based schedulers). Compilation, connection
+setup and post-download hashing are outside the measurement. The bandwidth freshness
+limit is 10 seconds. Sender duration is recorded separately and is not used below.
 
-With equal RTTs this reduces to the bandwidth-ratio scheduler. A larger RTT on one
-path shifts work to the other. For example, with 100 chunks, equal rates of 10
-chunks/second, and RTTs of 0 and 2 seconds, the split is 55:45.
+| Delay case | Scheduler | Client download time (s) |
+|---|---|---:|
+| A | minRTT | 192.765 |
+| A | Bandwidth ratio | 137.545 |
+| A | Balanced completion | 141.235 |
+| B | minRTT | 458.109 |
+| B | Bandwidth ratio | 232.171 |
+| B | Balanced completion | 240.650 |
 
-Each window refreshes the RTT/BW snapshot. Missing or stale bandwidth, or an invalid
-RTT, triggers the logged minRTT fallback. Data and bandwidth probes keep Q3's same
-per-path delay distributions. Window barriers and the service-delay simulation
-remain approximations, so equal predicted times do not guarantee equal actual times.
-
-### Validation
-
-Tests check unit conversion, RTT effects, clamping, fallback and reduction to the
-ratio split when RTTs match. For 1,000 seeded cases, every integer allocation was
-checked to confirm the selected split minimizes the predicted completion-time
-difference. File-transfer tests check hashes and verify each logged window against
-an independent enumeration of the possible splits.
-
-[Validation record](../results/q4/validation.txt)
-
-### Two-machine results
-
-With `balanced 4 2 10 4`, the server completed successfully:
-
-```text
-Path 0: 26,075 chunks (70.35%)
-Path 1: 10,989 chunks (29.65%)
-Sender duration: 136.883 seconds
-```
-
-All 145 windows minimized the predicted completion-time difference over integer
-splits, with no fallback. Compared with the ratio formula on the same snapshots,
-55 windows changed allocation, giving path 0 a net 55 extra chunks.
-Mean probe rates were 2.213 and 0.937 Mbps. Sender duration excludes warmup and
-ends at the final socket writes. The client completed in **139.648 seconds**, including
-warmup, and its 53,186,840-byte output matched this run's server SHA-256:
+All six downloads matched the source size and SHA-256, and all 870 scheduling
+windows passed their allocation checks, with no fallback windows.
 
 ```text
 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
 ```
 
-[Client verification](../results/q4/client-verification.txt)
-This single run is insufficient to rank schedulers; repeated comparisons follow in Q5.
+[Combined measurements](../results/q5/q5-20261017/summary.csv) ·
+[Raw client/server evidence](../results/q5/q5-20261017/README.md)
 
-[Run logs and measurements](../results/q4/lan-run-20261017-153738/README.md)
+## Q6. Observations
 
-## Q5-Q6
+Bandwidth ratio had the shortest measured time in both cases. I calculated the
+download-time reduction relative to minRTT as:
 
-To be added after experiments.
+```text
+reduction (%) = 100 × (time_minRTT − time_scheduler) / time_minRTT
+```
+
+**Case A:** Bandwidth ratio reduced the download time by **28.6%** and balanced
+completion by **26.7%** compared with minRTT. The lower-delay path can process
+chunks faster in this simulation, so the bandwidth-based schedulers gave it about
+70% of the work and still used the other path. MinRTT sent almost all chunks over
+the lower-RTT path, leaving the other worker mostly unused.
+
+**Case B:** Bandwidth ratio reduced the time by **49.3%**, and balanced completion by
+**47.5%**. Both paths had similar conditions, so sending roughly half the file on
+each path allowed concurrent progress. MinRTT could switch paths between windows,
+but it still used only one path in a window.
+
+Balanced completion was 3.690 s slower than bandwidth ratio in A and 8.479 s slower
+in B. Its RTT term adjusts the split, but does not guarantee a faster actual download.
+When RTTs are similar, its formula approaches the bandwidth-ratio rule. Probe noise,
+random delays and waiting at window boundaries can affect the observed difference.
+
+These results support using both paths for this file-transfer workload. They do not
+establish a universal ranking between the two bandwidth-based schedulers: each value
+is one run, with independent random delay samples. Both logical paths use the same
+server IP, and sleeping per chunk models service delay as well as latency. Conclusions
+apply to this setup; repeated trials would be needed to quantify variability.
+
+[Calculations](../results/q6/comparison.json)
+
+## References
+
+- Assignment3-Multipath_Assignment (1).pdf, Questions 1-6.
+- Multipath-Tutorial.pdf, multipath setup, schedulers and estimate smoothing.

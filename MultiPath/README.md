@@ -252,3 +252,14 @@ sender times are never substituted for client download time.
 
 For the Codex instance on the client laptop, follow
 [CLIENT_Q5_INSTRUCTIONS.md](experiments/CLIENT_Q5_INSTRUCTIONS.md).
+
+Recheck the recorded scheduler allocations and probe calculations with:
+
+```sh
+python3 MultiPath/experiments/audit_q5.py --batch q5-20261017
+```
+
+The final Q5 batch is complete: all six client files matched the source, all 870
+windows passed checks, and no fallback windows occurred. See
+[the combined results](../results/q5/q5-20261017/summary.csv) and
+[Q6 calculations](../results/q6/comparison.json).
