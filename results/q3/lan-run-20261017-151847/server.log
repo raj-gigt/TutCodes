@@ -1,0 +1,1244 @@
+CONFIG scheduler=bwratio window=256 mean0=4.000 std0=2.000 mean1=10.000 std1=4.000 (ms)
+Waiting for data clients on 6001 and 6002
+Connected to Path1 on port: 6001
+Connected to Path2 on port: 6002
+0 Hi Received
+1 Hi Received
+0 Resending Timestamp
+1 Resending Timestamp
+0 Current RTT: 31.0 Estimates RTT: 0.0
+1 Current RTT: 46.0 Estimates RTT: 0.0
+0 Current RTT: 17.0 Estimates RTT: 3.875
+1 Current RTT: 27.0 Estimates RTT: 5.75
+1 Current RTT: 22.0 Estimates RTT: 8.40625
+0 Current RTT: 14.0 Estimates RTT: 5.515625
+1 Current RTT: 27.0 Estimates RTT: 10.105469
+0 Current RTT: 19.0 Estimates RTT: 6.576172
+BW Path 0: sample 2.197 Mbps, estimate 2.197 Mbps
+0 Current RTT: 17.0 Estimates RTT: 8.12915
+1 Current RTT: 33.0 Estimates RTT: 12.217285
+1 Current RTT: 24.0 Estimates RTT: 14.8151245
+0 Current RTT: 18.0 Estimates RTT: 9.238007
+1 Current RTT: 22.0 Estimates RTT: 15.963234
+0 Current RTT: 10.0 Estimates RTT: 10.333256
+1 Current RTT: 39.0 Estimates RTT: 16.71783
+0 Current RTT: 14.0 Estimates RTT: 10.291599
+0 Current RTT: 17.0 Estimates RTT: 10.75515
+1 Current RTT: 27.0 Estimates RTT: 19.503101
+0 Current RTT: 20.0 Estimates RTT: 11.535756
+1 Current RTT: 32.0 Estimates RTT: 20.440214
+BW Path 1: sample 0.914 Mbps, estimate 0.914 Mbps
+0 Current RTT: 26.0 Estimates RTT: 12.593786
+1 Current RTT: 33.0 Estimates RTT: 21.885187
+0 Current RTT: 18.0 Estimates RTT: 14.269563
+1 Current RTT: 18.0 Estimates RTT: 23.274538
+1 Current RTT: 29.0 Estimates RTT: 22.615221
+0 Current RTT: 15.0 Estimates RTT: 14.7358675
+BW Path 0: sample 2.160 Mbps, estimate 2.192 Mbps
+0 Current RTT: 19.0 Estimates RTT: 14.768884
+1 Current RTT: 43.0 Estimates RTT: 23.413319
+0 Current RTT: 19.0 Estimates RTT: 15.297773
+1 Current RTT: 28.0 Estimates RTT: 25.861654
+0 Current RTT: 16.0 Estimates RTT: 15.760551
+1 Current RTT: 21.0 Estimates RTT: 26.128948
+0 Current RTT: 25.0 Estimates RTT: 15.7904825
+1 Current RTT: 35.0 Estimates RTT: 25.48783
+0 Current RTT: 16.0 Estimates RTT: 16.941673
+1 Current RTT: 32.0 Estimates RTT: 26.676851
+0 Current RTT: 17.0 Estimates RTT: 16.823963
+1 Current RTT: 26.0 Estimates RTT: 27.342245
+0 Current RTT: 18.0 Estimates RTT: 16.845968
+1 Current RTT: 41.0 Estimates RTT: 27.174465
+0 Current RTT: 20.0 Estimates RTT: 16.990223
+1 Current RTT: 29.0 Estimates RTT: 28.902657
+0 Current RTT: 23.0 Estimates RTT: 17.366446
+1 Current RTT: 31.0 Estimates RTT: 28.914825
+0 Current RTT: 11.0 Estimates RTT: 18.07064
+1 Current RTT: 30.0 Estimates RTT: 29.175472
+BW Path 0: sample 2.167 Mbps, estimate 2.189 Mbps
+0 Current RTT: 12.0 Estimates RTT: 17.18681
+1 Current RTT: 27.0 Estimates RTT: 29.278538
+0 Current RTT: 15.0 Estimates RTT: 16.538458
+1 Current RTT: 23.0 Estimates RTT: 28.993721
+BW Path 1: sample 0.944 Mbps, estimate 0.918 Mbps
+0 Current RTT: 15.0 Estimates RTT: 16.34615
+1 Current RTT: 88.0 Estimates RTT: 28.244507
+0 Current RTT: 18.0 Estimates RTT: 16.177881
+1 Current RTT: 40.0 Estimates RTT: 35.713943
+0 Current RTT: 14.0 Estimates RTT: 16.405647
+1 Current RTT: 34.0 Estimates RTT: 36.249702
+0 Current RTT: 15.0 Estimates RTT: 16.104942
+1 Current RTT: 30.0 Estimates RTT: 35.96849
+0 Current RTT: 19.0 Estimates RTT: 15.966825
+1 Current RTT: 21.0 Estimates RTT: 35.222427
+0 Current RTT: 42.0 Estimates RTT: 16.34597
+1 Current RTT: 25.0 Estimates RTT: 33.444626
+0 Current RTT: 32.0 Estimates RTT: 19.552723
+BW Path 0: sample 2.312 Mbps, estimate 2.204 Mbps
+1 Current RTT: 39.0 Estimates RTT: 32.389046
+0 Current RTT: 14.0 Estimates RTT: 21.108633
+1 Current RTT: 52.0 Estimates RTT: 33.215416
+0 Current RTT: 20.0 Estimates RTT: 20.220055
+1 Current RTT: 36.0 Estimates RTT: 35.563488
+0 Current RTT: 14.0 Estimates RTT: 20.192547
+1 Current RTT: 28.0 Estimates RTT: 35.61805
+0 Current RTT: 20.0 Estimates RTT: 19.418478
+1 Current RTT: 36.0 Estimates RTT: 34.665794
+0 Current RTT: 28.0 Estimates RTT: 19.491169
+1 Current RTT: 27.0 Estimates RTT: 34.83257
+0 Current RTT: 14.0 Estimates RTT: 20.554773
+1 Current RTT: 27.0 Estimates RTT: 33.8535
+0 Current RTT: 22.0 Estimates RTT: 19.735426
+1 Current RTT: 32.0 Estimates RTT: 32.99681
+0 Current RTT: 15.0 Estimates RTT: 20.018497
+1 Current RTT: 30.0 Estimates RTT: 32.872208
+BW Path 1: sample 0.961 Mbps, estimate 0.923 Mbps
+0 Current RTT: 15.0 Estimates RTT: 19.391186
+BW Path 0: sample 2.224 Mbps, estimate 2.207 Mbps
+1 Current RTT: 38.0 Estimates RTT: 32.513184
+0 Current RTT: 29.0 Estimates RTT: 18.842287
+1 Current RTT: 42.0 Estimates RTT: 33.199036
+0 Current RTT: 16.0 Estimates RTT: 20.112001
+1 Current RTT: 27.0 Estimates RTT: 34.299156
+0 Current RTT: 19.0 Estimates RTT: 19.598001
+1 Current RTT: 25.0 Estimates RTT: 33.38676
+0 Current RTT: 15.0 Estimates RTT: 19.52325
+1 Current RTT: 34.0 Estimates RTT: 32.338417
+0 Current RTT: 18.0 Estimates RTT: 18.957844
+1 Current RTT: 21.0 Estimates RTT: 32.546116
+0 Current RTT: 25.0 Estimates RTT: 18.838114
+1 Current RTT: 25.0 Estimates RTT: 31.102852
+0 Current RTT: 13.0 Estimates RTT: 19.608349
+1 Current RTT: 41.0 Estimates RTT: 30.339996
+0 Current RTT: 18.0 Estimates RTT: 18.782305
+1 Current RTT: 24.0 Estimates RTT: 31.672497
+0 Current RTT: 17.0 Estimates RTT: 18.684517
+1 Current RTT: 29.0 Estimates RTT: 30.713434
+BW Path 0: sample 2.188 Mbps, estimate 2.204 Mbps
+0 Current RTT: 22.0 Estimates RTT: 18.473953
+1 Current RTT: 24.0 Estimates RTT: 30.499254
+0 Current RTT: 15.0 Estimates RTT: 18.91471
+1 Current RTT: 40.0 Estimates RTT: 29.686848
+0 Current RTT: 10.0 Estimates RTT: 18.425371
+1 Current RTT: 18.0 Estimates RTT: 30.975992
+0 Current RTT: 22.0 Estimates RTT: 17.3722
+1 Current RTT: 18.0 Estimates RTT: 29.353992
+0 Current RTT: 9.0 Estimates RTT: 17.950676
+1 Current RTT: 24.0 Estimates RTT: 27.934744
+0 Current RTT: 28.0 Estimates RTT: 16.83184
+BW Path 1: sample 0.932 Mbps, estimate 0.924 Mbps
+1 Current RTT: 41.0 Estimates RTT: 27.442902
+0 Current RTT: 16.0 Estimates RTT: 18.22786
+1 Current RTT: 24.0 Estimates RTT: 29.137539
+0 Current RTT: 24.0 Estimates RTT: 17.949377
+1 Current RTT: 37.0 Estimates RTT: 28.495346
+0 Current RTT: 12.0 Estimates RTT: 18.705704
+1 Current RTT: 21.0 Estimates RTT: 29.558428
+BW Path 0: sample 2.304 Mbps, estimate 2.217 Mbps
+0 Current RTT: 8.0 Estimates RTT: 17.86749
+1 Current RTT: 25.0 Estimates RTT: 28.488625
+0 Current RTT: 13.0 Estimates RTT: 16.634054
+1 Current RTT: 35.0 Estimates RTT: 28.052547
+0 Current RTT: 12.0 Estimates RTT: 16.179798
+1 Current RTT: 34.0 Estimates RTT: 28.920979
+0 Current RTT: 12.0 Estimates RTT: 15.657324
+1 Current RTT: 25.0 Estimates RTT: 29.555857
+0 Current RTT: 13.0 Estimates RTT: 15.200158
+1 Current RTT: 81.0 Estimates RTT: 28.986374
+0 Current RTT: 34.0 Estimates RTT: 14.925138
+1 Current RTT: 55.0 Estimates RTT: 35.488075
+0 Current RTT: 25.0 Estimates RTT: 17.309496
+1 Current RTT: 29.0 Estimates RTT: 37.927067
+0 Current RTT: 24.0 Estimates RTT: 18.27081
+1 Current RTT: 40.0 Estimates RTT: 36.811184
+0 Current RTT: 14.0 Estimates RTT: 18.986958
+BW Path 0: sample 2.241 Mbps, estimate 2.220 Mbps
+1 Current RTT: 31.0 Estimates RTT: 37.209785
+0 Current RTT: 17.0 Estimates RTT: 18.363588
+1 Current RTT: 29.0 Estimates RTT: 36.433563
+0 Current RTT: 22.0 Estimates RTT: 18.19314
+1 Current RTT: 30.0 Estimates RTT: 35.504368
+BW Path 1: sample 0.974 Mbps, estimate 0.930 Mbps
+0 Current RTT: 18.0 Estimates RTT: 18.668999
+1 Current RTT: 21.0 Estimates RTT: 34.816322
+0 Current RTT: 17.0 Estimates RTT: 18.585373
+1 Current RTT: 34.0 Estimates RTT: 33.089283
+0 Current RTT: 23.0 Estimates RTT: 18.387201
+1 Current RTT: 22.0 Estimates RTT: 33.203125
+0 Current RTT: 12.0 Estimates RTT: 18.9638
+1 Current RTT: 33.0 Estimates RTT: 31.802734
+0 Current RTT: 14.0 Estimates RTT: 18.093325
+1 Current RTT: 19.0 Estimates RTT: 31.952393
+0 Current RTT: 25.0 Estimates RTT: 17.58166
+1 Current RTT: 36.0 Estimates RTT: 30.333344
+0 Current RTT: 14.0 Estimates RTT: 18.508953
+1 Current RTT: 21.0 Estimates RTT: 31.041676
+BW Path 0: sample 2.233 Mbps, estimate 2.222 Mbps
+0 Current RTT: 21.0 Estimates RTT: 17.945333
+1 Current RTT: 38.0 Estimates RTT: 29.786467
+0 Current RTT: 29.0 Estimates RTT: 18.327168
+1 Current RTT: 38.0 Estimates RTT: 30.813158
+0 Current RTT: 10.0 Estimates RTT: 19.661272
+1 Current RTT: 38.0 Estimates RTT: 31.711514
+0 Current RTT: 16.0 Estimates RTT: 18.453613
+1 Current RTT: 36.0 Estimates RTT: 32.497574
+0 Current RTT: 34.0 Estimates RTT: 18.146912
+1 Current RTT: 30.0 Estimates RTT: 32.93538
+0 Current RTT: 14.0 Estimates RTT: 20.128548
+1 Current RTT: 38.0 Estimates RTT: 32.56846
+0 Current RTT: 28.0 Estimates RTT: 19.36248
+1 Current RTT: 43.0 Estimates RTT: 33.247402
+0 Current RTT: 15.0 Estimates RTT: 20.44217
+1 Current RTT: 27.0 Estimates RTT: 34.466476
+BW Path 1: sample 0.958 Mbps, estimate 0.934 Mbps
+0 Current RTT: 21.0 Estimates RTT: 19.761898
+1 Current RTT: 26.0 Estimates RTT: 33.533165
+BW Path 0: sample 2.193 Mbps, estimate 2.218 Mbps
+0 Current RTT: 23.0 Estimates RTT: 19.91666
+1 Current RTT: 22.0 Estimates RTT: 32.59152
+0 Current RTT: 18.0 Estimates RTT: 20.302078
+1 Current RTT: 47.0 Estimates RTT: 31.267578
+0 Current RTT: 25.0 Estimates RTT: 20.014318
+1 Current RTT: 33.0 Estimates RTT: 33.23413
+0 Current RTT: 13.0 Estimates RTT: 20.63753
+1 Current RTT: 35.0 Estimates RTT: 33.204865
+0 Current RTT: 10.0 Estimates RTT: 19.682838
+1 Current RTT: 28.0 Estimates RTT: 33.429256
+0 Current RTT: 16.0 Estimates RTT: 18.472485
+1 Current RTT: 30.0 Estimates RTT: 32.7506
+0 Current RTT: 21.0 Estimates RTT: 18.163424
+1 Current RTT: 38.0 Estimates RTT: 32.406776
+0 Current RTT: 15.0 Estimates RTT: 18.517996
+1 Current RTT: 35.0 Estimates RTT: 33.10593
+0 Current RTT: 22.0 Estimates RTT: 18.078247
+1 Current RTT: 34.0 Estimates RTT: 33.34269
+BW Path 0: sample 2.304 Mbps, estimate 2.229 Mbps
+0 Current RTT: 19.0 Estimates RTT: 18.568466
+1 Current RTT: 27.0 Estimates RTT: 33.424854
+0 Current RTT: 19.0 Estimates RTT: 18.622408
+1 Current RTT: 29.0 Estimates RTT: 32.62175
+0 Current RTT: 17.0 Estimates RTT: 18.669607
+1 Current RTT: 25.0 Estimates RTT: 32.16903
+0 Current RTT: 17.0 Estimates RTT: 18.460907
+1 Current RTT: 32.0 Estimates RTT: 31.2729
+0 Current RTT: 18.0 Estimates RTT: 18.278294
+BW Path 1: sample 0.965 Mbps, estimate 0.938 Mbps
+1 Current RTT: 26.0 Estimates RTT: 31.363787
+0 Current RTT: 18.0 Estimates RTT: 18.243507
+1 Current RTT: 55.0 Estimates RTT: 30.693314
+0 Current RTT: 22.0 Estimates RTT: 18.21307
+1 Current RTT: 44.0 Estimates RTT: 33.73165
+0 Current RTT: 17.0 Estimates RTT: 18.686436
+1 Current RTT: 44.0 Estimates RTT: 35.015194
+0 Current RTT: 29.0 Estimates RTT: 18.475632
+1 Current RTT: 19.0 Estimates RTT: 36.138294
+0 Current RTT: 13.0 Estimates RTT: 19.791178
+BW Path 0: sample 2.228 Mbps, estimate 2.229 Mbps
+1 Current RTT: 46.0 Estimates RTT: 33.99601
+0 Current RTT: 38.0 Estimates RTT: 18.94228
+1 Current RTT: 29.0 Estimates RTT: 35.49651
+0 Current RTT: 20.0 Estimates RTT: 21.324495
+1 Current RTT: 37.0 Estimates RTT: 34.68445
+0 Current RTT: 10.0 Estimates RTT: 21.158934
+1 Current RTT: 20.0 Estimates RTT: 34.973892
+0 Current RTT: 11.0 Estimates RTT: 19.764067
+1 Current RTT: 37.0 Estimates RTT: 33.102158
+0 Current RTT: 16.0 Estimates RTT: 18.668558
+1 Current RTT: 41.0 Estimates RTT: 33.589386
+0 Current RTT: 15.0 Estimates RTT: 18.334988
+1 Current RTT: 29.0 Estimates RTT: 34.515713
+0 Current RTT: 19.0 Estimates RTT: 17.918114
+1 Current RTT: 66.0 Estimates RTT: 33.82625
+0 Current RTT: 25.0 Estimates RTT: 18.053349
+1 Current RTT: 57.0 Estimates RTT: 37.84797
+0 Current RTT: 49.0 Estimates RTT: 18.92168
+BW Path 0: sample 2.216 Mbps, estimate 2.227 Mbps
+0 Current RTT: 18.0 Estimates RTT: 22.68147
+1 Current RTT: 39.0 Estimates RTT: 40.241974
+BW Path 1: sample 0.933 Mbps, estimate 0.937 Mbps
+0 Current RTT: 21.0 Estimates RTT: 22.096287
+1 Current RTT: 25.0 Estimates RTT: 40.086727
+1 Current RTT: 34.0 Estimates RTT: 38.200886
+0 Current RTT: 11.0 Estimates RTT: 21.959251
+0 Current RTT: 31.0 Estimates RTT: 20.589344
+1 Current RTT: 41.0 Estimates RTT: 37.675774
+1 Current RTT: 27.0 Estimates RTT: 38.0913
+0 Current RTT: 25.0 Estimates RTT: 21.890676
+1 Current RTT: 21.0 Estimates RTT: 36.704887
+0 Current RTT: 14.0 Estimates RTT: 22.279343
+0 Current RTT: 15.0 Estimates RTT: 21.244425
+1 Current RTT: 21.0 Estimates RTT: 34.741776
+0 Current RTT: 14.0 Estimates RTT: 20.463871
+1 Current RTT: 32.0 Estimates RTT: 33.024055
+BW Path 0: sample 2.333 Mbps, estimate 2.240 Mbps
+0 Current RTT: 23.0 Estimates RTT: 19.655888
+1 Current RTT: 24.0 Estimates RTT: 32.89605
+0 Current RTT: 16.0 Estimates RTT: 20.073902
+1 Current RTT: 30.0 Estimates RTT: 31.784042
+0 Current RTT: 18.0 Estimates RTT: 19.564665
+1 Current RTT: 40.0 Estimates RTT: 31.561037
+0 Current RTT: 12.0 Estimates RTT: 19.369081
+1 Current RTT: 33.0 Estimates RTT: 32.615906
+0 Current RTT: 16.0 Estimates RTT: 18.447947
+1 Current RTT: 19.0 Estimates RTT: 32.663918
+0 Current RTT: 14.0 Estimates RTT: 18.141953
+1 Current RTT: 29.0 Estimates RTT: 30.955929
+0 Current RTT: 17.0 Estimates RTT: 17.624208
+1 Current RTT: 30.0 Estimates RTT: 30.711437
+0 Current RTT: 14.0 Estimates RTT: 17.546183
+1 Current RTT: 21.0 Estimates RTT: 30.622507
+0 Current RTT: 23.0 Estimates RTT: 17.10291
+1 Current RTT: 23.0 Estimates RTT: 29.419693
+BW Path 1: sample 0.950 Mbps, estimate 0.939 Mbps
+0 Current RTT: 20.0 Estimates RTT: 17.840046
+1 Current RTT: 22.0 Estimates RTT: 28.617231
+BW Path 0: sample 2.225 Mbps, estimate 2.238 Mbps
+1 Current RTT: 113.0 Estimates RTT: 27.790077
+0 Current RTT: 96.0 Estimates RTT: 18.11004
+1 Current RTT: 24.0 Estimates RTT: 38.44132
+0 Current RTT: 21.0 Estimates RTT: 27.846287
+1 Current RTT: 28.0 Estimates RTT: 36.636154
+0 Current RTT: 35.0 Estimates RTT: 26.990501
+1 Current RTT: 26.0 Estimates RTT: 35.556633
+0 Current RTT: 17.0 Estimates RTT: 27.991688
+1 Current RTT: 31.0 Estimates RTT: 34.362053
+0 Current RTT: 18.0 Estimates RTT: 26.617727
+1 Current RTT: 30.0 Estimates RTT: 33.941795
+0 Current RTT: 22.0 Estimates RTT: 25.540512
+1 Current RTT: 34.0 Estimates RTT: 33.44907
+0 Current RTT: 14.0 Estimates RTT: 25.097948
+1 Current RTT: 44.0 Estimates RTT: 33.517937
+0 Current RTT: 24.0 Estimates RTT: 23.710705
+BW Path 0: sample 2.258 Mbps, estimate 2.241 Mbps
+1 Current RTT: 34.0 Estimates RTT: 34.828194
+0 Current RTT: 17.0 Estimates RTT: 23.746866
+1 Current RTT: 35.0 Estimates RTT: 34.72467
+0 Current RTT: 17.0 Estimates RTT: 22.903507
+1 Current RTT: 31.0 Estimates RTT: 34.759087
+0 Current RTT: 19.0 Estimates RTT: 22.16557
+1 Current RTT: 34.0 Estimates RTT: 34.2892
+0 Current RTT: 13.0 Estimates RTT: 21.769873
+1 Current RTT: 20.0 Estimates RTT: 34.25305
+0 Current RTT: 14.0 Estimates RTT: 20.67364
+BW Path 1: sample 0.941 Mbps, estimate 0.939 Mbps
+1 Current RTT: 46.0 Estimates RTT: 32.47142
+0 Current RTT: 23.0 Estimates RTT: 19.839434
+0 Current RTT: 21.0 Estimates RTT: 20.234505
+1 Current RTT: 26.0 Estimates RTT: 34.16249
+1 Current RTT: 23.0 Estimates RTT: 33.14218
+0 Current RTT: 22.0 Estimates RTT: 20.330193
+1 Current RTT: 31.0 Estimates RTT: 31.874409
+0 Current RTT: 17.0 Estimates RTT: 20.538918
+1 Current RTT: 35.0 Estimates RTT: 31.765108
+0 Current RTT: 13.0 Estimates RTT: 20.096554
+BW Path 0: sample 2.271 Mbps, estimate 2.245 Mbps
+1 Current RTT: 38.0 Estimates RTT: 32.16947
+0 Current RTT: 17.0 Estimates RTT: 19.209484
+1 Current RTT: 34.0 Estimates RTT: 32.89829
+0 Current RTT: 21.0 Estimates RTT: 18.933298
+0 Current RTT: 13.0 Estimates RTT: 19.191635
+1 Current RTT: 24.0 Estimates RTT: 33.036003
+1 Current RTT: 20.0 Estimates RTT: 31.906502
+0 Current RTT: 19.0 Estimates RTT: 18.41768
+1 Current RTT: 32.0 Estimates RTT: 30.41819
+0 Current RTT: 22.0 Estimates RTT: 18.49047
+1 Current RTT: 32.0 Estimates RTT: 30.615917
+0 Current RTT: 13.0 Estimates RTT: 18.929161
+1 Current RTT: 24.0 Estimates RTT: 30.788927
+0 Current RTT: 13.0 Estimates RTT: 18.188015
+1 Current RTT: 36.0 Estimates RTT: 29.940311
+0 Current RTT: 17.0 Estimates RTT: 17.539513
+1 Current RTT: 32.0 Estimates RTT: 30.697773
+0 Current RTT: 16.0 Estimates RTT: 17.472073
+BW Path 0: sample 2.277 Mbps, estimate 2.249 Mbps
+1 Current RTT: 39.0 Estimates RTT: 30.860552
+0 Current RTT: 36.0 Estimates RTT: 17.288063
+BW Path 1: sample 0.965 Mbps, estimate 0.942 Mbps
+1 Current RTT: 27.0 Estimates RTT: 31.877983
+0 Current RTT: 18.0 Estimates RTT: 19.627056
+1 Current RTT: 55.0 Estimates RTT: 31.268234
+0 Current RTT: 36.0 Estimates RTT: 19.423674
+1 Current RTT: 51.0 Estimates RTT: 34.234703
+0 Current RTT: 11.0 Estimates RTT: 21.495714
+1 Current RTT: 23.0 Estimates RTT: 36.330364
+0 Current RTT: 20.0 Estimates RTT: 20.18375
+1 Current RTT: 19.0 Estimates RTT: 34.66407
+0 Current RTT: 24.0 Estimates RTT: 20.160782
+1 Current RTT: 36.0 Estimates RTT: 32.706062
+0 Current RTT: 8.0 Estimates RTT: 20.640684
+1 Current RTT: 25.0 Estimates RTT: 33.117805
+0 Current RTT: 16.0 Estimates RTT: 19.060598
+BW Path 0: sample 2.352 Mbps, estimate 2.262 Mbps
+1 Current RTT: 39.0 Estimates RTT: 32.10308
+0 Current RTT: 33.0 Estimates RTT: 18.678024
+1 Current RTT: 32.0 Estimates RTT: 32.965195
+0 Current RTT: 14.0 Estimates RTT: 20.468271
+1 Current RTT: 28.0 Estimates RTT: 32.844543
+0 Current RTT: 16.0 Estimates RTT: 19.659737
+1 Current RTT: 25.0 Estimates RTT: 32.238976
+0 Current RTT: 16.0 Estimates RTT: 19.20227
+1 Current RTT: 10.0 Estimates RTT: 31.334103
+0 Current RTT: 10.0 Estimates RTT: 18.801987
+1 Current RTT: 52.0 Estimates RTT: 28.66734
+0 Current RTT: 19.0 Estimates RTT: 17.701738
+1 Current RTT: 44.0 Estimates RTT: 31.583921
+0 Current RTT: 25.0 Estimates RTT: 17.864021
+1 Current RTT: 21.0 Estimates RTT: 33.135933
+0 Current RTT: 14.0 Estimates RTT: 18.75602
+1 Current RTT: 29.0 Estimates RTT: 31.618942
+BW Path 1: sample 0.927 Mbps, estimate 0.940 Mbps
+0 Current RTT: 16.0 Estimates RTT: 18.161518
+1 Current RTT: 34.0 Estimates RTT: 31.291574
+0 Current RTT: 15.0 Estimates RTT: 17.891329
+BW Path 0: sample 2.198 Mbps, estimate 2.254 Mbps
+1 Current RTT: 29.0 Estimates RTT: 31.630127
+0 Current RTT: 12.0 Estimates RTT: 17.529913
+1 Current RTT: 28.0 Estimates RTT: 31.301361
+0 Current RTT: 25.0 Estimates RTT: 16.838673
+1 Current RTT: 39.0 Estimates RTT: 30.88869
+0 Current RTT: 14.0 Estimates RTT: 17.858839
+1 Current RTT: 34.0 Estimates RTT: 31.902605
+0 Current RTT: 17.0 Estimates RTT: 17.376484
+0 Current RTT: 12.0 Estimates RTT: 17.329424
+1 Current RTT: 25.0 Estimates RTT: 32.16478
+1 Current RTT: 23.0 Estimates RTT: 31.269182
+0 Current RTT: 13.0 Estimates RTT: 16.663246
+0 Current RTT: 16.0 Estimates RTT: 16.205341
+1 Current RTT: 25.0 Estimates RTT: 30.235535
+0 Current RTT: 30.0 Estimates RTT: 16.179674
+1 Current RTT: 34.0 Estimates RTT: 29.581093
+BW Path 0: sample 2.400 Mbps, estimate 2.272 Mbps
+0 Current RTT: 29.0 Estimates RTT: 17.907215
+1 Current RTT: 38.0 Estimates RTT: 30.133457
+1 Current RTT: 20.0 Estimates RTT: 31.116776
+0 Current RTT: 11.0 Estimates RTT: 19.293814
+0 Current RTT: 20.0 Estimates RTT: 18.257088
+1 Current RTT: 23.0 Estimates RTT: 29.727179
+1 Current RTT: 40.0 Estimates RTT: 28.886282
+0 Current RTT: 15.0 Estimates RTT: 18.474953
+1 Current RTT: 13.0 Estimates RTT: 30.275497
+0 Current RTT: 16.0 Estimates RTT: 18.040585
+1 Current RTT: 30.0 Estimates RTT: 28.11606
+0 Current RTT: 15.0 Estimates RTT: 17.785511
+BW Path 1: sample 0.886 Mbps, estimate 0.934 Mbps
+1 Current RTT: 23.0 Estimates RTT: 28.351553
+0 Current RTT: 18.0 Estimates RTT: 17.437323
+1 Current RTT: 31.0 Estimates RTT: 27.68261
+0 Current RTT: 21.0 Estimates RTT: 17.507656
+1 Current RTT: 31.0 Estimates RTT: 28.097282
+0 Current RTT: 23.0 Estimates RTT: 17.944199
+BW Path 0: sample 2.340 Mbps, estimate 2.280 Mbps
+1 Current RTT: 47.0 Estimates RTT: 28.460121
+0 Current RTT: 20.0 Estimates RTT: 18.576174
+1 Current RTT: 33.0 Estimates RTT: 30.777607
+0 Current RTT: 19.0 Estimates RTT: 18.754152
+1 Current RTT: 32.0 Estimates RTT: 31.055407
+0 Current RTT: 19.0 Estimates RTT: 18.784883
+1 Current RTT: 35.0 Estimates RTT: 31.173481
+0 Current RTT: 15.0 Estimates RTT: 18.811773
+0 Current RTT: 18.0 Estimates RTT: 18.335302
+1 Current RTT: 21.0 Estimates RTT: 31.651796
+0 Current RTT: 18.0 Estimates RTT: 18.29339
+1 Current RTT: 39.0 Estimates RTT: 30.320322
+0 Current RTT: 14.0 Estimates RTT: 18.256716
+1 Current RTT: 19.0 Estimates RTT: 31.405281
+1 Current RTT: 29.0 Estimates RTT: 29.854622
+0 Current RTT: 16.0 Estimates RTT: 17.724627
+1 Current RTT: 35.0 Estimates RTT: 29.747795
+0 Current RTT: 15.0 Estimates RTT: 17.509048
+0 Current RTT: 10.0 Estimates RTT: 17.195417
+1 Current RTT: 41.0 Estimates RTT: 30.40432
+BW Path 0: sample 2.171 Mbps, estimate 2.267 Mbps
+0 Current RTT: 17.0 Estimates RTT: 16.29599
+1 Current RTT: 27.0 Estimates RTT: 31.728779
+0 Current RTT: 14.0 Estimates RTT: 16.383991
+1 Current RTT: 40.0 Estimates RTT: 31.137682
+0 Current RTT: 11.0 Estimates RTT: 16.085993
+1 Current RTT: 41.0 Estimates RTT: 32.245472
+BW Path 1: sample 0.908 Mbps, estimate 0.930 Mbps
+0 Current RTT: 14.0 Estimates RTT: 15.450244
+1 Current RTT: 28.0 Estimates RTT: 33.33979
+0 Current RTT: 16.0 Estimates RTT: 15.268964
+1 Current RTT: 19.0 Estimates RTT: 32.672318
+0 Current RTT: 19.0 Estimates RTT: 15.360343
+1 Current RTT: 33.0 Estimates RTT: 30.963278
+0 Current RTT: 15.0 Estimates RTT: 15.8153
+1 Current RTT: 29.0 Estimates RTT: 31.217869
+0 Current RTT: 21.0 Estimates RTT: 15.7133875
+1 Current RTT: 19.0 Estimates RTT: 30.940636
+0 Current RTT: 11.0 Estimates RTT: 16.374214
+1 Current RTT: 27.0 Estimates RTT: 29.448055
+BW Path 0: sample 2.279 Mbps, estimate 2.268 Mbps
+0 Current RTT: 14.0 Estimates RTT: 15.702437
+1 Current RTT: 34.0 Estimates RTT: 29.142048
+0 Current RTT: 9.0 Estimates RTT: 15.489633
+1 Current RTT: 28.0 Estimates RTT: 29.749292
+0 Current RTT: 20.0 Estimates RTT: 14.678429
+1 Current RTT: 25.0 Estimates RTT: 29.53063
+0 Current RTT: 11.0 Estimates RTT: 15.343625
+1 Current RTT: 20.0 Estimates RTT: 28.964302
+0 Current RTT: 25.0 Estimates RTT: 14.800672
+1 Current RTT: 27.0 Estimates RTT: 27.843765
+0 Current RTT: 14.0 Estimates RTT: 16.075588
+1 Current RTT: 53.0 Estimates RTT: 27.738295
+0 Current RTT: 15.0 Estimates RTT: 15.816139
+1 Current RTT: 20.0 Estimates RTT: 30.896008
+0 Current RTT: 21.0 Estimates RTT: 15.714122
+1 Current RTT: 28.0 Estimates RTT: 29.534006
+0 Current RTT: 14.0 Estimates RTT: 16.374857
+1 Current RTT: 33.0 Estimates RTT: 29.342255
+BW Path 0: sample 2.292 Mbps, estimate 2.271 Mbps
+BW Path 1: sample 0.922 Mbps, estimate 0.929 Mbps
+0 Current RTT: 13.0 Estimates RTT: 16.078
+1 Current RTT: 21.0 Estimates RTT: 29.799473
+0 Current RTT: 12.0 Estimates RTT: 15.693249
+1 Current RTT: 29.0 Estimates RTT: 28.69954
+0 Current RTT: 27.0 Estimates RTT: 15.231592
+1 Current RTT: 41.0 Estimates RTT: 28.737097
+0 Current RTT: 15.0 Estimates RTT: 16.702644
+1 Current RTT: 38.0 Estimates RTT: 30.26996
+0 Current RTT: 14.0 Estimates RTT: 16.489815
+1 Current RTT: 18.0 Estimates RTT: 31.236216
+0 Current RTT: 15.0 Estimates RTT: 16.178589
+1 Current RTT: 38.0 Estimates RTT: 29.581688
+0 Current RTT: 19.0 Estimates RTT: 16.031265
+1 Current RTT: 16.0 Estimates RTT: 30.633976
+0 Current RTT: 21.0 Estimates RTT: 16.402357
+1 Current RTT: 26.0 Estimates RTT: 28.80473
+0 Current RTT: 15.0 Estimates RTT: 16.977062
+1 Current RTT: 35.0 Estimates RTT: 28.454138
+BW Path 0: sample 2.285 Mbps, estimate 2.273 Mbps
+0 Current RTT: 19.0 Estimates RTT: 16.729929
+1 Current RTT: 24.0 Estimates RTT: 29.272371
+0 Current RTT: 16.0 Estimates RTT: 17.013687
+1 Current RTT: 27.0 Estimates RTT: 28.613325
+0 Current RTT: 19.0 Estimates RTT: 16.886976
+1 Current RTT: 31.0 Estimates RTT: 28.41166
+0 Current RTT: 12.0 Estimates RTT: 17.151104
+1 Current RTT: 27.0 Estimates RTT: 28.735203
+0 Current RTT: 16.0 Estimates RTT: 16.507215
+1 Current RTT: 37.0 Estimates RTT: 28.518303
+0 Current RTT: 27.0 Estimates RTT: 16.443813
+1 Current RTT: 37.0 Estimates RTT: 29.578514
+0 Current RTT: 19.0 Estimates RTT: 17.763336
+1 Current RTT: 25.0 Estimates RTT: 30.506199
+BW Path 1: sample 0.909 Mbps, estimate 0.927 Mbps
+1 Current RTT: 28.0 Estimates RTT: 29.817924
+0 Current RTT: 12.0 Estimates RTT: 17.91792
+0 Current RTT: 12.0 Estimates RTT: 17.178179
+1 Current RTT: 21.0 Estimates RTT: 29.590683
+BW Path 0: sample 2.164 Mbps, estimate 2.259 Mbps
+0 Current RTT: 17.0 Estimates RTT: 16.530907
+1 Current RTT: 23.0 Estimates RTT: 28.516848
+1 Current RTT: 34.0 Estimates RTT: 27.827242
+0 Current RTT: 14.0 Estimates RTT: 16.589542
+1 Current RTT: 25.0 Estimates RTT: 28.598837
+0 Current RTT: 16.0 Estimates RTT: 16.26585
+1 Current RTT: 29.0 Estimates RTT: 28.148983
+0 Current RTT: 13.0 Estimates RTT: 16.232618
+1 Current RTT: 27.0 Estimates RTT: 28.25536
+0 Current RTT: 13.0 Estimates RTT: 15.828541
+1 Current RTT: 38.0 Estimates RTT: 28.09844
+0 Current RTT: 18.0 Estimates RTT: 15.474974
+1 Current RTT: 27.0 Estimates RTT: 29.336136
+0 Current RTT: 12.0 Estimates RTT: 15.790602
+1 Current RTT: 21.0 Estimates RTT: 29.044119
+0 Current RTT: 19.0 Estimates RTT: 15.316776
+0 Current RTT: 20.0 Estimates RTT: 15.77718
+1 Current RTT: 21.0 Estimates RTT: 28.038605
+BW Path 0: sample 2.405 Mbps, estimate 2.278 Mbps
+0 Current RTT: 16.0 Estimates RTT: 16.305033
+1 Current RTT: 24.0 Estimates RTT: 27.15878
+0 Current RTT: 15.0 Estimates RTT: 16.266903
+1 Current RTT: 35.0 Estimates RTT: 26.763931
+0 Current RTT: 10.0 Estimates RTT: 16.10854
+1 Current RTT: 20.0 Estimates RTT: 27.79344
+0 Current RTT: 17.0 Estimates RTT: 15.344973
+1 Current RTT: 30.0 Estimates RTT: 26.81926
+0 Current RTT: 34.0 Estimates RTT: 15.551851
+BW Path 1: sample 0.938 Mbps, estimate 0.928 Mbps
+1 Current RTT: 42.0 Estimates RTT: 27.216852
+0 Current RTT: 12.0 Estimates RTT: 17.85787
+1 Current RTT: 25.0 Estimates RTT: 29.064745
+0 Current RTT: 15.0 Estimates RTT: 17.125637
+1 Current RTT: 29.0 Estimates RTT: 28.556652
+1 Current RTT: 27.0 Estimates RTT: 28.61207
+0 Current RTT: 20.0 Estimates RTT: 16.859932
+0 Current RTT: 15.0 Estimates RTT: 17.252441
+1 Current RTT: 28.0 Estimates RTT: 28.41056
+0 Current RTT: 23.0 Estimates RTT: 16.970886
+1 Current RTT: 39.0 Estimates RTT: 28.359241
+BW Path 0: sample 2.240 Mbps, estimate 2.273 Mbps
+0 Current RTT: 22.0 Estimates RTT: 17.724525
+1 Current RTT: 30.0 Estimates RTT: 29.689337
+0 Current RTT: 16.0 Estimates RTT: 18.25896
+1 Current RTT: 30.0 Estimates RTT: 29.72817
+0 Current RTT: 21.0 Estimates RTT: 17.976591
+1 Current RTT: 31.0 Estimates RTT: 29.76215
+0 Current RTT: 23.0 Estimates RTT: 18.354517
+1 Current RTT: 27.0 Estimates RTT: 29.916882
+0 Current RTT: 16.0 Estimates RTT: 18.935202
+1 Current RTT: 32.0 Estimates RTT: 29.55227
+0 Current RTT: 21.0 Estimates RTT: 18.568302
+1 Current RTT: 34.0 Estimates RTT: 29.858236
+0 Current RTT: 13.0 Estimates RTT: 18.872265
+1 Current RTT: 20.0 Estimates RTT: 30.375957
+0 Current RTT: 17.0 Estimates RTT: 18.138231
+1 Current RTT: 16.0 Estimates RTT: 29.078962
+0 Current RTT: 12.0 Estimates RTT: 17.995953
+1 Current RTT: 18.0 Estimates RTT: 27.444092
+BW Path 0: sample 2.064 Mbps, estimate 2.247 Mbps
+0 Current RTT: 23.0 Estimates RTT: 17.246458
+1 Current RTT: 27.0 Estimates RTT: 26.26358
+BW Path 1: sample 0.960 Mbps, estimate 0.932 Mbps
+0 Current RTT: 28.0 Estimates RTT: 17.96565
+1 Current RTT: 51.0 Estimates RTT: 26.355633
+0 Current RTT: 17.0 Estimates RTT: 19.219944
+1 Current RTT: 26.0 Estimates RTT: 29.436178
+0 Current RTT: 12.0 Estimates RTT: 18.942451
+1 Current RTT: 29.0 Estimates RTT: 29.006657
+0 Current RTT: 21.0 Estimates RTT: 18.074646
+1 Current RTT: 45.0 Estimates RTT: 29.005825
+0 Current RTT: 40.0 Estimates RTT: 18.440315
+1 Current RTT: 58.0 Estimates RTT: 31.005096
+0 Current RTT: 25.0 Estimates RTT: 21.135277
+1 Current RTT: 40.0 Estimates RTT: 34.37946
+0 Current RTT: 27.0 Estimates RTT: 21.618366
+1 Current RTT: 32.0 Estimates RTT: 35.082027
+0 Current RTT: 18.0 Estimates RTT: 22.29107
+1 Current RTT: 27.0 Estimates RTT: 34.696774
+BW Path 0: sample 2.199 Mbps, estimate 2.241 Mbps
+1 Current RTT: 30.0 Estimates RTT: 33.734676
+0 Current RTT: 37.0 Estimates RTT: 21.754686
+1 Current RTT: 30.0 Estimates RTT: 33.26784
+0 Current RTT: 36.0 Estimates RTT: 23.66035
+1 Current RTT: 36.0 Estimates RTT: 32.85936
+0 Current RTT: 36.0 Estimates RTT: 25.202806
+1 Current RTT: 20.0 Estimates RTT: 33.251938
+0 Current RTT: 18.0 Estimates RTT: 26.552456
+1 Current RTT: 27.0 Estimates RTT: 31.595446
+0 Current RTT: 13.0 Estimates RTT: 25.483398
+1 Current RTT: 33.0 Estimates RTT: 31.021015
+0 Current RTT: 9.0 Estimates RTT: 23.922974
+BW Path 1: sample 0.963 Mbps, estimate 0.936 Mbps
+1 Current RTT: 31.0 Estimates RTT: 31.268389
+0 Current RTT: 15.0 Estimates RTT: 22.057602
+1 Current RTT: 29.0 Estimates RTT: 31.23484
+0 Current RTT: 18.0 Estimates RTT: 21.175402
+1 Current RTT: 22.0 Estimates RTT: 30.955486
+0 Current RTT: 20.0 Estimates RTT: 20.778477
+BW Path 0: sample 2.315 Mbps, estimate 2.250 Mbps
+1 Current RTT: 20.0 Estimates RTT: 29.83605
+0 Current RTT: 19.0 Estimates RTT: 20.681168
+1 Current RTT: 27.0 Estimates RTT: 28.606544
+0 Current RTT: 14.0 Estimates RTT: 20.471022
+1 Current RTT: 30.0 Estimates RTT: 28.405727
+0 Current RTT: 16.0 Estimates RTT: 19.662144
+1 Current RTT: 25.0 Estimates RTT: 28.605011
+0 Current RTT: 16.0 Estimates RTT: 19.204376
+1 Current RTT: 21.0 Estimates RTT: 28.154385
+0 Current RTT: 19.0 Estimates RTT: 18.80383
+1 Current RTT: 37.0 Estimates RTT: 27.260086
+0 Current RTT: 19.0 Estimates RTT: 18.82835
+0 Current RTT: 22.0 Estimates RTT: 18.849806
+1 Current RTT: 36.0 Estimates RTT: 28.477575
+0 Current RTT: 25.0 Estimates RTT: 19.24358
+1 Current RTT: 41.0 Estimates RTT: 29.41788
+1 Current RTT: 29.0 Estimates RTT: 30.865644
+0 Current RTT: 12.0 Estimates RTT: 19.963133
+BW Path 0: sample 2.286 Mbps, estimate 2.255 Mbps
+0 Current RTT: 12.0 Estimates RTT: 18.967741
+1 Current RTT: 18.0 Estimates RTT: 30.632439
+0 Current RTT: 36.0 Estimates RTT: 18.096773
+1 Current RTT: 35.0 Estimates RTT: 29.053383
+1 Current RTT: 26.0 Estimates RTT: 29.796711
+0 Current RTT: 16.0 Estimates RTT: 20.334677
+0 Current RTT: 14.0 Estimates RTT: 19.792843
+1 Current RTT: 36.0 Estimates RTT: 29.322123
+BW Path 1: sample 0.905 Mbps, estimate 0.932 Mbps
+0 Current RTT: 14.0 Estimates RTT: 19.068737
+1 Current RTT: 31.0 Estimates RTT: 30.156857
+1 Current RTT: 24.0 Estimates RTT: 30.262249
+0 Current RTT: 16.0 Estimates RTT: 18.435144
+1 Current RTT: 35.0 Estimates RTT: 29.479467
+0 Current RTT: 17.0 Estimates RTT: 18.13075
+0 Current RTT: 20.0 Estimates RTT: 17.989407
+1 Current RTT: 24.0 Estimates RTT: 30.169535
+0 Current RTT: 15.0 Estimates RTT: 18.24073
+1 Current RTT: 39.0 Estimates RTT: 29.398342
+BW Path 0: sample 2.342 Mbps, estimate 2.266 Mbps
+1 Current RTT: 24.0 Estimates RTT: 30.598549
+0 Current RTT: 11.0 Estimates RTT: 17.83564
+1 Current RTT: 32.0 Estimates RTT: 29.773731
+0 Current RTT: 12.0 Estimates RTT: 16.981186
+1 Current RTT: 26.0 Estimates RTT: 30.052015
+0 Current RTT: 17.0 Estimates RTT: 16.358538
+1 Current RTT: 44.0 Estimates RTT: 29.545513
+0 Current RTT: 26.0 Estimates RTT: 16.43872
+1 Current RTT: 36.0 Estimates RTT: 31.352324
+0 Current RTT: 18.0 Estimates RTT: 17.63388
+1 Current RTT: 26.0 Estimates RTT: 31.933283
+0 Current RTT: 18.0 Estimates RTT: 17.679646
+1 Current RTT: 25.0 Estimates RTT: 31.191622
+0 Current RTT: 16.0 Estimates RTT: 17.71969
+1 Current RTT: 37.0 Estimates RTT: 30.41767
+0 Current RTT: 17.0 Estimates RTT: 17.50473
+1 Current RTT: 27.0 Estimates RTT: 31.240461
+0 Current RTT: 17.0 Estimates RTT: 17.441639
+BW Path 0: sample 2.216 Mbps, estimate 2.259 Mbps
+1 Current RTT: 22.0 Estimates RTT: 30.710403
+0 Current RTT: 14.0 Estimates RTT: 17.386435
+0 Current RTT: 15.0 Estimates RTT: 16.96313
+1 Current RTT: 19.0 Estimates RTT: 29.621603
+BW Path 1: sample 0.904 Mbps, estimate 0.929 Mbps
+0 Current RTT: 16.0 Estimates RTT: 16.71774
+1 Current RTT: 34.0 Estimates RTT: 28.293903
+0 Current RTT: 19.0 Estimates RTT: 16.628021
+1 Current RTT: 26.0 Estimates RTT: 29.007166
+0 Current RTT: 12.0 Estimates RTT: 16.924519
+1 Current RTT: 21.0 Estimates RTT: 28.63127
+1 Current RTT: 31.0 Estimates RTT: 27.67736
+0 Current RTT: 21.0 Estimates RTT: 16.308954
+1 Current RTT: 22.0 Estimates RTT: 28.09269
+0 Current RTT: 20.0 Estimates RTT: 16.895336
+1 Current RTT: 23.0 Estimates RTT: 27.331104
+0 Current RTT: 17.0 Estimates RTT: 17.283419
+0 Current RTT: 15.0 Estimates RTT: 17.247992
+1 Current RTT: 30.0 Estimates RTT: 26.789717
+0 Current RTT: 18.0 Estimates RTT: 16.966991
+1 Current RTT: 31.0 Estimates RTT: 27.191002
+BW Path 0: sample 2.217 Mbps, estimate 2.254 Mbps
+0 Current RTT: 13.0 Estimates RTT: 17.096117
+1 Current RTT: 34.0 Estimates RTT: 27.667126
+0 Current RTT: 12.0 Estimates RTT: 16.584103
+1 Current RTT: 25.0 Estimates RTT: 28.458735
+1 Current RTT: 35.0 Estimates RTT: 28.026392
+0 Current RTT: 23.0 Estimates RTT: 16.01109
+1 Current RTT: 18.0 Estimates RTT: 28.898092
+0 Current RTT: 17.0 Estimates RTT: 16.884703
+1 Current RTT: 23.0 Estimates RTT: 27.535831
+0 Current RTT: 23.0 Estimates RTT: 16.899115
+0 Current RTT: 18.0 Estimates RTT: 17.661724
+1 Current RTT: 32.0 Estimates RTT: 26.968853
+0 Current RTT: 23.0 Estimates RTT: 17.704008
+1 Current RTT: 26.0 Estimates RTT: 27.597746
+BW Path 1: sample 0.937 Mbps, estimate 0.930 Mbps
+0 Current RTT: 14.0 Estimates RTT: 18.366007
+1 Current RTT: 25.0 Estimates RTT: 27.398027
+0 Current RTT: 13.0 Estimates RTT: 17.820255
+1 Current RTT: 32.0 Estimates RTT: 27.098274
+BW Path 0: sample 2.121 Mbps, estimate 2.237 Mbps
+0 Current RTT: 13.0 Estimates RTT: 17.217724
+1 Current RTT: 26.0 Estimates RTT: 27.71099
+0 Current RTT: 12.0 Estimates RTT: 16.690508
+1 Current RTT: 18.0 Estimates RTT: 27.497116
+0 Current RTT: 17.0 Estimates RTT: 16.104195
+1 Current RTT: 33.0 Estimates RTT: 26.309977
+0 Current RTT: 16.0 Estimates RTT: 16.216171
+1 Current RTT: 31.0 Estimates RTT: 27.146229
+0 Current RTT: 17.0 Estimates RTT: 16.18915
+1 Current RTT: 20.0 Estimates RTT: 27.62795
+0 Current RTT: 20.0 Estimates RTT: 16.290506
+1 Current RTT: 30.0 Estimates RTT: 26.674458
+0 Current RTT: 29.0 Estimates RTT: 16.754192
+1 Current RTT: 42.0 Estimates RTT: 27.09015
+0 Current RTT: 14.0 Estimates RTT: 18.284918
+1 Current RTT: 28.0 Estimates RTT: 28.953882
+0 Current RTT: 11.0 Estimates RTT: 17.749302
+1 Current RTT: 15.0 Estimates RTT: 28.834646
+BW Path 0: sample 2.262 Mbps, estimate 2.241 Mbps
+0 Current RTT: 12.0 Estimates RTT: 16.90564
+1 Current RTT: 38.0 Estimates RTT: 27.105316
+0 Current RTT: 13.0 Estimates RTT: 16.292435
+1 Current RTT: 24.0 Estimates RTT: 28.467152
+0 Current RTT: 29.0 Estimates RTT: 15.88088
+1 Current RTT: 45.0 Estimates RTT: 27.908758
+0 Current RTT: 38.0 Estimates RTT: 17.520771
+1 Current RTT: 36.0 Estimates RTT: 30.045164
+BW Path 1: sample 0.931 Mbps, estimate 0.930 Mbps
+0 Current RTT: 12.0 Estimates RTT: 20.080675
+1 Current RTT: 31.0 Estimates RTT: 30.789518
+0 Current RTT: 19.0 Estimates RTT: 19.070591
+1 Current RTT: 28.0 Estimates RTT: 30.815828
+0 Current RTT: 10.0 Estimates RTT: 19.061768
+1 Current RTT: 41.0 Estimates RTT: 30.46385
+0 Current RTT: 19.0 Estimates RTT: 17.929047
+1 Current RTT: 30.0 Estimates RTT: 31.780869
+0 Current RTT: 14.0 Estimates RTT: 18.062916
+1 Current RTT: 24.0 Estimates RTT: 31.55826
+BW Path 0: sample 2.369 Mbps, estimate 2.257 Mbps
+0 Current RTT: 19.0 Estimates RTT: 17.555052
+1 Current RTT: 30.0 Estimates RTT: 30.613478
+0 Current RTT: 11.0 Estimates RTT: 17.73567
+1 Current RTT: 28.0 Estimates RTT: 30.536793
+0 Current RTT: 13.0 Estimates RTT: 16.893711
+1 Current RTT: 19.0 Estimates RTT: 30.219694
+0 Current RTT: 16.0 Estimates RTT: 16.406998
+1 Current RTT: 33.0 Estimates RTT: 28.817232
+0 Current RTT: 19.0 Estimates RTT: 16.356123
+1 Current RTT: 19.0 Estimates RTT: 29.340078
+0 Current RTT: 7.0 Estimates RTT: 16.686607
+1 Current RTT: 28.0 Estimates RTT: 28.04757
+0 Current RTT: 13.0 Estimates RTT: 15.475781
+1 Current RTT: 25.0 Estimates RTT: 28.041622
+0 Current RTT: 17.0 Estimates RTT: 15.166308
+1 Current RTT: 31.0 Estimates RTT: 27.661419
+0 Current RTT: 17.0 Estimates RTT: 15.39552
+1 Current RTT: 28.0 Estimates RTT: 28.078741
+BW Path 0: sample 2.249 Mbps, estimate 2.256 Mbps
+0 Current RTT: 13.0 Estimates RTT: 15.59608
+1 Current RTT: 33.0 Estimates RTT: 28.0689
+0 Current RTT: 16.0 Estimates RTT: 15.27157
+1 Current RTT: 24.0 Estimates RTT: 28.685287
+BW Path 1: sample 0.928 Mbps, estimate 0.930 Mbps
+0 Current RTT: 7.0 Estimates RTT: 15.362624
+1 Current RTT: 26.0 Estimates RTT: 28.099627
+0 Current RTT: 20.0 Estimates RTT: 14.317296
+1 Current RTT: 20.0 Estimates RTT: 27.837173
+0 Current RTT: 14.0 Estimates RTT: 15.027634
+1 Current RTT: 26.0 Estimates RTT: 26.857527
+0 Current RTT: 17.0 Estimates RTT: 14.899179
+1 Current RTT: 32.0 Estimates RTT: 26.750336
+0 Current RTT: 10.0 Estimates RTT: 15.161782
+1 Current RTT: 14.0 Estimates RTT: 27.406544
+0 Current RTT: 18.0 Estimates RTT: 14.51656
+1 Current RTT: 32.0 Estimates RTT: 25.730726
+0 Current RTT: 14.0 Estimates RTT: 14.95199
+1 Current RTT: 25.0 Estimates RTT: 26.514385
+0 Current RTT: 18.0 Estimates RTT: 14.832992
+1 Current RTT: 20.0 Estimates RTT: 26.325087
+BW Path 0: sample 2.143 Mbps, estimate 2.242 Mbps
+0 Current RTT: 24.0 Estimates RTT: 15.228868
+1 Current RTT: 64.0 Estimates RTT: 25.53445
+0 Current RTT: 17.0 Estimates RTT: 16.32526
+1 Current RTT: 31.0 Estimates RTT: 30.342644
+0 Current RTT: 21.0 Estimates RTT: 16.409603
+1 Current RTT: 37.0 Estimates RTT: 30.424812
+0 Current RTT: 17.0 Estimates RTT: 16.983402
+1 Current RTT: 28.0 Estimates RTT: 31.246712
+0 Current RTT: 19.0 Estimates RTT: 16.985477
+1 Current RTT: 32.0 Estimates RTT: 30.840874
+0 Current RTT: 17.0 Estimates RTT: 17.237293
+1 Current RTT: 24.0 Estimates RTT: 30.985764
+0 Current RTT: 20.0 Estimates RTT: 17.207632
+1 Current RTT: 25.0 Estimates RTT: 30.112543
+0 Current RTT: 12.0 Estimates RTT: 17.556679
+1 Current RTT: 32.0 Estimates RTT: 29.473475
+BW Path 1: sample 0.886 Mbps, estimate 0.924 Mbps
+0 Current RTT: 15.0 Estimates RTT: 16.862095
+1 Current RTT: 32.0 Estimates RTT: 29.78929
+BW Path 0: sample 2.227 Mbps, estimate 2.240 Mbps
+0 Current RTT: 16.0 Estimates RTT: 16.629333
+1 Current RTT: 24.0 Estimates RTT: 30.065628
+0 Current RTT: 15.0 Estimates RTT: 16.550667
+1 Current RTT: 39.0 Estimates RTT: 29.307425
+0 Current RTT: 19.0 Estimates RTT: 16.356834
+1 Current RTT: 21.0 Estimates RTT: 30.518997
+0 Current RTT: 25.0 Estimates RTT: 16.68723
+1 Current RTT: 31.0 Estimates RTT: 29.329123
+0 Current RTT: 25.0 Estimates RTT: 17.726326
+1 Current RTT: 21.0 Estimates RTT: 29.537983
+0 Current RTT: 19.0 Estimates RTT: 18.635536
+1 Current RTT: 31.0 Estimates RTT: 28.470736
+0 Current RTT: 15.0 Estimates RTT: 18.681095
+1 Current RTT: 25.0 Estimates RTT: 28.786894
+0 Current RTT: 21.0 Estimates RTT: 18.220959
+1 Current RTT: 25.0 Estimates RTT: 28.313532
+0 Current RTT: 15.0 Estimates RTT: 18.568338
+1 Current RTT: 29.0 Estimates RTT: 27.89934
+BW Path 0: sample 2.195 Mbps, estimate 2.234 Mbps
+0 Current RTT: 16.0 Estimates RTT: 18.122295
+1 Current RTT: 14.0 Estimates RTT: 28.036922
+0 Current RTT: 13.0 Estimates RTT: 17.857008
+1 Current RTT: 37.0 Estimates RTT: 26.282307
+0 Current RTT: 17.0 Estimates RTT: 17.249882
+1 Current RTT: 39.0 Estimates RTT: 27.622019
+0 Current RTT: 15.0 Estimates RTT: 17.218647
+1 Current RTT: 30.0 Estimates RTT: 29.044266
+0 Current RTT: 23.0 Estimates RTT: 16.941317
+1 Current RTT: 25.0 Estimates RTT: 29.163733
+BW Path 1: sample 0.961 Mbps, estimate 0.929 Mbps
+0 Current RTT: 18.0 Estimates RTT: 17.698652
+1 Current RTT: 31.0 Estimates RTT: 28.643267
+0 Current RTT: 13.0 Estimates RTT: 17.73632
+1 Current RTT: 26.0 Estimates RTT: 28.937859
+0 Current RTT: 15.0 Estimates RTT: 17.14428
+1 Current RTT: 12.0 Estimates RTT: 28.570625
+0 Current RTT: 43.0 Estimates RTT: 16.876244
+1 Current RTT: 34.0 Estimates RTT: 26.499298
+0 Current RTT: 20.0 Estimates RTT: 20.141712
+BW Path 0: sample 2.125 Mbps, estimate 2.221 Mbps
+1 Current RTT: 21.0 Estimates RTT: 27.436886
+0 Current RTT: 16.0 Estimates RTT: 20.123999
+1 Current RTT: 30.0 Estimates RTT: 26.632275
+1 Current RTT: 32.0 Estimates RTT: 27.05324
+0 Current RTT: 19.0 Estimates RTT: 19.6085
+1 Current RTT: 24.0 Estimates RTT: 27.671585
+0 Current RTT: 22.0 Estimates RTT: 19.532436
+1 Current RTT: 24.0 Estimates RTT: 27.212637
+0 Current RTT: 14.0 Estimates RTT: 19.840881
+0 Current RTT: 7.0 Estimates RTT: 19.110771
+1 Current RTT: 32.0 Estimates RTT: 26.811058
+0 Current RTT: 18.0 Estimates RTT: 17.596924
+1 Current RTT: 38.0 Estimates RTT: 27.459675
+1 Current RTT: 31.0 Estimates RTT: 28.777216
+0 Current RTT: 13.0 Estimates RTT: 17.647308
+1 Current RTT: 26.0 Estimates RTT: 29.055063
+0 Current RTT: 15.0 Estimates RTT: 17.066395
+0 Current RTT: 20.0 Estimates RTT: 16.808096
+1 Current RTT: 37.0 Estimates RTT: 28.67318
+BW Path 0: sample 2.185 Mbps, estimate 2.216 Mbps
+0 Current RTT: 27.0 Estimates RTT: 17.207085
+1 Current RTT: 32.0 Estimates RTT: 29.714031
+BW Path 1: sample 0.934 Mbps, estimate 0.929 Mbps
+0 Current RTT: 13.0 Estimates RTT: 18.431198
+1 Current RTT: 18.0 Estimates RTT: 29.999777
+1 Current RTT: 22.0 Estimates RTT: 28.499805
+0 Current RTT: 16.0 Estimates RTT: 17.752298
+1 Current RTT: 16.0 Estimates RTT: 27.68733
+0 Current RTT: 14.0 Estimates RTT: 17.53326
+1 Current RTT: 35.0 Estimates RTT: 26.226414
+0 Current RTT: 24.0 Estimates RTT: 17.091602
+0 Current RTT: 18.0 Estimates RTT: 17.955153
+1 Current RTT: 25.0 Estimates RTT: 27.323112
+1 Current RTT: 36.0 Estimates RTT: 27.032722
+0 Current RTT: 18.0 Estimates RTT: 17.960758
+1 Current RTT: 21.0 Estimates RTT: 28.153633
+0 Current RTT: 13.0 Estimates RTT: 17.965664
+1 Current RTT: 30.0 Estimates RTT: 27.25943
+0 Current RTT: 14.0 Estimates RTT: 17.344955
+BW Path 0: sample 2.300 Mbps, estimate 2.227 Mbps
+1 Current RTT: 36.0 Estimates RTT: 27.602001
+0 Current RTT: 17.0 Estimates RTT: 16.926836
+1 Current RTT: 26.0 Estimates RTT: 28.65175
+0 Current RTT: 16.0 Estimates RTT: 16.935982
+1 Current RTT: 29.0 Estimates RTT: 28.320282
+0 Current RTT: 14.0 Estimates RTT: 16.818985
+1 Current RTT: 30.0 Estimates RTT: 28.405247
+0 Current RTT: 14.0 Estimates RTT: 16.466612
+1 Current RTT: 25.0 Estimates RTT: 28.604591
+0 Current RTT: 13.0 Estimates RTT: 16.158285
+0 Current RTT: 16.0 Estimates RTT: 15.763499
+1 Current RTT: 37.0 Estimates RTT: 28.154018
+0 Current RTT: 15.0 Estimates RTT: 15.793062
+1 Current RTT: 34.0 Estimates RTT: 29.259766
+BW Path 1: sample 0.969 Mbps, estimate 0.934 Mbps
+0 Current RTT: 14.0 Estimates RTT: 15.69393
+1 Current RTT: 32.0 Estimates RTT: 29.852295
+1 Current RTT: 36.0 Estimates RTT: 30.120758
+0 Current RTT: 14.0 Estimates RTT: 15.482188
+BW Path 0: sample 2.445 Mbps, estimate 2.254 Mbps
+0 Current RTT: 20.0 Estimates RTT: 15.296915
+1 Current RTT: 37.0 Estimates RTT: 30.855663
+0 Resending Timestamp
+1 Resending Timestamp
+1 Current RTT: 19.0 Estimates RTT: 31.623705
+0 Current RTT: 17.0 Estimates RTT: 15.884801
+1 Current RTT: 32.0 Estimates RTT: 30.045742
+0 Current RTT: 25.0 Estimates RTT: 16.0242
+1 Current RTT: 30.0 Estimates RTT: 30.290024
+0 Current RTT: 15.0 Estimates RTT: 17.146175
+1 Current RTT: 26.0 Estimates RTT: 30.25377
+0 Current RTT: 16.0 Estimates RTT: 16.877903
+1 Current RTT: 52.0 Estimates RTT: 29.72205
+0 Current RTT: 55.0 Estimates RTT: 16.768166
+1 Current RTT: 64.0 Estimates RTT: 32.506794
+0 Current RTT: 27.0 Estimates RTT: 21.547146
+1 Current RTT: 36.0 Estimates RTT: 36.443443
+0 Current RTT: 26.0 Estimates RTT: 22.228752
+BW Path 0: sample 2.246 Mbps, estimate 2.253 Mbps
+1 Current RTT: 35.0 Estimates RTT: 36.388012
+0 Current RTT: 12.0 Estimates RTT: 22.700157
+1 Current RTT: 16.0 Estimates RTT: 36.214508
+0 Current RTT: 33.0 Estimates RTT: 21.362637
+1 Current RTT: 35.0 Estimates RTT: 33.687695
+0 Current RTT: 20.0 Estimates RTT: 22.817307
+1 Current RTT: 30.0 Estimates RTT: 33.85173
+0 Current RTT: 20.0 Estimates RTT: 22.465143
+BW Path 1: sample 0.945 Mbps, estimate 0.936 Mbps
+1 Current RTT: 31.0 Estimates RTT: 33.370262
+0 Current RTT: 24.0 Estimates RTT: 22.157
+1 Current RTT: 45.0 Estimates RTT: 33.07398
+0 Current RTT: 40.0 Estimates RTT: 22.387375
+1 Current RTT: 42.0 Estimates RTT: 34.56473
+0 Current RTT: 28.0 Estimates RTT: 24.588953
+1 Current RTT: 42.0 Estimates RTT: 35.49414
+0 Current RTT: 20.0 Estimates RTT: 25.015333
+1 Current RTT: 38.0 Estimates RTT: 36.307373
+0 Current RTT: 23.0 Estimates RTT: 24.388416
+BW Path 0: sample 2.278 Mbps, estimate 2.256 Mbps
+1 Current RTT: 41.0 Estimates RTT: 36.51895
+0 Current RTT: 35.0 Estimates RTT: 24.214865
+0 Current RTT: 20.0 Estimates RTT: 25.563007
+1 Current RTT: 27.0 Estimates RTT: 37.079082
+1 Current RTT: 19.0 Estimates RTT: 35.8192
+0 Current RTT: 17.0 Estimates RTT: 24.867632
+1 Current RTT: 38.0 Estimates RTT: 33.716797
+0 Current RTT: 28.0 Estimates RTT: 23.884178
+1 Current RTT: 30.0 Estimates RTT: 34.252197
+0 Current RTT: 17.0 Estimates RTT: 24.398655
+0 Current RTT: 11.0 Estimates RTT: 23.473824
+1 Current RTT: 26.0 Estimates RTT: 33.720673
+0 Current RTT: 47.0 Estimates RTT: 21.914597
+1 Current RTT: 61.0 Estimates RTT: 32.75559
+1 Current RTT: 30.0 Estimates RTT: 36.28614
+0 Current RTT: 20.0 Estimates RTT: 25.050272
+BW Path 0: sample 2.277 Mbps, estimate 2.259 Mbps
+1 Current RTT: 42.0 Estimates RTT: 35.500374
+0 Current RTT: 23.0 Estimates RTT: 24.418987
+BW Path 1: sample 0.997 Mbps, estimate 0.943 Mbps
+0 Current RTT: 25.0 Estimates RTT: 24.241613
+1 Current RTT: 39.0 Estimates RTT: 36.312828
+0 Current RTT: 20.0 Estimates RTT: 24.336412
+1 Current RTT: 28.0 Estimates RTT: 36.648724
+0 Current RTT: 58.0 Estimates RTT: 23.794361
+1 Current RTT: 71.0 Estimates RTT: 35.567635
+0 Current RTT: 12.0 Estimates RTT: 28.070066
+1 Current RTT: 21.0 Estimates RTT: 39.99668
+1 Current RTT: 47.0 Estimates RTT: 37.622097
+0 Current RTT: 44.0 Estimates RTT: 26.061308
+0 Current RTT: 25.0 Estimates RTT: 28.303644
+1 Current RTT: 36.0 Estimates RTT: 38.794334
+0 Current RTT: 17.0 Estimates RTT: 27.890688
+1 Current RTT: 21.0 Estimates RTT: 38.44504
+0 Current RTT: 21.0 Estimates RTT: 26.529352
+1 Current RTT: 40.0 Estimates RTT: 36.264412
+BW Path 0: sample 2.125 Mbps, estimate 2.242 Mbps
+0 Current RTT: 27.0 Estimates RTT: 25.838182
+1 Current RTT: 42.0 Estimates RTT: 36.73136
+0 Current RTT: 15.0 Estimates RTT: 25.98341
+1 Current RTT: 21.0 Estimates RTT: 37.389942
+1 Current RTT: 30.0 Estimates RTT: 35.341198
+0 Current RTT: 24.0 Estimates RTT: 24.610483
+0 Current RTT: 21.0 Estimates RTT: 24.534172
+1 Current RTT: 24.0 Estimates RTT: 34.673546
+0 Current RTT: 14.0 Estimates RTT: 24.0924
+1 Current RTT: 30.0 Estimates RTT: 33.33935
+1 Current RTT: 70.0 Estimates RTT: 32.921932
+0 Current RTT: 64.0 Estimates RTT: 22.830849
+1 Current RTT: 30.0 Estimates RTT: 37.55669
+0 Current RTT: 16.0 Estimates RTT: 27.976994
+BW Path 1: sample 0.910 Mbps, estimate 0.939 Mbps
+0 Current RTT: 19.0 Estimates RTT: 26.47987
+1 Current RTT: 33.0 Estimates RTT: 36.612103
+1 Current RTT: 37.0 Estimates RTT: 36.16059
+0 Current RTT: 41.0 Estimates RTT: 25.544886
+BW Path 0: sample 2.253 Mbps, estimate 2.243 Mbps
+1 Current RTT: 24.0 Estimates RTT: 36.26552
+0 Current RTT: 21.0 Estimates RTT: 27.476774
+1 Current RTT: 46.0 Estimates RTT: 34.73233
+0 Current RTT: 22.0 Estimates RTT: 26.667177
+1 Current RTT: 42.0 Estimates RTT: 36.14079
+0 Current RTT: 17.0 Estimates RTT: 26.08378
+1 Current RTT: 39.0 Estimates RTT: 36.87319
+0 Current RTT: 23.0 Estimates RTT: 24.948307
+1 Current RTT: 46.0 Estimates RTT: 37.13904
+0 Current RTT: 25.0 Estimates RTT: 24.70477
+0 Current RTT: 18.0 Estimates RTT: 24.741673
+1 Current RTT: 36.0 Estimates RTT: 38.246662
+0 Current RTT: 88.0 Estimates RTT: 23.898964
+1 Current RTT: 98.0 Estimates RTT: 37.965828
+1 Current RTT: 39.0 Estimates RTT: 45.4701
+0 Current RTT: 21.0 Estimates RTT: 31.911594
+0 Current RTT: 73.0 Estimates RTT: 30.547646
+1 Current RTT: 93.0 Estimates RTT: 44.66134
+BW Path 0: sample 2.226 Mbps, estimate 2.241 Mbps
+1 Current RTT: 32.0 Estimates RTT: 50.70367
+0 Current RTT: 23.0 Estimates RTT: 35.85419
+1 Current RTT: 44.0 Estimates RTT: 48.36571
+0 Current RTT: 35.0 Estimates RTT: 34.247417
+1 Current RTT: 25.0 Estimates RTT: 47.819996
+0 Current RTT: 17.0 Estimates RTT: 34.34149
+BW Path 1: sample 0.943 Mbps, estimate 0.940 Mbps
+1 Current RTT: 27.0 Estimates RTT: 44.967495
+0 Current RTT: 29.0 Estimates RTT: 32.173805
+1 Current RTT: 26.0 Estimates RTT: 42.721558
+0 Current RTT: 11.0 Estimates RTT: 31.77708
+1 Current RTT: 29.0 Estimates RTT: 40.631363
+0 Current RTT: 18.0 Estimates RTT: 29.179945
+1 Current RTT: 37.0 Estimates RTT: 39.177444
+0 Current RTT: 23.0 Estimates RTT: 27.782452
+1 Current RTT: 47.0 Estimates RTT: 38.905266
+0 Current RTT: 36.0 Estimates RTT: 27.184645
+BW Path 0: sample 2.445 Mbps, estimate 2.267 Mbps
+1 Current RTT: 51.0 Estimates RTT: 39.917107
+0 Current RTT: 21.0 Estimates RTT: 28.286564
+1 Current RTT: 30.0 Estimates RTT: 41.302467
+0 Current RTT: 20.0 Estimates RTT: 27.375744
+1 Current RTT: 24.0 Estimates RTT: 39.88966
+0 Current RTT: 21.0 Estimates RTT: 26.453775
+1 Current RTT: 35.0 Estimates RTT: 37.903454
+0 Current RTT: 20.0 Estimates RTT: 25.772053
+1 Current RTT: 26.0 Estimates RTT: 37.540524
+0 Current RTT: 13.0 Estimates RTT: 25.050547
+0 Current RTT: 17.0 Estimates RTT: 23.544228
+1 Current RTT: 31.0 Estimates RTT: 36.097958
+0 Current RTT: 12.0 Estimates RTT: 22.7262
+1 Current RTT: 26.0 Estimates RTT: 35.460712
+0 Current RTT: 12.0 Estimates RTT: 21.385426
+1 Current RTT: 19.0 Estimates RTT: 34.278122
+0 Current RTT: 16.0 Estimates RTT: 20.212248
+1 Current RTT: 23.0 Estimates RTT: 32.368355
+0 Current RTT: 22.0 Estimates RTT: 19.685717
+1 Current RTT: 36.0 Estimates RTT: 31.197311
+BW Path 0: sample 2.184 Mbps, estimate 2.256 Mbps
+BW Path 1: sample 0.969 Mbps, estimate 0.943 Mbps
+0 Current RTT: 13.0 Estimates RTT: 19.975002
+1 Current RTT: 26.0 Estimates RTT: 31.797647
+0 Current RTT: 21.0 Estimates RTT: 19.103127
+1 Current RTT: 31.0 Estimates RTT: 31.07294
+1 Current RTT: 19.0 Estimates RTT: 31.063824
+0 Current RTT: 16.0 Estimates RTT: 19.340237
+1 Current RTT: 17.0 Estimates RTT: 29.555845
+0 Current RTT: 16.0 Estimates RTT: 18.922707
+0 Current RTT: 16.0 Estimates RTT: 18.55737
+1 Current RTT: 28.0 Estimates RTT: 27.986364
+1 Current RTT: 23.0 Estimates RTT: 27.98807
+0 Current RTT: 15.0 Estimates RTT: 18.237698
+0 Current RTT: 25.0 Estimates RTT: 17.832985
+1 Current RTT: 29.0 Estimates RTT: 27.364561
+0 Current RTT: 16.0 Estimates RTT: 18.728863
+1 Current RTT: 28.0 Estimates RTT: 27.56899
+1 Current RTT: 42.0 Estimates RTT: 27.622868
+0 Current RTT: 13.0 Estimates RTT: 18.387754
+BW Path 0: sample 2.269 Mbps, estimate 2.258 Mbps
+1 Current RTT: 29.0 Estimates RTT: 29.42001
+0 Current RTT: 20.0 Estimates RTT: 17.714285
+1 Current RTT: 23.0 Estimates RTT: 29.367508
+0 Current RTT: 22.0 Estimates RTT: 18.0
+1 Current RTT: 24.0 Estimates RTT: 28.57157
+0 Current RTT: 20.0 Estimates RTT: 18.5
+1 Current RTT: 32.0 Estimates RTT: 28.000124
+0 Current RTT: 19.0 Estimates RTT: 18.6875
+1 Current RTT: 30.0 Estimates RTT: 28.500109
+0 Current RTT: 14.0 Estimates RTT: 18.726562
+1 Current RTT: 51.0 Estimates RTT: 28.687595
+0 Current RTT: 54.0 Estimates RTT: 18.135742
+BW Path 1: sample 0.929 Mbps, estimate 0.941 Mbps
+1 Current RTT: 38.0 Estimates RTT: 31.476646
+0 Current RTT: 30.0 Estimates RTT: 22.618774
+1 Current RTT: 30.0 Estimates RTT: 32.292065
+0 Current RTT: 16.0 Estimates RTT: 23.541428
+1 Current RTT: 59.0 Estimates RTT: 32.005554
+0 Current RTT: 49.0 Estimates RTT: 22.59875
+BW Path 0: sample 2.065 Mbps, estimate 2.234 Mbps
+1 Current RTT: 37.0 Estimates RTT: 35.37986
+0 Current RTT: 42.0 Estimates RTT: 25.898905
+1 Current RTT: 37.0 Estimates RTT: 35.58238
+0 Current RTT: 51.0 Estimates RTT: 27.911541
+1 Current RTT: 41.0 Estimates RTT: 35.759583
+0 Current RTT: 19.0 Estimates RTT: 30.797598
+1 Current RTT: 47.0 Estimates RTT: 36.414635
+0 Current RTT: 12.0 Estimates RTT: 29.322899
+1 Current RTT: 44.0 Estimates RTT: 37.737804
+0 Current RTT: 31.0 Estimates RTT: 27.157536
+1 Current RTT: 33.0 Estimates RTT: 38.52058
+0 Current RTT: 22.0 Estimates RTT: 27.637844
+1 Current RTT: 33.0 Estimates RTT: 37.83051
+0 Current RTT: 28.0 Estimates RTT: 26.933113
+1 Current RTT: 35.0 Estimates RTT: 37.226696
+0 Current RTT: 23.0 Estimates RTT: 27.066475
+1 Current RTT: 40.0 Estimates RTT: 36.94836
+BW Path 0: sample 2.167 Mbps, estimate 2.225 Mbps
+0 Current RTT: 19.0 Estimates RTT: 26.558167
+1 Current RTT: 55.0 Estimates RTT: 37.329815
+0 Current RTT: 26.0 Estimates RTT: 25.613396
+1 Current RTT: 34.0 Estimates RTT: 39.53859
+0 Current RTT: 16.0 Estimates RTT: 25.66172
+1 Current RTT: 20.0 Estimates RTT: 38.846268
+0 Current RTT: 26.0 Estimates RTT: 24.454006
+1 Current RTT: 29.0 Estimates RTT: 36.490486
+0 Current RTT: 16.0 Estimates RTT: 24.647255
+BW Path 1: sample 0.850 Mbps, estimate 0.930 Mbps
+1 Current RTT: 25.0 Estimates RTT: 35.554176
+0 Current RTT: 13.0 Estimates RTT: 23.566349
+1 Current RTT: 29.0 Estimates RTT: 34.234905
+0 Current RTT: 20.0 Estimates RTT: 22.245556
+1 Current RTT: 42.0 Estimates RTT: 33.580544
+0 Current RTT: 26.0 Estimates RTT: 21.96486
+0 Current RTT: 24.0 Estimates RTT: 22.469254
+1 Current RTT: 47.0 Estimates RTT: 34.632977
+0 Current RTT: 21.0 Estimates RTT: 22.660597
+BW Path 0: sample 2.238 Mbps, estimate 2.227 Mbps
+1 Current RTT: 43.0 Estimates RTT: 36.178856
+0 Current RTT: 18.0 Estimates RTT: 22.453022
+1 Current RTT: 36.0 Estimates RTT: 37.031498
+0 Current RTT: 9.0 Estimates RTT: 21.896395
+1 Current RTT: 41.0 Estimates RTT: 36.90256
+0 Current RTT: 23.0 Estimates RTT: 20.284346
+1 Current RTT: 36.0 Estimates RTT: 37.41474
+0 Current RTT: 21.0 Estimates RTT: 20.623802
+1 Current RTT: 33.0 Estimates RTT: 37.2379
+1 Current RTT: 38.0 Estimates RTT: 36.70816
+0 Current RTT: 21.0 Estimates RTT: 20.670826
+0 Current RTT: 20.0 Estimates RTT: 20.711973
+1 Current RTT: 40.0 Estimates RTT: 36.86964
+1 Current RTT: 52.0 Estimates RTT: 37.260937
+0 Current RTT: 25.0 Estimates RTT: 20.622976
+1 Current RTT: 23.0 Estimates RTT: 39.10332
+0 Current RTT: 21.0 Estimates RTT: 21.170105
+0 Current RTT: 4.0 Estimates RTT: 21.148842
+BW Path 0: sample 2.237 Mbps, estimate 2.228 Mbps
+1 Current RTT: 29.0 Estimates RTT: 37.090405
+0 Current RTT: 25.0 Estimates RTT: 19.005238
+BW Path 1: sample 0.956 Mbps, estimate 0.933 Mbps
+1 Current RTT: 22.0 Estimates RTT: 36.079105
+0 Current RTT: 12.0 Estimates RTT: 19.754583
+1 Current RTT: 25.0 Estimates RTT: 34.319218
+0 Current RTT: 13.0 Estimates RTT: 18.785261
+1 Current RTT: 38.0 Estimates RTT: 33.154316
+0 Current RTT: 14.0 Estimates RTT: 18.062103
+1 Current RTT: 11.0 Estimates RTT: 33.760025
+0 Current RTT: 14.0 Estimates RTT: 17.55434
+1 Current RTT: 25.0 Estimates RTT: 30.915022
+0 Current RTT: 20.0 Estimates RTT: 17.110048
+1 Current RTT: 42.0 Estimates RTT: 30.175644
+0 Current RTT: 35.0 Estimates RTT: 17.471292
+1 Current RTT: 28.0 Estimates RTT: 31.653688
+0 Current RTT: 15.0 Estimates RTT: 19.66238
+1 Current RTT: 34.0 Estimates RTT: 31.196978
+0 Current RTT: 14.0 Estimates RTT: 19.079582
+1 Current RTT: 33.0 Estimates RTT: 31.547356
+BW Path 0: sample 2.228 Mbps, estimate 2.228 Mbps
+0 Current RTT: 20.0 Estimates RTT: 18.444633
+1 Current RTT: 24.0 Estimates RTT: 31.728935
+1 Current RTT: 46.0 Estimates RTT: 30.762817
+0 Current RTT: 16.0 Estimates RTT: 18.639053
+1 Current RTT: 33.0 Estimates RTT: 32.667465
+0 Current RTT: 16.0 Estimates RTT: 18.309172
+1 Current RTT: 29.0 Estimates RTT: 32.70903
+0 Current RTT: 15.0 Estimates RTT: 18.020525
+1 Current RTT: 28.0 Estimates RTT: 32.2454
+0 Current RTT: 19.0 Estimates RTT: 17.64296
+1 Current RTT: 29.0 Estimates RTT: 31.714725
+0 Current RTT: 19.0 Estimates RTT: 17.81259
+BW Path 1: sample 0.973 Mbps, estimate 0.938 Mbps
+0 Current RTT: 18.0 Estimates RTT: 17.961016
+1 Current RTT: 38.0 Estimates RTT: 31.375385
+1 Resending Timestamp
+0 Resending Timestamp
+BW Path 0: Connection reset
+1 Resending Timestamp
+0 Resending Timestamp
+Exception in thread "main" java.io.IOException: Data-path worker failed
+	at Server.await(Main.java:376)
+	at Server.sendFile(Main.java:416)
+	at Main.main(Main.java:458)
+Caused by: java.net.SocketException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:65)
+	at java.base/sun.nio.ch.NioSocketImpl.tryWrite(NioSocketImpl.java:404)
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:421)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:454)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:821)
+	at java.base/java.net.Socket$SocketOutputStream.implWrite(Socket.java:1097)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1087)
+	at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:123)
+	at java.base/java.io.BufferedOutputStream.flush(BufferedOutputStream.java:203)
+	at java.base/java.io.DataOutputStream.flush(DataOutputStream.java:144)
+	at Server.sendChunks(Main.java:369)
+	at Server.lambda$sendFile$0(Main.java:413)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:330)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1527)

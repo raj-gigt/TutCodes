@@ -1,0 +1,21 @@
+{
+  "status": "failed before completion",
+  "logged_windows": 126,
+  "logged_chunk_assignments": 32256,
+  "total_file_chunks": 37064,
+  "path0_assigned": 22780,
+  "path1_assigned": 9476,
+  "fallback_windows": 0,
+  "all_logged_allocations_match_formula": true,
+  "caveat": "Assignments are logged before writes; final window may be incomplete. Counts are not delivered-chunk counts.",
+  "path0_bandwidth": {
+    "samples": 61,
+    "mean_mbps": 2.2451490850813114,
+    "final_ewma_mbps": 2.228176900136
+  },
+  "path1_bandwidth": {
+    "samples": 37,
+    "mean_mbps": 0.9371765586871351,
+    "final_ewma_mbps": 0.938310877264
+  }
+}

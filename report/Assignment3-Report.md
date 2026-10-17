@@ -254,6 +254,15 @@ the bandwidth-ratio allocation.
 
 [Validation record](../results/q3/validation.txt)
 
+### First two-machine attempt
+
+With `bwratio 4 2 10 4`, all 126 logged windows followed the ratio formula, with
+no fallback. The connection reset before completion; the server then reported
+`Broken pipe`. The log contains 32,256 chunk assignments out of 37,064, but the
+last window may be incomplete. This attempt is not a completed-download result.
+
+[Failed-run logs](../results/q3/lan-run-20261017-151847/README.md)
+
 ## Q4-Q6
 
 To be added after implementation and experiments.
