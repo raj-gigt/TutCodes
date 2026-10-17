@@ -170,7 +170,7 @@ public Client(String serverIP, int portToConnect, int id, Status status) throws 
         }
     }
 
-    @Override
+    @Override  
     public void run() {
         try {
             receiveFile();
