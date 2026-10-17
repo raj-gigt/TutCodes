@@ -76,7 +76,7 @@ Client elapsed time was **139.648287 seconds**, including warmup.
 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
 ```
 
-The hash matches the previously verified sample source. Comparison with this
-Q4 run's server source and confirmation of scheduler allocations await server records.
+The client hash and file size match this Q4 run's server source. All 145 scheduler
+allocations were checked against the completion-time equation.
 - q4/lan-run-20261017-153738/: completed server run and per-window equation checks;
-  client verification pending.
+  client completion, elapsed time and matching source/output hashes verified.

@@ -17,4 +17,8 @@ extra chunks to path 0. This is a formula comparison, not another measured downl
 - run.json: configuration, source hash, commit, timestamps and exit status.
 - summary.json: allocation checks and measurement summaries.
 
-Client completion/hash confirmation is pending for this run.
+The [client record](../client-verification.txt) confirms successful reconstruction
+of 53,186,840 bytes. Its SHA-256 matches this run's source hash. Client elapsed
+time was 139.648287 seconds, from receiver start through output flush, including warmup.
+The client prints probe EOF messages after completion when the server closes the
+control channels; its exit code is 0.

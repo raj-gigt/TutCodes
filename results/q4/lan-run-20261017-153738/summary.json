@@ -1,5 +1,5 @@
 {
-  "status": "server completed; client verification pending",
+  "status": "server and client completed; file integrity verified",
   "windows": 145,
   "total_chunks": 37064,
   "path0_chunks": 26075,
@@ -22,5 +22,8 @@
     "sample_count": 43,
     "mean_sample_mbps": 0.9370662128485582,
     "final_ewma_mbps": 0.938048127616
-  }
+  },
+  "client_elapsed_seconds": 139.648287,
+  "client_timing_boundary": "Receiver start through verified output flush, including server warmup.",
+  "file_integrity_verified": true
 }

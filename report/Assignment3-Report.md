@@ -335,7 +335,14 @@ All 145 windows minimized the predicted completion-time difference over integer
 splits, with no fallback. Compared with the ratio formula on the same snapshots,
 55 windows changed allocation, giving path 0 a net 55 extra chunks.
 Mean probe rates were 2.213 and 0.937 Mbps. Sender duration excludes warmup and
-ends at the final socket writes. Client completion/hash confirmation is pending.
+ends at the final socket writes. The client completed in **139.648 seconds**, including
+warmup, and its 53,186,840-byte output matched this run's server SHA-256:
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+```
+
+[Client verification](../results/q4/client-verification.txt)
 This single run is insufficient to rank schedulers; repeated comparisons follow in Q5.
 
 [Run logs and measurements](../results/q4/lan-run-20261017-153738/README.md)

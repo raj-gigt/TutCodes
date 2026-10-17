@@ -25,4 +25,5 @@ SHA-256: 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
 Client elapsed seconds: 139.648287
 Timing: receiver start through output flush, including warmup.
 Hash matches the previously verified sample source.
-Q4 server-side source comparison and scheduler allocations: pending server records.
+Server verification: SHA-256 and size match lan-run-20261017-153738/run.json.
+All 145 scheduler allocations minimize the predicted completion-time difference.

@@ -17,12 +17,16 @@
   "ewma_alpha": 0.125,
   "file_size_bytes": 53186840,
   "source_sha256": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
-  "status": "server finished",
-  "client_hash": null,
-  "client_download_duration": null,
+  "status": "server and client completed; file integrity verified",
+  "client_hash": "653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc",
+  "client_download_duration": 139.648287,
   "ended_at": "2026-10-17T15:40:54.675919+05:30",
   "server_exit_code": 0,
   "sender_seconds": 136.883317,
   "path0_chunks": 26075,
-  "path1_chunks": 10989
+  "path1_chunks": 10989,
+  "client_exit_code": 0,
+  "client_timing_boundary": "Receiver start through verified output flush, including server warmup.",
+  "file_integrity_verified": true,
+  "client_hash_evidence": "results/q4/client-verification.txt from remote commit 73b15b4"
 }
