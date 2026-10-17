@@ -1,6 +1,6 @@
 # Multipath: in-order delivery, probes and interchangeable schedulers
 
-The server supports minRTT and bandwidth-ratio schedulers. Every file chunk gets a global
+The server supports minRTT, bandwidth-ratio and balanced-completion schedulers. Every file chunk gets a global
 sequence number before being sent on either TCP path. Both client receiver threads
 share a synchronized `Reassembler`, which buffers later chunks and writes only
 consecutive chunks to one output stream. One path ending does not complete the file.
@@ -89,7 +89,7 @@ The client overwrites its output ZIP each run. No cleanup script is needed.
 The lag timestamps still depend on clock synchronization between machines; they
 are not RTT measurements. Bandwidth probes run independently of the minRTT data
 scheduler by default. Q3 adds bandwidth-ratio scheduling and Gaussian data-path
-delays; Q4 balanced completion is not implemented yet.
+delays; Q4 adds balanced subflow completion.
 
 ## Tests
 
@@ -189,3 +189,30 @@ python3 MultiPath/tests/test_q1.py --scheduler bwratio --delays 4 2 10 4
 
 The data frame format remains compatible with Q1/Q2 clients. Archive Scheduler.csv
 and the bandwidth CSVs after each run; subsequent runs replace them.
+
+## Q4 balanced completion
+
+```sh
+# From MultiPath/Server, after compiling Main.java:
+java -cp build Main balanced 4 2 10 4
+```
+
+BalancedCompletionScheduler implements the existing Scheduler interface. It solves
+RTT0/2 + n*L/BW0 = RTT1/2 + (N-n)*L/BW1 for each window, where L=1435 bytes,
+BW is bytes/second and RTT is seconds (converted from measured milliseconds).
+It rounds to the nearest integer and clamps to [0,N]. Equal RTTs give the Q3 ratio.
+The implementation evaluates an algebraically equivalent scaled form to avoid
+multiplying two potentially large bandwidth values.
+
+The last partial chunk is modeled as full size when choosing its window's split.
+Warmup, fresh-estimate checks, concurrent workers, delays and window barriers are
+shared with Q3. Invalid RTTs also trigger the recorded minRTT fallback. Scheduler.csv
+uses mode balanced on valid windows; the wire format and client command are unchanged.
+
+```sh
+# From the repository root:
+python3 MultiPath/tests/test_q1.py --scheduler balanced --delays 4 2 10 4
+```
+
+The Java SchedulerTest additionally checks balanced allocation against every possible
+integer split for 1000 seeded cases. See results/q4/validation.txt for recorded checks.

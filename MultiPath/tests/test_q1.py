@@ -27,7 +27,7 @@ def digest(data):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--scheduler', default='minrtt', choices=['minrtt', 'bwratio'])
+    parser.add_argument('--scheduler', default='minrtt', choices=['minrtt', 'bwratio', 'balanced'])
     parser.add_argument('--delays', nargs=4, default=['0', '0', '0', '0'])
     options = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='multipath-q1-') as directory:
@@ -111,6 +111,17 @@ def main():
                             assert row['mode'] == 'bwratio', row
                             b0, b1 = float(row['bw0_Bps']), float(row['bw1_Bps'])
                             assert first == math.floor(n * b0 / (b0 + b1) + .5), row
+                    if options.scheduler == 'balanced':
+                        for row in windows:
+                            assert row['mode'] == 'balanced', row
+                            n = int(row['chunks'])
+                            chosen = int(row['path0_chunks'])
+                            b0, b1 = float(row['bw0_Bps']), float(row['bw1_Bps'])
+                            r0, r1 = float(row['rtt0_ms']), float(row['rtt1_ms'])
+                            def residual(split):
+                                return abs(r0 / 2000 + split * 1435 / b0
+                                           - r1 / 2000 - (n - split) * 1435 / b1)
+                            assert residual(chosen) <= min(residual(k) for k in range(n + 1)) + 1e-7, row
                     for path in (0, 1):
                         with (server_dir / f'Bandwidth-Path{path}.csv').open() as probe_log:
                             samples = list(csv.DictReader(probe_log))

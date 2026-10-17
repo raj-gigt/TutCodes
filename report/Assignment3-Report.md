@@ -279,6 +279,48 @@ completed successfully and its 53,186,840-byte output matched the server SHA-256
 
 [Run logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
 
-## Q4-Q6
+## Q4. Balanced subflow completion scheduler
 
-To be added after implementation and experiments.
+I added `BalancedCompletionScheduler` using the same strategy interface, windows,
+workers and delay settings as Q3:
+
+```sh
+java -cp build Main balanced 4 2 10 4
+```
+
+For a window of N chunks, the estimated completion times are:
+
+```text
+T0 = RTT0/2 + n × L/BW0
+T1 = RTT1/2 + (N − n) × L/BW1
+
+n = (N × L/BW1 + (RTT1 − RTT0)/2) / (L/BW0 + L/BW1)
+```
+
+Here L = 1435 bytes, bandwidth is in bytes/second, and RTT is converted to seconds.
+The result is rounded to the nearest chunk and clamped to [0, N]. The last partial
+chunk is approximated as a full chunk for allocation, but only its actual bytes
+are transmitted.
+
+With equal RTTs this reduces to the bandwidth-ratio scheduler. A larger RTT on one
+path shifts work to the other. For example, with 100 chunks, equal rates of 10
+chunks/second, and RTTs of 0 and 2 seconds, the split is 55:45.
+
+Each window refreshes the RTT/BW snapshot. Missing or stale bandwidth, or an invalid
+RTT, triggers the logged minRTT fallback. Data and bandwidth probes keep Q3's same
+per-path delay distributions. Window barriers and the service-delay simulation
+remain approximations, so equal predicted times do not guarantee equal actual times.
+
+### Validation
+
+Tests check unit conversion, RTT effects, clamping, fallback and reduction to the
+ratio split when RTTs match. For 1,000 seeded cases, every integer allocation was
+checked to confirm the selected split minimizes the predicted completion-time
+difference. File-transfer tests check hashes and verify each logged window against
+an independent enumeration of the possible splits.
+
+[Validation record](../results/q4/validation.txt)
+
+## Q5-Q6
+
+To be added after experiments.

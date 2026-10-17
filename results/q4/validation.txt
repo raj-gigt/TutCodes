@@ -1,0 +1,20 @@
+Q4 validation
+
+javac -d /tmp/multipath-q4-tests MultiPath/Server/Main.java MultiPath/tests/SchedulerTest.java
+java -cp /tmp/multipath-q4-tests SchedulerTest
+PASS balanced units, latency shift, clamping, fallback, equal-RTT reduction and 1000 exhaustive split checks
+PASS strategy allocation, updates, fallback, rounding, exact coverage and Gaussian delays
+
+python3 MultiPath/tests/test_q1.py --scheduler balanced --delays 4 2 10 4
+PASS empty
+PASS exact-chunks
+PASS partial-final-chunk
+PASS reordered-fragmented-early-eof
+PASS reject-truncated-payload
+Successful transfers matched source SHA-256; each real-server window was checked
+against all possible integer splits to minimize predicted completion-time difference.
+
+python3 MultiPath/tests/test_q1.py --scheduler bwratio --delays 4 2 10 4
+PASS all five Q3 regression cases
+
+Tests used loopback and temporary files; they are correctness checks, not LAN benchmarks.

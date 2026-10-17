@@ -59,3 +59,9 @@ confirms file integrity, not client download time.
 - q3/lan-run-20261017-151847/: interrupted first attempt; preserved as a failed run.
 - q3/lan-run-20261017-152422/: retry completed on the server; all allocations checked.
   Client completion, file size, and SHA-256 are verified for this retry.
+
+## Q4 evidence
+
+- q4/validation.txt: balanced-completion equation and transfer checks.
+- Q4 LAN runs archive bandwidth CSVs, Scheduler.csv, server console, parameters,
+  source hash and allocation summaries. Client verification is recorded per run.

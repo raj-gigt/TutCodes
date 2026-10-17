@@ -278,6 +278,9 @@ class PathMetrics {
 interface Scheduler {
     String name();
     default boolean requiresBandwidth() { return false; }
+    default boolean hasUsableMetrics(PathMetrics first, PathMetrics second) {
+        return !requiresBandwidth() || (first.hasBandwidth() && second.hasBandwidth());
+    }
     // Return the number of chunks assigned to path 0; the rest go to path 1.
     int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second);
 }
@@ -293,7 +296,7 @@ class BandwidthRatioScheduler implements Scheduler {
     public String name() { return "bwratio"; }
     public boolean requiresBandwidth() { return true; }
     public int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second) {
-        if (!first.hasBandwidth() || !second.hasBandwidth()) {
+        if (!hasUsableMetrics(first, second)) {
             return new MinRttScheduler().chunksOnFirstPath(count, first, second);
         }
         // Scaling avoids overflow when adding two large estimates.
@@ -301,6 +304,36 @@ class BandwidthRatioScheduler implements Scheduler {
         double share = (first.bandwidth / scale)
                 / (first.bandwidth / scale + second.bandwidth / scale);
         return Math.max(0, Math.min(count, (int) Math.round(count * share)));
+    }
+}
+
+class BalancedCompletionScheduler implements Scheduler {
+    public String name() { return "balanced"; }
+    public boolean requiresBandwidth() { return true; }
+    public boolean hasUsableMetrics(PathMetrics first, PathMetrics second) {
+        return Scheduler.super.hasUsableMetrics(first, second)
+                && Double.isFinite(first.rttMs) && first.rttMs >= 0
+                && Double.isFinite(second.rttMs) && second.rttMs >= 0;
+    }
+
+    public int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second) {
+        if (count <= 0) return 0;
+        if (!hasUsableMetrics(first, second)) {
+            return new MinRttScheduler().chunksOnFirstPath(count, first, second);
+        }
+        // Solve RTT0/2 + n*L/BW0 = RTT1/2 + (N-n)*L/BW1.
+        // BW is bytes/s, L is bytes/chunk, and RTT is converted from ms to s.
+        double largest = Math.max(first.bandwidth, second.bandwidth);
+        double smallest = Math.min(first.bandwidth, second.bandwidth);
+        double w0 = first.bandwidth / largest;
+        double w1 = second.bandwidth / largest;
+        double share = w0 / (w0 + w1);
+        // BW0*BW1/(BW0+BW1), avoiding overflow in the product/sum.
+        double harmonicRate = smallest / (1 + smallest / largest);
+        double latencyDifferenceSeconds = (second.rttMs - first.rttMs) / 2000.0;
+        double n = count * share
+                + latencyDifferenceSeconds * (harmonicRate / Server.CHUNK_BYTES);
+        return (int) Math.round(Math.max(0, Math.min(count, n)));
     }
 }
 
@@ -403,7 +436,7 @@ class Server {
                 PathMetrics m0 = metrics(0), m1 = metrics(1);
                 int firstCount = scheduler.chunksOnFirstPath(count, m0, m1);
                 String mode = scheduler.name();
-                if (scheduler.requiresBandwidth() && (!m0.hasBandwidth() || !m1.hasBandwidth()))
+                if (!scheduler.hasUsableMetrics(m0, m1))
                     mode = "minrtt-fallback";
                 log.write(String.format(Locale.ROOT, "%d,%d,%d,%.6f,%.6f,%.6f,%.6f,%d,%d,%s%n",
                         window++, start, count, m0.bandwidth, m1.bandwidth,
@@ -431,13 +464,14 @@ class Server {
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length != 0 && args.length != 1 && args.length != 5) {
-            throw new IllegalArgumentException("Usage: Main [minrtt|bwratio [mean0 std0 mean1 std1]]");
+            throw new IllegalArgumentException("Usage: Main [minrtt|bwratio|balanced [mean0 std0 mean1 std1]]");
         }
         String name = args.length == 0 ? "minrtt" : args[0];
         Scheduler scheduler;
         switch (name) {
             case "minrtt": scheduler = new MinRttScheduler(); break;
             case "bwratio": scheduler = new BandwidthRatioScheduler(); break;
+            case "balanced": scheduler = new BalancedCompletionScheduler(); break;
             default: throw new IllegalArgumentException("Unknown scheduler: " + name);
         }
         double mean0 = args.length == 5 ? Double.parseDouble(args[1]) : 0;
