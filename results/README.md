@@ -32,3 +32,5 @@ measurements. CSV rates are bytes/second; console rates are decimal Mbps.
 
 - q2/lan-run-20261017-145341/: captured two-machine run, including server console,
   raw per-path CSVs, parameters, source hash, and calculated summaries.
+
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
