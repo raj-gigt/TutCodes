@@ -2,8 +2,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.*;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
+import java.io.DataOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Random;
 
 class AddDelay{
@@ -24,7 +25,7 @@ class AddDelay{
 
 class Status{
     // Class to log status of current data transfer
-    public boolean status;
+    public volatile boolean status;
     public Status(boolean status){
         this.status = status;
     }
@@ -39,7 +40,7 @@ class RTTHandler implements Runnable {
     int id;
     int bufSize = 20;
     int timestampSendingInternal;
-    float rttEstimate = 0.0F;
+    volatile float rttEstimate = 0.0F;
     Status status;
     private AddDelay delayer;
 
@@ -58,60 +59,61 @@ class RTTHandler implements Runnable {
 
     public void connect() throws SocketException, UnknownHostException, InterruptedException {
         // Receive the "Hi" message from the client to get its IP and Port
-        DatagramSocket socket = new DatagramSocket(this.serverPort);
+        try (DatagramSocket socket = new DatagramSocket(this.serverPort)) {
 
-        byte[] buf = new byte[this.bufSize];
-        DatagramPacket dpSend;
-        DatagramPacket dpReceive;
+            byte[] buf = new byte[this.bufSize];
+            DatagramPacket dpSend;
+            DatagramPacket dpReceive;
 
-        // Getting Hi message
-        try {
-            dpReceive = new DatagramPacket(buf, buf.length);
-            socket.receive(dpReceive);
-            System.out.println(this.id + " Hi Received");
-
-            // Get client IP and Port
-            clientIP = dpReceive.getAddress();
-            clientPort = dpReceive.getPort();
-        } catch (
-                IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        while (true) {
-            // Sending timestamps
-            long sentTimestamp = System.currentTimeMillis();
-            long recvTimestamp;
-            buf = String.valueOf(sentTimestamp).getBytes();
-            byte[] recvBuf = new byte[buf.length];
+            // Getting Hi message
             try {
-                dpSend = new DatagramPacket(buf, buf.length, this.clientIP, this.clientPort);
-                socket.send(dpSend);
-
-                dpReceive = new DatagramPacket(recvBuf, recvBuf.length);
-                socket.setSoTimeout(this.timeout);
+                dpReceive = new DatagramPacket(buf, buf.length);
                 socket.receive(dpReceive);
-                recvTimestamp = Long.parseLong(new String(recvBuf));
-                long currentTimeStamp = System.currentTimeMillis();
-                float rtt = (currentTimeStamp - recvTimestamp) + Float.valueOf(delayer.addDelay());
-                if (rtt == 0){
-                    rtt = 1.0F;
-                }
-                System.out.println(this.id + " Current RTT: " + rtt + " Estimates RTT: " + this.rttEstimate); //+ " " + recvTimestamp + " " + sentTimestamp);
+                System.out.println(this.id + " Hi Received");
 
-                this.updateEstimate(rtt);
-                if (this.status.status) {
-                    System.out.println("Stopping Control Channels");
-                    break;
-                }
-
-                // Sleep before next send
-                Thread.sleep(this.timestampSendingInternal);
-
-            } catch (SocketTimeoutException e) {
-                System.out.println(this.id + " Resending Timestamp");
-            } catch (IOException e) {
+                // Get client IP and Port
+                clientIP = dpReceive.getAddress();
+                clientPort = dpReceive.getPort();
+            } catch (
+                    IOException e) {
                 throw new RuntimeException(e);
+            }
+
+            while (!this.status.status) {
+                // Sending timestamps
+                long sentTimestamp = System.currentTimeMillis();
+                long recvTimestamp;
+                buf = String.valueOf(sentTimestamp).getBytes();
+                byte[] recvBuf = new byte[buf.length];
+                try {
+                    dpSend = new DatagramPacket(buf, buf.length, this.clientIP, this.clientPort);
+                    socket.send(dpSend);
+
+                    dpReceive = new DatagramPacket(recvBuf, recvBuf.length);
+                    socket.setSoTimeout(this.timeout);
+                    socket.receive(dpReceive);
+                    recvTimestamp = Long.parseLong(new String(recvBuf));
+                    long currentTimeStamp = System.currentTimeMillis();
+                    float rtt = (currentTimeStamp - recvTimestamp) + Float.valueOf(delayer.addDelay());
+                    if (rtt == 0){
+                        rtt = 1.0F;
+                    }
+                    System.out.println(this.id + " Current RTT: " + rtt + " Estimates RTT: " + this.rttEstimate); //+ " " + recvTimestamp + " " + sentTimestamp);
+
+                    this.updateEstimate(rtt);
+                    if (this.status.status) {
+                        System.out.println("Stopping Control Channels");
+                        break;
+                    }
+
+                    // Sleep before next send
+                    Thread.sleep(this.timestampSendingInternal);
+
+                } catch (SocketTimeoutException e) {
+                    System.out.println(this.id + " Resending Timestamp");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -154,77 +156,43 @@ class Server{
     }
 
     public byte[] readFile(String filename) throws IOException {
-        /*
-        This function reads the whole video file,
-        and returns the content as a byte array.
-        */
-        File file = new File(filename);
-        if (file.exists()) {
-            FileInputStream fl = new FileInputStream(file);
-            byte[] arr = new byte[(int) file.length()];
-            int res = fl.read(arr);
-            if (res < 0) {
-                System.out.println("Error in reading file");
-                fl.close();
-                return null;
-            }
-            fl.close();
-            return arr;
-        } else {
-            return null;
-        }
+        return Files.readAllBytes(Paths.get(filename));
     }
 
     public boolean sendFile() throws IOException, InterruptedException {
-        /*
-        Sends the video file to the client
-        */
-        Thread.sleep(2000); // wait for cold start
-        byte[] fileBytes = readFile(this.videoFileName);
-        int step = this.sendBufferSize;
-        int sentSliceSize = 0;
-        boolean isBreak = false;
-        ByteBuffer byteBuffer;
+        try (Socket path1 = connectedSocketPath1;
+             Socket path2 = connectedSocketPath2;
+             ServerSocket listener1 = serverSocketPath1;
+             ServerSocket listener2 = serverSocketPath2) {
+            Thread.sleep(2000); // allow RTT estimates to warm up
+            byte[] fileBytes = readFile(this.videoFileName);
+            DataOutputStream out1 = new DataOutputStream(path1.getOutputStream());
+            DataOutputStream out2 = new DataOutputStream(path2.getOutputStream());
 
-        // Reading  bytes from the read file and sending it over TCP socket
-        while (!isBreak) {
-            byte[] slice;
-            // Bifurcating the whole file content into chunks
-            if (sentSliceSize + this.sendBufferSize >= fileBytes.length) { // last chunk
-                slice = Arrays.copyOfRange(fileBytes, sentSliceSize, fileBytes.length);
-                isBreak = true;
-            } else {
-                slice = Arrays.copyOfRange(fileBytes, sentSliceSize, step);
-                sentSliceSize = step;
-                step += this.sendBufferSize;
+            // Both paths describe the same file. Payload chunks are at most 1435 bytes.
+            out1.writeLong(fileBytes.length);
+            out2.writeLong(fileBytes.length);
+            int sequence = 0;
+            for (int offset = 0; offset < fileBytes.length;) {
+                int length = Math.min(sendBufferSize, fileBytes.length - offset);
+                DataOutputStream out = rttHandlerPath1.rttEstimate <= rttHandlerPath2.rttEstimate
+                        ? out1 : out2;
+                // Frame: global sequence (int), length (int), timestamp (long), payload.
+                out.writeInt(sequence++);
+                out.writeInt(length);
+                out.writeLong(System.currentTimeMillis());
+                out.write(fileBytes, offset, length);
+                offset += length;
             }
-
-            // Attaching timestamp to the chunks
-            byte[] currentTime = String.valueOf(System.currentTimeMillis()).getBytes();
-
-            byteBuffer = ByteBuffer.allocate(sendBufferSize + currentTime.length);
-            byteBuffer.put(currentTime);
-            byteBuffer.put(slice);
-            byteBuffer.flip();
-
-            System.out.println("RTTs: " + this.rttHandlerPath1.rttEstimate +  " " + this.rttHandlerPath2.rttEstimate);
-            try {
-                if (this.rttHandlerPath1.rttEstimate <= this.rttHandlerPath2.rttEstimate) {
-                    connectedSocketPath1.getOutputStream().write(byteBuffer.array());
-                    System.out.println("Sent over Path 1");
-                } else {
-                    connectedSocketPath2.getOutputStream().write(byteBuffer.array());
-                    System.out.println("Sent over Path 2");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-//            Thread.sleep(2);              // Deliberate
+            // Explicit end markers distinguish successful completion from truncated TCP data.
+            out1.writeInt(-1);
+            out2.writeInt(-1);
+            out1.flush();
+            out2.flush();
+            return true;
         }
-        connectedSocketPath1.close(); connectedSocketPath2.close();
-        serverSocketPath1.close(); serverSocketPath2.close();
-        return true;
     }
+
 }
 
 public class Main {
@@ -252,7 +220,11 @@ public class Main {
         // Sending the video file
         Server server = new Server(portForPath1, portForPath2, rttHandlerPath1, rttHandlerPath2);
 
-        status.status = server.sendFile();
+        try {
+            server.sendFile();
+        } finally {
+            status.status = true;
+        }
 
         rttPath1Thread.join();
         rttPath2Thread.join();

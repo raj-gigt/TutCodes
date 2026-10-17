@@ -3,12 +3,13 @@ import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 class Status{
     // Class to log status of current data transfer
-    public boolean status;
+    public volatile boolean status;
     public Status(boolean status){
         this.status = status;
     }
@@ -49,56 +50,59 @@ class RTTHandler implements Runnable {
 
     public void connect() throws SocketException, UnknownHostException {
         // Send a "Hi" message to the server to create a separate thread for the client
-        DatagramSocket socket = new DatagramSocket();
-        InetAddress ip_server = InetAddress.getByName(this.serverIp);
+        try (DatagramSocket socket = new DatagramSocket()) {
+            InetAddress ip_server = InetAddress.getByName(this.serverIp);
 
-        recvBufSize = 20;
-        byte[] hiBuf = "Hi".getBytes();
-        byte[] recvBuf = new byte[recvBufSize];
-        DatagramPacket dpSend = new DatagramPacket(hiBuf, hiBuf.length, ip_server, this.serverPort);
-        DatagramPacket dpReceive;
-        boolean doneHandshake = true;
-        try {
-            while(doneHandshake){
-                socket.send(dpSend);
-                System.out.println(this.id + " Hi Sent");
+            recvBufSize = 20;
+            byte[] hiBuf = "Hi".getBytes();
+            byte[] recvBuf = new byte[recvBufSize];
+            DatagramPacket dpSend = new DatagramPacket(hiBuf, hiBuf.length, ip_server, this.serverPort);
+            DatagramPacket dpReceive;
+            boolean doneHandshake = true;
+            try {
+                while(doneHandshake && !this.status.status){
+                    socket.send(dpSend);
+                    System.out.println(this.id + " Hi Sent");
 
+                    dpReceive = new DatagramPacket(recvBuf, recvBuf.length);
+                    socket.setSoTimeout(this.timeout);
+                    try{
+                        socket.receive(dpReceive);
+                        doneHandshake = false;
+                        recvBufSize = dpReceive.getLength();
+    //                    System.out.println(this.id + " received bytes " + dpReceive.getLength() + " " + new String(recvBuf) + " Received HiAck");
+                        System.out.println(this.id + " Received HiAck");
+                    } catch (SocketTimeoutException e){
+                        System.out.println(this.id + " Resending Hi");
+                    }
+                }
+            } catch (
+                    IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Receiving timestamps for RTT estimation
+            while (!this.status.status) {
+                recvBuf = new byte[recvBufSize];
                 dpReceive = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.setSoTimeout(this.timeout);
-                try{
+
+                try {
                     socket.receive(dpReceive);
-                    doneHandshake = false;
-                    recvBufSize = dpReceive.getLength();
-//                    System.out.println(this.id + " received bytes " + dpReceive.getLength() + " " + new String(recvBuf) + " Received HiAck");
-                    System.out.println(this.id + " Received HiAck");
-                } catch (SocketTimeoutException e){
-                    System.out.println(this.id + " Resending Hi");
+    //                long recvTimestamp = Long.parseLong(new String(recvBuf));
+    //                System.out.println(this.id + " Received timestamp: " + recvTimestamp);
+
+                    dpSend = new DatagramPacket(recvBuf, recvBuf.length, ip_server, this.serverPort);
+                    socket.send(dpSend);
+                    if (this.status.status){
+                        System.out.println("Stopping controls channels");
+                        break;
+                    }
+                } catch (SocketTimeoutException e) {
+                    // Periodically check completion even after the server stops probing.
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            }
-        } catch (
-                IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Receiving timestamps for RTT estimation
-        while (true) {
-            recvBuf = new byte[recvBufSize];
-            dpReceive = new DatagramPacket(recvBuf, recvBuf.length);
-            socket.setSoTimeout(0);
-
-            try {
-                socket.receive(dpReceive);
-//                long recvTimestamp = Long.parseLong(new String(recvBuf));
-//                System.out.println(this.id + " Received timestamp: " + recvTimestamp);
-
-                dpSend = new DatagramPacket(recvBuf, recvBuf.length, ip_server, this.serverPort);
-                socket.send(dpSend);
-                if (this.status.status){
-                    System.out.println("Stopping controls channels");
-                    break;
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -115,110 +119,143 @@ class RTTHandler implements Runnable {
     }
 }
 
-class Client implements Runnable{
-    private Socket connectedSocket;
-    int recvBufferSize = 1448;
-    int id;
-    Status status;
-    private String videoFileName = "video/CN_Lect_NPTEL.zip";
+// One instance is shared by both TCP receivers; only this object writes the file.
+class Reassembler implements Closeable {
+    private final OutputStream output;
+    private final Map<Integer, byte[]> pending = new HashMap<>();
+    private long fileSize = -1;
+    private long written = 0;
+    private int nextExpected = 0;
 
-public Client(String serverIP, int portToConnect, int id, Status status) throws IOException {
-        this.connectedSocket = new Socket(serverIP, portToConnect);
-        System.out.println("Connected : " + id);
-        this.id = id;
-        this.status = status;
+    Reassembler(OutputStream output) {
+        this.output = output;
     }
 
-    public void receiveFile() throws IOException, InterruptedException {
-        ByteArrayOutputStream fileBytes = new ByteArrayOutputStream();
+    synchronized void setFileSize(long size) throws IOException {
+        if (size < 0 || size > Integer.MAX_VALUE || (fileSize != -1 && fileSize != size)) {
+            throw new IOException("Invalid or inconsistent file size: " + size);
+        }
+        fileSize = size;
+    }
 
-        while (true) {
-            byte[] chunk = new byte[this.recvBufferSize];
-            int len = this.connectedSocket.getInputStream().read(chunk);
-//            System.out.println("Received " + len + " Bytes");
-            if (len == -1) {
-                try (OutputStream outputStream = new FileOutputStream(this.videoFileName)) {
-                    fileBytes.writeTo(outputStream);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                fileBytes.reset();
-                this.connectedSocket.close();
-                this.status.status = true;
-                break;
-            } else {
-                if (len == this.recvBufferSize) {
-                    // Extracting timestamp
-                    String recvTime = String.valueOf(System.currentTimeMillis());
-
-                    byte[] sendingTimestamp = Arrays.copyOfRange(chunk, 0, recvTime.getBytes().length);
-                    byte[] videoBytes = Arrays.copyOfRange(chunk, recvTime.getBytes().length, chunk.length);
-                    String sendingTime = new String(sendingTimestamp);
-
-                    try {
-                        String s = "Network Lag of Path " + this.id + " : " + (Long.parseLong(recvTime) - Long.parseLong(sendingTime)) + "\n";
-                        System.out.println(s);
-                        Files.write(Paths.get("MultiPath.txt"), s.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-                    } catch (Exception e){
-                        ;
-                    }
-                    fileBytes.write(videoBytes);
-                } else {
-                    fileBytes.write(chunk);
-                }
-            }
+    synchronized void accept(int sequence, byte[] payload) throws IOException {
+        long offset = (long) sequence * 1435;
+        if (fileSize < 0 || sequence < nextExpected || pending.containsKey(sequence)
+                || offset >= fileSize || sequence < 0
+                || payload.length != Math.min(1435L, fileSize - offset)) {
+            throw new IOException("Invalid or duplicate chunk: " + sequence);
+        }
+        pending.put(sequence, payload);
+        // A later chunk waits here until all preceding chunks have arrived.
+        while (pending.containsKey(nextExpected)) {
+            byte[] next = pending.remove(nextExpected);
+            output.write(next);
+            written += next.length;
+            nextExpected++;
         }
     }
 
-    @Override  
+    synchronized void verifyComplete() throws IOException {
+        if (fileSize < 0 || written != fileSize || !pending.isEmpty()) {
+            throw new IOException("Incomplete file: wrote " + written + " of " + fileSize + " bytes");
+        }
+        output.flush();
+    }
+
+    public void close() throws IOException {
+        output.close();
+    }
+}
+
+class Client implements Runnable, Closeable {
+    private final Socket connectedSocket;
+    private final int id;
+    private final Reassembler reassembler;
+    private IOException failure;
+
+    Client(String serverIP, int portToConnect, int id, Reassembler reassembler) throws IOException {
+        this.connectedSocket = new Socket(serverIP, portToConnect);
+        this.id = id;
+        this.reassembler = reassembler;
+        System.out.println("Connected : " + id);
+    }
+
+    public void receiveFile() throws IOException {
+        DataInputStream input = new DataInputStream(connectedSocket.getInputStream());
+        reassembler.setFileSize(input.readLong());
+        while (true) {
+            // readInt/readLong/readFully handle TCP fragmentation across arbitrary reads.
+            int sequence = input.readInt();
+            if (sequence == -1) {
+                return;
+            }
+            int length = input.readInt();
+            if (length <= 0 || length > 1435) {
+                throw new IOException("Invalid payload length: " + length);
+            }
+            long sentTime = input.readLong();
+            byte[] payload = new byte[length];
+            input.readFully(payload);
+            long lag = System.currentTimeMillis() - sentTime;
+            reassembler.accept(sequence, payload);
+            String log = "Network Lag of Path " + id + " : " + lag + "\n";
+            Files.write(Paths.get("MultiPath.txt"), log.getBytes(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        }
+    }
+
     public void run() {
         try {
             receiveFile();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            failure = e;
+        } finally {
+            try { close(); } catch (IOException e) { if (failure == null) failure = e; }
         }
+    }
+
+    void checkSuccess() throws IOException {
+        if (failure != null) throw failure;
+    }
+
+    public void close() throws IOException {
+        connectedSocket.close();
     }
 }
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        // Clears old files
-        Process p = Runtime.getRuntime().exec("bash clear.sh");
-        p.waitFor();
-
         Status done = new Status(false);
-        int portForPath1 = 6001; int portForPath2 = 6002;
-        int rttHandlerPortPath1 = 8001;
-        int rttHandlerPortPath2 = 8002;
-        int timeoutOfRttHi = 200;
-        String serverIP = "10.42.184.197";
-        String helperIP = "10.42.184.197";
-//        AddDelay delayerPath1 = new AddDelay(10, 10);
-//        AddDelay delayerPath2 = new AddDelay(10, 10);
+        String serverIP = args.length > 0 ? args[0] : "10.42.184.197";
+        String helperIP = args.length > 1 ? args[1] : serverIP;
+        Files.createDirectories(Paths.get("video"));
 
-        Client client1 = new Client(serverIP, portForPath1, 0, done);
-        Client client2 = new Client(helperIP, portForPath2, 1, done);
-
-        // For RTT Control Channels
-        RTTHandler rttHandlerPath1 = new RTTHandler(serverIP, rttHandlerPortPath1, timeoutOfRttHi, 0, done);
-        RTTHandler rttHandlerPath2 = new RTTHandler(helperIP, rttHandlerPortPath2, timeoutOfRttHi, 1, done);
-
-        Thread rttPath1Thread = new Thread(rttHandlerPath1);
-        Thread rttPath2Thread = new Thread(rttHandlerPath2);
-
-        rttPath1Thread.start();
-        rttPath2Thread.start();
-
-        // For Video Channels
-        Thread client1Thread = new Thread(client1);
-        Thread client2Thread = new Thread(client2);
-
-        client1Thread.start();
-        client2Thread.start();
-
-        client1Thread.join();
-        client2Thread.join();
-        rttPath1Thread.join();
-        rttPath2Thread.join();
+        // Open the output once, instead of letting each receiver overwrite it independently.
+        try (Reassembler shared = new Reassembler(new BufferedOutputStream(
+                    new FileOutputStream("video/CN_Lect_NPTEL.zip")));
+             Client client1 = new Client(serverIP, 6001, 0, shared);
+             Client client2 = new Client(helperIP, 6002, 1, shared)) {
+            Thread probe1 = new Thread(new RTTHandler(serverIP, 8001, 200, 0, done));
+            Thread probe2 = new Thread(new RTTHandler(helperIP, 8002, 200, 1, done));
+            probe1.start();
+            probe2.start();
+            try {
+                Thread receiver1 = new Thread(client1);
+                Thread receiver2 = new Thread(client2);
+                receiver1.start();
+                receiver2.start();
+                receiver1.join();
+                receiver2.join();
+                client1.checkSuccess();
+                client2.checkSuccess();
+                shared.verifyComplete();
+                System.out.println("Complete file reconstructed in order.");
+            } finally {
+                // A single path finishing must not stop the other path's control channel.
+                done.status = true;
+                probe1.join();
+                probe2.join();
+            }
+        }
     }
 }
