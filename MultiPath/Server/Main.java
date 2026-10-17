@@ -1,11 +1,9 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
-import java.io.DataOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.Locale;
 
 class AddDelay{
     // This class adds delay to the paths
@@ -65,10 +63,19 @@ class RTTHandler implements Runnable {
             DatagramPacket dpSend;
             DatagramPacket dpReceive;
 
-            // Getting Hi message
+            // Check completion while waiting for the initial control handshake.
+            socket.setSoTimeout(this.timeout);
             try {
                 dpReceive = new DatagramPacket(buf, buf.length);
-                socket.receive(dpReceive);
+                while (!status.status) {
+                    try {
+                        socket.receive(dpReceive);
+                        break;
+                    } catch (SocketTimeoutException e) {
+                        // No client yet; a failed/finished transfer can still shut down.
+                    }
+                }
+                if (status.status) return;
                 System.out.println(this.id + " Hi Received");
 
                 // Get client IP and Port
@@ -128,6 +135,104 @@ class RTTHandler implements Runnable {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+}
+
+// Active TCP probes: separate from data sockets, one worker and estimate per path.
+class BandwidthHandler implements Runnable, AutoCloseable {
+    static final int PROBE_BYTES = 256 * 1024;
+    static final int INTERVAL_MS = 1000;
+    static final int TIMEOUT_MS = 3000;
+    static final double ALPHA = 0.125;
+    private final int id;
+    private final ServerSocket listener;
+    private final Thread worker;
+    private volatile Socket connection;
+    private volatile boolean closed;
+    // NaN means no valid sample yet; schedulers must not treat it as zero bandwidth.
+    volatile double bandwidthEstimateBytesPerSecond = Double.NaN;
+    volatile long lastSampleNanos;
+
+    BandwidthHandler(int port, int id) throws IOException {
+        this.id = id;
+        listener = new ServerSocket(port);
+        worker = new Thread(this, "bandwidth-path-" + id);
+    }
+
+    void start() { worker.start(); }
+    void awaitStopped() throws InterruptedException { worker.join(); }
+
+    double updateEstimate(double sample) throws IOException {
+        if (!Double.isFinite(sample) || sample <= 0) {
+            throw new IOException("Invalid bandwidth sample: " + sample);
+        }
+        double old = bandwidthEstimateBytesPerSecond;
+        bandwidthEstimateBytesPerSecond = Double.isNaN(old)
+                ? sample : (1 - ALPHA) * old + ALPHA * sample;
+        lastSampleNanos = System.nanoTime();
+        return bandwidthEstimateBytesPerSecond;
+    }
+
+    public void run() {
+        byte[] payload = new byte[PROBE_BYTES];
+        new Random(id).nextBytes(payload);
+        int probeId = 0;
+        try (BufferedWriter log = Files.newBufferedWriter(Paths.get("Bandwidth-Path" + id + ".csv"))) {
+            log.write("probe_id,payload_bytes,elapsed_ns,sample_bytes_per_second,ewma_bytes_per_second\n");
+            log.flush();
+            while (!closed) {
+                try (Socket peer = listener.accept()) {
+                    connection = peer;
+                    if (closed) break;
+                    peer.setSoTimeout(TIMEOUT_MS);
+                    peer.setTcpNoDelay(true);
+                    DataInputStream input = new DataInputStream(peer.getInputStream());
+                    DataOutputStream output = new DataOutputStream(peer.getOutputStream());
+                    while (!closed) {
+                        int currentId = probeId++;
+                        output.writeInt(currentId);
+                        output.writeInt(PROBE_BYTES);
+                        output.flush();
+                        // Client starts its timer BEFORE READY; payload cannot be pre-buffered.
+                        if (input.readInt() != currentId) throw new IOException("Wrong READY id");
+                        output.write(payload);
+                        output.flush();
+                        if (input.readInt() != currentId) throw new IOException("Wrong result id");
+                        long elapsed = input.readLong();
+                        if (elapsed <= 0) throw new IOException("Invalid probe duration");
+                        double sample = PROBE_BYTES * 1_000_000_000.0 / elapsed;
+                        double estimate = updateEstimate(sample);
+                        log.write(String.format(Locale.ROOT, "%d,%d,%d,%.6f,%.6f%n",
+                                currentId, PROBE_BYTES, elapsed, sample, estimate));
+                        log.flush();
+                        System.out.printf(Locale.ROOT,
+                                "BW Path %d: sample %.3f Mbps, estimate %.3f Mbps%n",
+                                id, sample * 8 / 1_000_000, estimate * 8 / 1_000_000);
+                        Thread.sleep(INTERVAL_MS);
+                    }
+                } catch (IOException e) {
+                    if (!closed) System.err.println("BW Path " + id + ": " + e.getMessage());
+                    // A partial record is discarded by closing this connection, not resumed.
+                } finally {
+                    connection = null;
+                }
+            }
+        } catch (IOException e) {
+            if (!closed) System.err.println("BW log Path " + id + ": " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void close() throws IOException {
+        closed = true;
+        worker.interrupt();
+        try {
+            listener.close();
+        } finally {
+            Socket peer = connection;
+            if (peer != null) peer.close();
         }
     }
 }
@@ -214,20 +319,25 @@ public class Main {
         Thread rttPath1Thread = new Thread(rttHandlerPath1);
         Thread rttPath2Thread = new Thread(rttHandlerPath2);
 
-        rttPath1Thread.start();
-        rttPath2Thread.start();
-
-        // Sending the video file
-        Server server = new Server(portForPath1, portForPath2, rttHandlerPath1, rttHandlerPath2);
-
-        try {
-            server.sendFile();
-        } finally {
-            status.status = true;
+        // Bind both bandwidth listeners before accepting the data connections.
+        try (BandwidthHandler bandwidth1 = new BandwidthHandler(9001, 0);
+             BandwidthHandler bandwidth2 = new BandwidthHandler(9002, 1)) {
+            bandwidth1.start();
+            bandwidth2.start();
+            rttPath1Thread.start();
+            rttPath2Thread.start();
+            try {
+                Server server = new Server(portForPath1, portForPath2, rttHandlerPath1, rttHandlerPath2);
+                server.sendFile();
+            } finally {
+                status.status = true;
+                bandwidth1.close();
+                bandwidth2.close();
+                bandwidth1.awaitStopped();
+                bandwidth2.awaitStopped();
+                rttPath1Thread.join();
+                rttPath2Thread.join();
+            }
         }
-
-        rttPath1Thread.join();
-        rttPath2Thread.join();
-
     }
 }

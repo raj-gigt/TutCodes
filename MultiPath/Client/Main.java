@@ -119,6 +119,71 @@ class RTTHandler implements Runnable {
     }
 }
 
+// The control connection uses the same destination IP as its associated data path.
+class BandwidthHandler implements Runnable, AutoCloseable {
+    private final String serverIP;
+    private final int port;
+    private final int id;
+    private final Thread worker;
+    private volatile Socket connection;
+    private volatile boolean closed;
+
+    BandwidthHandler(String serverIP, int port, int id) {
+        this.serverIP = serverIP;
+        this.port = port;
+        this.id = id;
+        worker = new Thread(this, "bandwidth-path-" + id);
+    }
+
+    void start() { worker.start(); }
+    void awaitStopped() throws InterruptedException { worker.join(); }
+
+    public void run() {
+        while (!closed) {
+            try (Socket peer = new Socket()) {
+                connection = peer;
+                if (closed) break;
+                peer.connect(new InetSocketAddress(serverIP, port), 1000);
+                peer.setSoTimeout(3000);
+                peer.setTcpNoDelay(true);
+                DataInputStream input = new DataInputStream(peer.getInputStream());
+                DataOutputStream output = new DataOutputStream(peer.getOutputStream());
+                while (!closed) {
+                    int probeId = input.readInt();
+                    int length = input.readInt();
+                    if (length <= 0 || length > 1024 * 1024) {
+                        throw new IOException("Invalid bandwidth probe size: " + length);
+                    }
+                    byte[] payload = new byte[length];
+                    long start = System.nanoTime();
+                    output.writeInt(probeId); // READY: server may now send the payload.
+                    output.flush();
+                    input.readFully(payload);
+                    long elapsed = System.nanoTime() - start;
+                    output.writeInt(probeId);
+                    output.writeLong(elapsed);
+                    output.flush();
+                }
+            } catch (IOException e) {
+                if (!closed) System.err.println("BW Path " + id + ": " + e.getMessage());
+            } finally {
+                connection = null;
+            }
+            if (!closed) {
+                try { Thread.sleep(200); }
+                catch (InterruptedException e) { Thread.currentThread().interrupt(); break; }
+            }
+        }
+    }
+
+    public void close() throws IOException {
+        closed = true;
+        worker.interrupt();
+        Socket peer = connection;
+        if (peer != null) peer.close();
+    }
+}
+
 // One instance is shared by both TCP receivers; only this object writes the file.
 class Reassembler implements Closeable {
     private final OutputStream output;
@@ -234,9 +299,13 @@ public class Main {
         try (Reassembler shared = new Reassembler(new BufferedOutputStream(
                     new FileOutputStream("video/CN_Lect_NPTEL.zip")));
              Client client1 = new Client(serverIP, 6001, 0, shared);
-             Client client2 = new Client(helperIP, 6002, 1, shared)) {
+             Client client2 = new Client(helperIP, 6002, 1, shared);
+             BandwidthHandler bandwidth1 = new BandwidthHandler(serverIP, 9001, 0);
+             BandwidthHandler bandwidth2 = new BandwidthHandler(helperIP, 9002, 1)) {
             Thread probe1 = new Thread(new RTTHandler(serverIP, 8001, 200, 0, done));
             Thread probe2 = new Thread(new RTTHandler(helperIP, 8002, 200, 1, done));
+            bandwidth1.start();
+            bandwidth2.start();
             probe1.start();
             probe2.start();
             try {
@@ -253,6 +322,10 @@ public class Main {
             } finally {
                 // A single path finishing must not stop the other path's control channel.
                 done.status = true;
+                bandwidth1.close();
+                bandwidth2.close();
+                bandwidth1.awaitStopped();
+                bandwidth2.awaitStopped();
                 probe1.join();
                 probe2.join();
             }

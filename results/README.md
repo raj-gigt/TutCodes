@@ -17,3 +17,15 @@ For subsequent experiments, use distinct files for each run and record scheduler
 path parameters, file size, timing boundaries, and repetitions. MultiPath.txt
 appends between executions, so it should not be treated as one run without
 establishing its boundaries. Preserve existing logs before clearing them.
+
+## Q2 evidence
+
+- q2/validation.txt: Q2 probe integration test results.
+- q2/controlled-path0.csv and controlled-path1.csv: deliberately supplied durations
+  to check per-path rate calculations and EWMA; not network measurements.
+- q2/loopback-path0.csv and loopback-path1.csv: real samples exchanged by the Java
+  probe implementations on this machine; not the assignment's LAN experiments.
+
+The server's runtime Bandwidth-Path0.csv and Bandwidth-Path1.csv are overwritten
+on restart. Copy each run's files into a distinct results subdirectory to retain
+measurements. CSV rates are bytes/second; console rates are decimal Mbps.

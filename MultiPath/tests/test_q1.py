@@ -1,7 +1,8 @@
 """Q1 integration checks. Run: python3 MultiPath/tests/test_q1.py.
 Compiles and transfers test files in temporary directories; requires free ports
-6001, 6002, 8001 and 8002. Does not touch the supplied ZIP or client lag log.
+6001, 6002, 8001, 8002, 9001 and 9002. Does not touch the supplied ZIP or client lag log.
 """
+import csv
 import hashlib
 import socket
 import struct
@@ -92,6 +93,12 @@ def main():
                     assert 'Complete file reconstructed in order.' in result.stdout
                 if server:
                     assert server.wait(timeout=5) == 0, (work / 'server.log').read_text()
+                    # Q2 probes must produce estimates alongside the real file transfer.
+                    for path in (0, 1):
+                        with (server_dir / f'Bandwidth-Path{path}.csv').open() as probe_log:
+                            samples = list(csv.DictReader(probe_log))
+                        assert samples, f'No bandwidth samples on path {path}'
+                        assert all(float(row['ewma_bytes_per_second']) > 0 for row in samples)
                 if peer:
                     peer.join(timeout=5)
                     assert not peer.is_alive(), 'Fake peer did not stop'

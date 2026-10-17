@@ -78,6 +78,84 @@ This confirms byte-for-byte reconstruction for the tested transfer. The recorded
 [integration checks](../results/q1/validation.txt) also cover deliberately reordered
 and fragmented data, empty files, chunk boundaries, and truncated-payload rejection.
 
-## Q2-Q6
+## Q2. Bandwidth estimation
+
+I added two TCP control channels on ports 9001 and 9002. Each uses the same server
+IP as its corresponding data path. The server sends a 256 KiB probe burst and waits
+one second between completed probes. These bytes are discarded by the client and
+are not part of the downloaded file.
+
+### Measurement
+
+```text
+Server → Client: probe ID, payload size
+Client: start timer
+Client → Server: READY (probe ID)
+Server → Client: 262144 payload bytes
+Client: stop timer
+Client → Server: probe ID, elapsed nanoseconds
+```
+
+The timer uses `System.nanoTime()` on the client, so synchronized clocks are not
+needed. Starting before READY prevents the payload from arriving before timing starts.
+
+```java
+double sample = PROBE_BYTES * 1_000_000_000.0 / elapsed;
+```
+
+Samples are in bytes/second. They include the READY request delay and payload
+transfer time, so they estimate effective burst throughput rather than exact link
+capacity. The result message back to the server is outside the measured interval.
+
+### Smoothing
+
+I used an EWMA with `alpha = 0.125`. The first valid sample initializes the estimate;
+subsequent samples are smoothed independently for each path:
+
+```java
+bandwidthEstimateBytesPerSecond = Double.isNaN(old)
+        ? sample : 0.875 * old + 0.125 * sample;
+```
+
+This reduces sudden changes from noisy samples. Before the first sample, the estimate
+is `NaN` (unavailable). A timestamp records when the latest valid estimate was obtained.
+The estimate is `volatile` so the sender can read updates from the probe thread.
+MinRTT remains the data scheduler for Q2.
+
+### Results
+
+```sh
+python3 MultiPath/tests/test_q2.py --results results/q2
+```
+
+The tests passed for independent estimates, smoothing, fragmented reads, invalid
+messages, reconnecting, and stopping blocked probe workers. Both real probe endpoints
+also exchanged bursts successfully over loopback.
+
+Controlled durations verified the calculation (these are test inputs, not network measurements):
+
+```text
+Path 0: 100 ms → 200 ms; samples 2621440 → 1310720 B/s; final EWMA 2457600 B/s
+Path 1: 400 ms → 200 ms; samples  655360 → 1310720 B/s; final EWMA  737280 B/s
+```
+
+[Validation](../results/q2/validation.txt) ·
+[Path 0 controlled results](../results/q2/controlled-path0.csv) ·
+[Path 1 controlled results](../results/q2/controlled-path1.csv) ·
+[Path 0 loopback samples](../results/q2/loopback-path0.csv) ·
+[Path 1 loopback samples](../results/q2/loopback-path1.csv)
+
+### Limitations
+
+- Separate ports do not guarantee separate physical paths. With the same IP and
+  interface, both probes may share a bottleneck; differences can be measurement noise.
+- Separate TCP connections have their own congestion state. Their throughput is a
+  proxy for the associated data path, not its exact achieved rate.
+- Probe traffic consumes bandwidth and may affect file transfers. Burst size,
+  latency, TCP startup, and host processing also affect the samples.
+- These are local correctness checks, not measurements of the required two-machine
+  setup. No artificial bandwidth difference was introduced in Q2.
+
+## Q3-Q6
 
 To be added after implementation and experiments.
