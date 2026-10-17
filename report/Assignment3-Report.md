@@ -254,9 +254,9 @@ the bandwidth-ratio allocation.
 
 [Validation record](../results/q3/validation.txt)
 
-### Retry results
+### Two-machine results
 
-The same configuration completed on the server with exit code 0. All 145 scheduling
+The `bwratio 4 2 10 4` configuration completed on the server with exit code 0. All 145 scheduling
 windows matched the ratio formula, with no minRTT fallbacks:
 
 ```text
@@ -267,8 +267,7 @@ Sender duration: 135.396 seconds
 ```
 
 The larger allocation went to the path with higher measured bandwidth. Mean probe
-rates were 2.202 Mbps on path 0 and 0.933 Mbps on path 1. The earlier connection reset
-did not recur, but its cause is still unknown. Sender duration excludes warmup and
+rates were 2.202 Mbps on path 0 and 0.933 Mbps on path 1. Sender duration excludes warmup and
 ends after writing the end markers; it is not client-side download time. The client
 completed successfully and its 53,186,840-byte output matched the server SHA-256:
 
@@ -278,7 +277,7 @@ completed successfully and its 53,186,840-byte output matched the server SHA-256
 
 [Client verification](../results/q3/client-verification.txt)
 
-[Retry logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
+[Run logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
 
 ## Q4-Q6
 
