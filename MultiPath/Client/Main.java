@@ -311,6 +311,7 @@ public class Main {
             try {
                 Thread receiver1 = new Thread(client1);
                 Thread receiver2 = new Thread(client2);
+                long downloadStart = System.nanoTime();
                 receiver1.start();
                 receiver2.start();
                 receiver1.join();
@@ -319,6 +320,8 @@ public class Main {
                 client2.checkSuccess();
                 shared.verifyComplete();
                 System.out.println("Complete file reconstructed in order.");
+                System.out.printf(java.util.Locale.ROOT, "Client elapsed seconds (receiver start through flush, includes warmup): %.6f%n",
+                        (System.nanoTime() - downloadStart) / 1e9);
             } finally {
                 // A single path finishing must not stop the other path's control channel.
                 done.status = true;

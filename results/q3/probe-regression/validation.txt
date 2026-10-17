@@ -1,0 +1,12 @@
+Q2 integration validation
+Command: python3 MultiPath/tests/test_q2.py --results results/q3/probe-regression
+Controlled CSV durations are synthetic protocol inputs for arithmetic checks.
+Loopback CSVs are real local measurements, not IITM-network benchmarks.
+
+PASS independent per-path samples, first-sample initialization, and EWMA arithmetic
+PASS invalid READY/duration rejected, connection reset, subsequent probes succeed
+PASS server workers stop while sleeping or waiting for a connection
+PASS client monotonic timing and fragmented probe reads on both paths
+PASS client rejects invalid sizes and reconnects
+PASS client closes blocked reads and stops both workers
+PASS actual server/client probe exchange and finite positive estimates on both paths

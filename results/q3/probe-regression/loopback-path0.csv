@@ -1,0 +1,3 @@
+probe_id,payload_bytes,elapsed_ns,sample_bytes_per_second,ewma_bytes_per_second
+0,262144,5418250,48381673.049416,48381673.049416
+1,262144,7864708,33331688.856090,46500425.025251

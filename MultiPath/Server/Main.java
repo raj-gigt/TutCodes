@@ -4,21 +4,36 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
-class AddDelay{
-    // This class adds delay to the paths
-    private int meanDelay;
-    private int stdDelay;
-    private Random randomIntGenerator = new Random();
+class AddDelay {
+    private final double meanDelay;
+    private final double stdDelay;
+    private final Random random;
 
-    public AddDelay(int meanDelay, int maxValueOfStdDelay){
+    AddDelay(double meanDelay, double stdDelay) {
+        this(meanDelay, stdDelay, new Random());
+    }
+
+    AddDelay(double meanDelay, double stdDelay, Random random) {
+        if (!Double.isFinite(meanDelay) || !Double.isFinite(stdDelay)
+                || meanDelay < 0 || stdDelay < 0) {
+            throw new IllegalArgumentException("Delay mean/std must be finite and nonnegative");
+        }
         this.meanDelay = meanDelay;
-        this.stdDelay = maxValueOfStdDelay;
+        this.stdDelay = stdDelay;
+        this.random = random;
     }
 
-    public int addDelay(){
-        return (this.meanDelay + randomIntGenerator.nextInt(this.stdDelay));
+    // Milliseconds, normally distributed before rounding and clamping at zero.
+    public synchronized int addDelay() {
+        return (int) Math.min(Integer.MAX_VALUE,
+                Math.max(0, Math.round(meanDelay + stdDelay * random.nextGaussian())));
     }
+
+    void pause() throws InterruptedException { Thread.sleep(addDelay()); }
 }
 
 class Status{
@@ -101,7 +116,9 @@ class RTTHandler implements Runnable {
                     socket.receive(dpReceive);
                     recvTimestamp = Long.parseLong(new String(recvBuf));
                     long currentTimeStamp = System.currentTimeMillis();
-                    float rtt = (currentTimeStamp - recvTimestamp) + Float.valueOf(delayer.addDelay());
+                    // Two independent one-way delay samples approximate the simulated round trip.
+                    float rtt = (currentTimeStamp - recvTimestamp)
+                            + delayer.addDelay() + delayer.addDelay();
                     if (rtt == 0){
                         rtt = 1.0F;
                     }
@@ -146,6 +163,7 @@ class BandwidthHandler implements Runnable, AutoCloseable {
     static final int TIMEOUT_MS = 3000;
     static final double ALPHA = 0.125;
     private final int id;
+    private final AddDelay delay;
     private final ServerSocket listener;
     private final Thread worker;
     private volatile Socket connection;
@@ -155,7 +173,12 @@ class BandwidthHandler implements Runnable, AutoCloseable {
     volatile long lastSampleNanos;
 
     BandwidthHandler(int port, int id) throws IOException {
+        this(port, id, new AddDelay(0, 0));
+    }
+
+    BandwidthHandler(int port, int id, AddDelay delay) throws IOException {
         this.id = id;
+        this.delay = delay;
         listener = new ServerSocket(port);
         worker = new Thread(this, "bandwidth-path-" + id);
     }
@@ -196,7 +219,11 @@ class BandwidthHandler implements Runnable, AutoCloseable {
                         output.flush();
                         // Client starts its timer BEFORE READY; payload cannot be pre-buffered.
                         if (input.readInt() != currentId) throw new IOException("Wrong READY id");
-                        output.write(payload);
+                        // Match the data path's per-1435-byte service delay.
+                        for (int offset = 0; offset < payload.length; offset += 1435) {
+                            delay.pause();
+                            output.write(payload, offset, Math.min(1435, payload.length - offset));
+                        }
                         output.flush();
                         if (input.readInt() != currentId) throw new IOException("Wrong result id");
                         long elapsed = input.readLong();
@@ -237,106 +264,203 @@ class BandwidthHandler implements Runnable, AutoCloseable {
     }
 }
 
-class Server{
-    private ServerSocket serverSocketPath1;
-    private ServerSocket serverSocketPath2;
-    private Socket connectedSocketPath1;
-    private Socket connectedSocketPath2;
-    int sendBufferSize = 1435;
-    RTTHandler rttHandlerPath1; RTTHandler rttHandlerPath2;
-    private String videoFileName = "video/CN_Lect_NPTEL.zip";
+// Strategies receive one immutable snapshot per scheduling window.
+class PathMetrics {
+    final double rttMs;
+    final double bandwidth;
+    PathMetrics(double rttMs, double bandwidth) {
+        this.rttMs = rttMs;
+        this.bandwidth = bandwidth;
+    }
+    boolean hasBandwidth() { return Double.isFinite(bandwidth) && bandwidth > 0; }
+}
 
-    public Server(int path1Port, int path2Port, RTTHandler rttHandlerPath1, RTTHandler rttHandlerPath2) throws IOException {
-        this.serverSocketPath1 = new ServerSocket(path1Port);
-        this.serverSocketPath2 = new ServerSocket(path2Port);
+interface Scheduler {
+    String name();
+    default boolean requiresBandwidth() { return false; }
+    // Return the number of chunks assigned to path 0; the rest go to path 1.
+    int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second);
+}
 
-        this.connectedSocketPath1 = serverSocketPath1.accept();
-        System.out.println("Connected to Path1 on port: " + path1Port);
+class MinRttScheduler implements Scheduler {
+    public String name() { return "minrtt"; }
+    public int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second) {
+        return first.rttMs <= second.rttMs ? count : 0;
+    }
+}
 
-        this.connectedSocketPath2 = serverSocketPath2.accept();
-        System.out.println("Connected to Path2 on port: " + path2Port);
+class BandwidthRatioScheduler implements Scheduler {
+    public String name() { return "bwratio"; }
+    public boolean requiresBandwidth() { return true; }
+    public int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second) {
+        if (!first.hasBandwidth() || !second.hasBandwidth()) {
+            return new MinRttScheduler().chunksOnFirstPath(count, first, second);
+        }
+        // Scaling avoids overflow when adding two large estimates.
+        double scale = Math.max(first.bandwidth, second.bandwidth);
+        double share = (first.bandwidth / scale)
+                / (first.bandwidth / scale + second.bandwidth / scale);
+        return Math.max(0, Math.min(count, (int) Math.round(count * share)));
+    }
+}
 
-        this.rttHandlerPath1 = rttHandlerPath1;
-        this.rttHandlerPath2 = rttHandlerPath2;
+class Server {
+    static final int CHUNK_BYTES = 1435;
+    static final int WINDOW_CHUNKS = 256;
+    private final ServerSocket listener1;
+    private final ServerSocket listener2;
+    private final Socket path1;
+    private final Socket path2;
+    private final RTTHandler[] rtt;
+    private final BandwidthHandler[] bandwidth;
+    private final AddDelay[] delay;
+    private final Scheduler scheduler;
+
+    Server(int port1, int port2, RTTHandler rtt1, RTTHandler rtt2,
+           BandwidthHandler bw1, BandwidthHandler bw2, Scheduler scheduler,
+           AddDelay delay1, AddDelay delay2) throws IOException {
+        listener1 = new ServerSocket(port1);
+        listener2 = new ServerSocket(port2);
+        System.out.println("Waiting for data clients on " + port1 + " and " + port2);
+        path1 = listener1.accept();
+        System.out.println("Connected to Path1 on port: " + port1);
+        path2 = listener2.accept();
+        System.out.println("Connected to Path2 on port: " + port2);
+        rtt = new RTTHandler[]{rtt1, rtt2};
+        bandwidth = new BandwidthHandler[]{bw1, bw2};
+        delay = new AddDelay[]{delay1, delay2};
+        this.scheduler = scheduler;
     }
 
-    public byte[] readFile(String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(filename));
+    private PathMetrics metrics(int path) {
+        BandwidthHandler probe = bandwidth[path];
+        long age = System.nanoTime() - probe.lastSampleNanos;
+        double rate = probe.lastSampleNanos != 0 && age <= 10_000_000_000L
+                ? probe.bandwidthEstimateBytesPerSecond : Double.NaN;
+        return new PathMetrics(rtt[path].rttEstimate, rate);
     }
 
-    public boolean sendFile() throws IOException, InterruptedException {
-        try (Socket path1 = connectedSocketPath1;
-             Socket path2 = connectedSocketPath2;
-             ServerSocket listener1 = serverSocketPath1;
-             ServerSocket listener2 = serverSocketPath2) {
-            Thread.sleep(2000); // allow RTT estimates to warm up
-            byte[] fileBytes = readFile(this.videoFileName);
-            DataOutputStream out1 = new DataOutputStream(path1.getOutputStream());
-            DataOutputStream out2 = new DataOutputStream(path2.getOutputStream());
+    // Spread each window's assigned chunks through the global sequence order.
+    static List<List<Integer>> assign(int start, int count, int firstCount) {
+        List<List<Integer>> paths = new ArrayList<>();
+        paths.add(new ArrayList<>());
+        paths.add(new ArrayList<>());
+        int previous = 0;
+        for (int i = 0; i < count; i++) {
+            int cumulative = (int) ((long) (i + 1) * firstCount / count);
+            int path = cumulative > previous ? 0 : 1;
+            paths.get(path).add(start + i);
+            previous = cumulative;
+        }
+        return paths;
+    }
 
-            // Both paths describe the same file. Payload chunks are at most 1435 bytes.
-            out1.writeLong(fileBytes.length);
-            out2.writeLong(fileBytes.length);
-            int sequence = 0;
-            for (int offset = 0; offset < fileBytes.length;) {
-                int length = Math.min(sendBufferSize, fileBytes.length - offset);
-                DataOutputStream out = rttHandlerPath1.rttEstimate <= rttHandlerPath2.rttEstimate
-                        ? out1 : out2;
-                // Frame: global sequence (int), length (int), timestamp (long), payload.
-                out.writeInt(sequence++);
-                out.writeInt(length);
-                out.writeLong(System.currentTimeMillis());
-                out.write(fileBytes, offset, length);
-                offset += length;
+    private void sendChunks(DataOutputStream output, List<Integer> chunks,
+                            byte[] file, AddDelay delayer) throws IOException, InterruptedException {
+        for (int sequence : chunks) {
+            int offset = sequence * CHUNK_BYTES;
+            int length = Math.min(CHUNK_BYTES, file.length - offset);
+            long sentTime = System.currentTimeMillis();
+            delayer.pause();
+            output.writeInt(sequence);
+            output.writeInt(length);
+            output.writeLong(sentTime);
+            output.write(file, offset, length);
+            output.flush();
+        }
+        output.flush();
+    }
+
+    private static void await(Future<?> result) throws IOException, InterruptedException {
+        try { result.get(); }
+        catch (ExecutionException e) { throw new IOException("Data-path worker failed", e.getCause()); }
+    }
+
+    void sendFile() throws IOException, InterruptedException {
+        ExecutorService workers = Executors.newFixedThreadPool(2);
+        try (Socket first = path1; Socket second = path2;
+             ServerSocket l1 = listener1; ServerSocket l2 = listener2;
+             BufferedWriter log = Files.newBufferedWriter(Paths.get("Scheduler.csv"))) {
+            Thread.sleep(2000); // RTT warm-up, excluded from sender duration below.
+            if (scheduler.requiresBandwidth()) {
+                long deadline = System.nanoTime() + 15_000_000_000L;
+                while ((!metrics(0).hasBandwidth() || !metrics(1).hasBandwidth())
+                        && System.nanoTime() < deadline) Thread.sleep(50);
             }
-            // Explicit end markers distinguish successful completion from truncated TCP data.
-            out1.writeInt(-1);
-            out2.writeInt(-1);
-            out1.flush();
-            out2.flush();
-            return true;
+            byte[] file = Files.readAllBytes(Paths.get("video/CN_Lect_NPTEL.zip"));
+            int total = (int) ((file.length + (long) CHUNK_BYTES - 1) / CHUNK_BYTES);
+            first.setTcpNoDelay(true); second.setTcpNoDelay(true);
+            DataOutputStream out1 = new DataOutputStream(new BufferedOutputStream(first.getOutputStream()));
+            DataOutputStream out2 = new DataOutputStream(new BufferedOutputStream(second.getOutputStream()));
+            log.write("window,start_sequence,chunks,bw0_Bps,bw1_Bps,rtt0_ms,rtt1_ms,path0_chunks,path1_chunks,mode\n");
+            long startTime = System.nanoTime();
+            out1.writeLong(file.length);
+            out2.writeLong(file.length);
+            long[] counts = new long[2];
+            int window = 0;
+            for (int start = 0; start < total; start += WINDOW_CHUNKS) {
+                int count = Math.min(WINDOW_CHUNKS, total - start);
+                PathMetrics m0 = metrics(0), m1 = metrics(1);
+                int firstCount = scheduler.chunksOnFirstPath(count, m0, m1);
+                String mode = scheduler.name();
+                if (scheduler.requiresBandwidth() && (!m0.hasBandwidth() || !m1.hasBandwidth()))
+                    mode = "minrtt-fallback";
+                log.write(String.format(Locale.ROOT, "%d,%d,%d,%.6f,%.6f,%.6f,%.6f,%d,%d,%s%n",
+                        window++, start, count, m0.bandwidth, m1.bandwidth,
+                        m0.rttMs, m1.rttMs, firstCount, count - firstCount, mode));
+                log.flush();
+                List<List<Integer>> chunks = assign(start, count, firstCount);
+                Future<?> a = workers.submit(() -> { sendChunks(out1, chunks.get(0), file, delay[0]); return null; });
+                Future<?> b = workers.submit(() -> { sendChunks(out2, chunks.get(1), file, delay[1]); return null; });
+                // Bounded windows prevent an unbounded queue on the slower path.
+                await(a); await(b);
+                counts[0] += firstCount; counts[1] += count - firstCount;
+            }
+            out1.writeInt(-1); out2.writeInt(-1);
+            out1.flush(); out2.flush();
+            double seconds = (System.nanoTime() - startTime) / 1e9;
+            System.out.printf(Locale.ROOT, "TRANSFER scheduler=%s bytes=%d chunks=%d path0=%d path1=%d sender_seconds=%.6f%n",
+                    scheduler.name(), file.length, total, counts[0], counts[1], seconds);
+        } finally {
+            workers.shutdownNow();
+            workers.awaitTermination(5, TimeUnit.SECONDS);
         }
     }
-
 }
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        int portForPath1 = 6001;
-        int portForPath2 = 6002;
-        int rttHandlerPortPath1 = 8001;
-        int rttHandlerPortPath2 = 8002;
-        int timeoutOfRttHi = 200;
-        int timestampSendingInterval = 200;
+        if (args.length != 0 && args.length != 1 && args.length != 5) {
+            throw new IllegalArgumentException("Usage: Main [minrtt|bwratio [mean0 std0 mean1 std1]]");
+        }
+        String name = args.length == 0 ? "minrtt" : args[0];
+        Scheduler scheduler;
+        switch (name) {
+            case "minrtt": scheduler = new MinRttScheduler(); break;
+            case "bwratio": scheduler = new BandwidthRatioScheduler(); break;
+            default: throw new IllegalArgumentException("Unknown scheduler: " + name);
+        }
+        double mean0 = args.length == 5 ? Double.parseDouble(args[1]) : 0;
+        double std0 = args.length == 5 ? Double.parseDouble(args[2]) : 0;
+        double mean1 = args.length == 5 ? Double.parseDouble(args[3]) : 0;
+        double std1 = args.length == 5 ? Double.parseDouble(args[4]) : 0;
+        AddDelay delay0 = new AddDelay(mean0, std0), delay1 = new AddDelay(mean1, std1);
+        System.out.printf(Locale.ROOT, "CONFIG scheduler=%s window=%d mean0=%.3f std0=%.3f mean1=%.3f std1=%.3f (ms)%n",
+                name, Server.WINDOW_CHUNKS, mean0, std0, mean1, std1);
         Status status = new Status(false);
-        AddDelay delayerForPath1 = new AddDelay(10, 10);
-        AddDelay delayerForPath2 = new AddDelay(10, 10);
-
-        // For RTT Channel
-        RTTHandler rttHandlerPath1 = new RTTHandler(rttHandlerPortPath1, timeoutOfRttHi, 0, timestampSendingInterval, status, delayerForPath1);
-        RTTHandler rttHandlerPath2 = new RTTHandler(rttHandlerPortPath2, timeoutOfRttHi, 1, timestampSendingInterval, status, delayerForPath2);
-
-        Thread rttPath1Thread = new Thread(rttHandlerPath1);
-        Thread rttPath2Thread = new Thread(rttHandlerPath2);
-
-        // Bind both bandwidth listeners before accepting the data connections.
-        try (BandwidthHandler bandwidth1 = new BandwidthHandler(9001, 0);
-             BandwidthHandler bandwidth2 = new BandwidthHandler(9002, 1)) {
-            bandwidth1.start();
-            bandwidth2.start();
-            rttPath1Thread.start();
-            rttPath2Thread.start();
+        RTTHandler rtt0 = new RTTHandler(8001, 200, 0, 200, status, new AddDelay(mean0, std0));
+        RTTHandler rtt1 = new RTTHandler(8002, 200, 1, 200, status, new AddDelay(mean1, std1));
+        Thread rttThread0 = new Thread(rtt0), rttThread1 = new Thread(rtt1);
+        try (BandwidthHandler bw0 = new BandwidthHandler(9001, 0, new AddDelay(mean0, std0));
+             BandwidthHandler bw1 = new BandwidthHandler(9002, 1, new AddDelay(mean1, std1))) {
+            bw0.start(); bw1.start(); rttThread0.start(); rttThread1.start();
             try {
-                Server server = new Server(portForPath1, portForPath2, rttHandlerPath1, rttHandlerPath2);
-                server.sendFile();
+                new Server(6001, 6002, rtt0, rtt1, bw0, bw1, scheduler, delay0, delay1).sendFile();
             } finally {
                 status.status = true;
-                bandwidth1.close();
-                bandwidth2.close();
-                bandwidth1.awaitStopped();
-                bandwidth2.awaitStopped();
-                rttPath1Thread.join();
-                rttPath2Thread.join();
+                bw0.close(); bw1.close();
+                bw0.awaitStopped(); bw1.awaitStopped();
+                rttThread0.join(); rttThread1.join();
             }
         }
     }

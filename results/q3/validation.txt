@@ -1,0 +1,21 @@
+Q3 validation
+
+Commands:
+javac -d /tmp/multipath-q3-tests MultiPath/Server/Main.java MultiPath/tests/SchedulerTest.java
+java -cp /tmp/multipath-q3-tests SchedulerTest
+PASS strategy allocation, updates, fallback, rounding, exact coverage and Gaussian delays
+
+python3 MultiPath/tests/test_q1.py --scheduler bwratio --delays 4 2 10 4
+PASS empty
+PASS exact-chunks
+PASS partial-final-chunk
+PASS reordered-fragmented-early-eof
+PASS reject-truncated-payload
+Real-server cases verify file hashes, positive per-path BW samples, and each window's allocation.
+Tests run locally in temporary directories; they are not LAN performance benchmarks.
+
+python3 MultiPath/tests/test_q1.py
+PASS all five minRTT regression cases
+
+python3 MultiPath/tests/test_q2.py --results results/q3/probe-regression
+PASS all seven bandwidth-probe checks (see probe-regression/validation.txt)

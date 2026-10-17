@@ -1,6 +1,6 @@
-# Multipath: Q1 in-order delivery and Q2 bandwidth probes
+# Multipath: in-order delivery, probes and interchangeable schedulers
 
-The server keeps the tutorial's minRTT scheduler. Every file chunk gets a global
+The server supports minRTT and bandwidth-ratio schedulers. Every file chunk gets a global
 sequence number before being sent on either TCP path. Both client receiver threads
 share a synchronized `Reassembler`, which buffers later chunks and writes only
 consecutive chunks to one output stream. One path ending does not complete the file.
@@ -88,8 +88,8 @@ The client overwrites its output ZIP each run. No cleanup script is needed.
 
 The lag timestamps still depend on clock synchronization between machines; they
 are not RTT measurements. Bandwidth probes run independently of the minRTT data
-scheduler. New schedulers and Gaussian data-path delays (Q3 onward) are not
-implemented here.
+scheduler by default. Q3 adds bandwidth-ratio scheduling and Gaussian data-path
+delays; Q4 balanced completion is not implemented yet.
 
 ## Tests
 
@@ -146,3 +146,46 @@ The Q2 tests exercise both probe implementations, controlled per-path durations,
 EWMA arithmetic, invalid messages, fragmented reads, reconnection and shutdown.
 Saved controlled CSVs are synthetic arithmetic checks; loopback CSVs are actual
 local samples and should not be presented as two-machine benchmark results.
+
+## Q3 scheduler and delays
+
+Run from MultiPath/Server after `javac -d build Main.java`:
+
+```sh
+java -cp build Main bwratio 4 2 10 4
+java -cp build Main minrtt 4 2 10 4
+```
+
+Use one command per run. Arguments are scheduler, path-0 mean/std, path-1 mean/std
+in milliseconds. With no arguments the server uses minRTT and zero simulated delay.
+The client command is unchanged; recompile the updated client to get its elapsed-time
+message (receiver start through verified output flush, including server warmup).
+
+Both strategies operate on windows of up to 256 chunks. The ratio strategy assigns
+round(N * BW0 / (BW0 + BW1)) chunks to path 0 and the remainder to path 1, using
+fresh smoothed estimates at each window. Two workers send concurrently. Each window
+waits for both workers to finish writing before the next allocation, which bounds
+queued chunks but can idle the faster worker. MinRTT selects one path per window.
+
+The server logs allocation, estimates, and fallback decisions in Scheduler.csv.
+The final TRANSFER line records per-path chunk counts and sender duration from
+metadata transmission through final end-marker writes; it is not client download
+time. The ratio scheduler waits up to 15 seconds after its 2-second warmup for BW
+samples. Unavailable or older-than-10-second samples cause minRTT fallback.
+
+Gaussian delay samples are rounded and clamped at zero. Data workers sleep per
+chunk; bandwidth probes sleep per payload block (at most 1435 bytes), using the
+same mean/std for their associated path. RTT estimates add two one-way samples.
+This models per-chunk service delay and therefore limits throughput too; it does
+not emulate independent propagation delays with unlimited packets in flight.
+
+Tests from the repository root:
+
+```sh
+javac -d /tmp/multipath-q3-tests MultiPath/Server/Main.java MultiPath/tests/SchedulerTest.java
+java -cp /tmp/multipath-q3-tests SchedulerTest
+python3 MultiPath/tests/test_q1.py --scheduler bwratio --delays 4 2 10 4
+```
+
+The data frame format remains compatible with Q1/Q2 clients. Archive Scheduler.csv
+and the bandwidth CSVs after each run; subsequent runs replace them.

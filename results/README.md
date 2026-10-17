@@ -51,3 +51,8 @@ The client completed successfully and reconstructed a 53,186,840-byte ZIP.
 Server-side hash comparison for this run is pending verification by the server
 operator. This records client completion and integrity evidence, not scheduler
 performance or download time.
+## Q3 evidence
+
+- q3/validation.txt: scheduler and delay tests, plus delayed bandwidth-ratio transfers.
+- Each Q3 LAN run archives Scheduler.csv alongside the bandwidth CSVs and server log.
+  Sender duration excludes warmup but does not establish client download completion.

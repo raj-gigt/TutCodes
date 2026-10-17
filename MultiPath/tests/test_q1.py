@@ -2,6 +2,8 @@
 Compiles and transfers test files in temporary directories; requires free ports
 6001, 6002, 8001, 8002, 9001 and 9002. Does not touch the supplied ZIP or client lag log.
 """
+import argparse
+import math
 import csv
 import hashlib
 import socket
@@ -24,6 +26,10 @@ def digest(data):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--scheduler', default='minrtt', choices=['minrtt', 'bwratio'])
+    parser.add_argument('--delays', nargs=4, default=['0', '0', '0', '0'])
+    options = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='multipath-q1-') as directory:
         base = Path(directory)
         server_classes, client_classes = base / 'server-classes', base / 'client-classes'
@@ -76,7 +82,7 @@ def main():
                 peer.start()
             else:
                 log = open(work / 'server.log', 'w')
-                server = subprocess.Popen(['java', '-cp', str(server_classes), 'Main'], cwd=server_dir,
+                server = subprocess.Popen(['java', '-cp', str(server_classes), 'Main', options.scheduler, *options.delays], cwd=server_dir,
                                           stdout=log, stderr=subprocess.STDOUT)
                 # Do not probe readiness by connecting: the demo accepts one connection per path.
                 time.sleep(.5)
@@ -94,6 +100,17 @@ def main():
                 if server:
                     assert server.wait(timeout=5) == 0, (work / 'server.log').read_text()
                     # Q2 probes must produce estimates alongside the real file transfer.
+                    with (server_dir / 'Scheduler.csv').open() as schedule_log:
+                        windows = list(csv.DictReader(schedule_log))
+                    assert sum(int(w['chunks']) for w in windows) == math.ceil(len(data) / 1435)
+                    for row in windows:
+                        n = int(row['chunks'])
+                        first = int(row['path0_chunks'])
+                        assert first + int(row['path1_chunks']) == n
+                        if options.scheduler == 'bwratio':
+                            assert row['mode'] == 'bwratio', row
+                            b0, b1 = float(row['bw0_Bps']), float(row['bw1_Bps'])
+                            assert first == math.floor(n * b0 / (b0 + b1) + .5), row
                     for path in (0, 1):
                         with (server_dir / f'Bandwidth-Path{path}.csv').open() as probe_log:
                             samples = list(csv.DictReader(probe_log))

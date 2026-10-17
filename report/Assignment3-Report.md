@@ -186,6 +186,74 @@ waiting for the client.
 - Automated tests used loopback; the separate two-machine run is recorded above.
   No artificial bandwidth difference was introduced in Q2.
 
-## Q3-Q6
+## Q3. Bandwidth-ratio scheduler
+
+I added a `Scheduler` interface with `MinRttScheduler` and `BandwidthRatioScheduler`
+implementations. The scheduler can be selected from the command line:
+
+```sh
+java -cp build Main bwratio 4 2 10 4
+# Alternative: java -cp build Main minrtt 4 2 10 4
+```
+
+The four numbers are path 0 mean/std and path 1 mean/std, in milliseconds.
+
+### Allocation
+
+The file is scheduled in windows of up to 256 chunks. Each window uses the latest
+smoothed bandwidth estimates from Q2:
+
+```text
+n = round(N × BW0 / (BW0 + BW1))
+Path 0 receives n chunks; path 1 receives N - n chunks.
+```
+
+The assigned chunks are spread through the window's sequence numbers. Two sender
+workers transmit concurrently, and the next window begins after both workers finish
+writing the current one. This bounds queued work, but a faster path can wait at the
+window boundary. MinRTT also selects a path per window for a consistent comparison.
+
+```java
+interface Scheduler {
+    String name();
+    default boolean requiresBandwidth() { return false; }
+    int chunksOnFirstPath(int count, PathMetrics first, PathMetrics second);
+}
+```
+
+The ratio scheduler waits up to 15 seconds after the 2-second warmup for valid
+bandwidth estimates. If either estimate is unavailable or older than 10 seconds,
+it uses minRTT for that window and records the fallback in `Scheduler.csv`.
+
+### Simulated delay
+
+`AddDelay` samples a normal distribution, rounds to milliseconds, and clamps
+negative values to zero:
+
+```text
+delay = max(0, round(mean + std × Gaussian(0, 1)))
+```
+
+Each sender sleeps before transmitting a chunk. Bandwidth probes use the same
+per-path distribution before every payload block of at most 1435 bytes. RTT samples
+include two independently sampled one-way delays. Separate random samples are used
+for data and probes.
+
+This is a per-chunk service-delay simulation, not a pure propagation-delay model:
+sleeping between chunks also limits effective throughput. Clamping changes the
+actual distribution slightly. Both schedulers use the same simulation rules.
+
+### Validation
+
+Strategy tests passed for 2:1 allocation, equal bandwidth, changed estimates,
+rounding, fallback, and exact sequence coverage. Normal-delay sampling was checked
+with a fixed random seed. File-transfer tests with `bwratio 4 2 10 4` passed for
+empty files, exact and partial chunks, reordering, fragmentation, and truncation.
+Successful transfers matched the source SHA-256, and every logged window matched
+the bandwidth-ratio allocation.
+
+[Validation record](../results/q3/validation.txt)
+
+## Q4-Q6
 
 To be added after implementation and experiments.
