@@ -38,3 +38,16 @@ Client-reported SHA-256 for the Q2 two-machine run (matches the server source):
 ```text
 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
 ```
+
+## Q3 client verification — 17 October 2026
+
+The client completed successfully and reconstructed a 53,186,840-byte ZIP.
+[Client output and verification](q3/client-verification.txt).
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
+```
+
+Server-side hash comparison for this run is pending verification by the server
+operator. This records client completion and integrity evidence, not scheduler
+performance or download time.

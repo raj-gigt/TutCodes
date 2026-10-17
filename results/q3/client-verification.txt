@@ -1,0 +1,23 @@
+Q3 client download verification — 17 October 2026
+
+Working directory: MultiPath/Client
+Command: java -cp build Main
+Server IP: 10.42.184.197
+Client exit code: 0
+
+Captured client output:
+Connected : 0
+Connected : 1
+0 Hi Sent
+1 Hi Sent
+0 Received HiAck
+1 Received HiAck
+Complete file reconstructed in order.
+
+Downloaded file: video/CN_Lect_NPTEL.zip
+Size: 53186840 bytes
+SHA-256: 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+
+Server-side comparison for this Q3 run: pending friend verification.
+Server scheduler/settings were not captured by the client.
+No application download-duration measurement was captured.
