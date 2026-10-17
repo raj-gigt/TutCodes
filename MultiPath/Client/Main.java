@@ -191,8 +191,8 @@ public class Main {
         int rttHandlerPortPath1 = 8001;
         int rttHandlerPortPath2 = 8002;
         int timeoutOfRttHi = 200;
-        String serverIP = "192.168.31.207";
-        String helperIP = "192.168.31.207";
+        String serverIP = "10.42.184.197";
+        String helperIP = "10.42.184.197";
 //        AddDelay delayerPath1 = new AddDelay(10, 10);
 //        AddDelay delayerPath2 = new AddDelay(10, 10);
 
