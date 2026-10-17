@@ -18,6 +18,7 @@ Downloaded file: video/CN_Lect_NPTEL.zip
 Size: 53186840 bytes
 SHA-256: 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
 
-Server-side comparison for this Q3 run: pending friend verification.
+Server-side comparison: verified against lan-run-20261017-152422/run.json.
+The client SHA-256 and file size match the server source.
 Server scheduler/settings were not captured by the client.
 No application download-duration measurement was captured.

@@ -254,15 +254,6 @@ the bandwidth-ratio allocation.
 
 [Validation record](../results/q3/validation.txt)
 
-### First two-machine attempt
-
-With `bwratio 4 2 10 4`, all 126 logged windows followed the ratio formula, with
-no fallback. The connection reset before completion; the server then reported
-`Broken pipe`. The log contains 32,256 chunk assignments out of 37,064, but the
-last window may be incomplete. This attempt is not a completed-download result.
-
-[Failed-run logs](../results/q3/lan-run-20261017-151847/README.md)
-
 ### Retry results
 
 The same configuration completed on the server with exit code 0. All 145 scheduling
@@ -278,8 +269,14 @@ Sender duration: 135.396 seconds
 The larger allocation went to the path with higher measured bandwidth. Mean probe
 rates were 2.202 Mbps on path 0 and 0.933 Mbps on path 1. The earlier connection reset
 did not recur, but its cause is still unknown. Sender duration excludes warmup and
-ends after writing the end markers; it is not client-side download time. Client
-completion/hash confirmation for this retry is pending.
+ends after writing the end markers; it is not client-side download time. The client
+completed successfully and its 53,186,840-byte output matched the server SHA-256:
+
+```text
+653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc
+```
+
+[Client verification](../results/q3/client-verification.txt)
 
 [Retry logs and measurements](../results/q3/lan-run-20261017-152422/README.md)
 

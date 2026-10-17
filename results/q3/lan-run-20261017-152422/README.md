@@ -15,8 +15,9 @@ Sender duration: 135.395867 seconds
 
 All 145 windows matched the bandwidth-ratio allocation; there were no fallbacks.
 Sender duration covers metadata writes through end-marker writes, excluding warmup.
-It is not a measurement of client-side download completion. Client completion/hash
-confirmation for this retry is pending; do not reuse a hash from an earlier run.
+It is not a measurement of client-side download completion. The supplied
+[client verification](../client-verification.txt) records successful completion and
+a 53,186,840-byte output whose SHA-256 matches this run's server source hash.
 
 - server.log: full server console output.
 - Scheduler.csv: window allocations and estimates used.

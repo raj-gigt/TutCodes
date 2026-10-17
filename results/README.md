@@ -48,9 +48,8 @@ The client completed successfully and reconstructed a 53,186,840-byte ZIP.
 653bfc4afd75e6b758b9355ee8d2eea00bc888991e7a2725b6fede2eb51ca8bc  video/CN_Lect_NPTEL.zip
 ```
 
-Server-side hash comparison for this run is pending verification by the server
-operator. This records client completion and integrity evidence, not scheduler
-performance or download time.
+The client hash and file size match the server source for the Q3 retry. This
+confirms file integrity, not client download time.
 ## Q3 evidence
 
 - q3/validation.txt: scheduler and delay tests, plus delayed bandwidth-ratio transfers.
@@ -59,4 +58,4 @@ performance or download time.
 
 - q3/lan-run-20261017-151847/: interrupted first attempt; preserved as a failed run.
 - q3/lan-run-20261017-152422/: retry completed on the server; all allocations checked.
-  Client hash confirmation is pending for this retry.
+  Client completion, file size, and SHA-256 are verified for this retry.
